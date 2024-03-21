@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Save__plan_your_trips</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        :root {
+            font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            font-weight: 400;
+            color-scheme: light dark;
+            color: rgba(255, 255, 255, 0.87);
+            background-color: #242424;
+            font-synthesis: none;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 62.5%;
+        }
+
+        body {
+            font-size: 1.6rem;
+        }
+
+        button {
+            border-radius: 8px;
+            border: 1px solid transparent;
+            padding: 0.6em 1.2em;
+            font-size: 1em;
+            font-weight: 500;
+            font-family: inherit;
+            background-color: #15aabf;
+            color: #242424;
+            cursor: pointer;
+            transition: all 0.3s
+        }
+
+        button:hover {
+            background-color: #22b8cf;
+        }
+
+        button:focus,
+        button:focus-visible {
+            outline: 4px auto -webkit-focus-ring-color;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            padding: 2.4rem;
+            background-color: #22b8cf;
+        }
+
+        .mainPages {
+            display: flex;
+            gap: 1.6rem;
+        }
+
+        .nav a {
+            font-weight: 600;
+            text-decoration: none;
+            color: #242424;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <ul>
+                <div class="mainPages">
+                <li>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Logo</a>
+                </li>
+                <li>
+                    <a class="naark" asp-area="" asp-controller="Trips" asp-action="YourAlbums">Trips</a>
+                </li>
+                <li>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Scheduled">Scheduled</a>
+                </li>
+                </div>
+                <li>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Log in</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div>
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

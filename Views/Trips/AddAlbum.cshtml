@@ -1,0 +1,126 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+<style>
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .form {
+        font-size: 1.8rem;
+        margin-top: 7%;
+        padding: 3.6rem;
+        background-color: #333333;
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+        border-radius: 6px;
+    }
+
+        .form label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .form input, textarea {
+            padding: 0.8rem;
+            border: 2px solid #242424;
+            height: 3rem;
+            width: 100%;
+            border-radius: 6px;
+        }
+
+        .form textarea {
+            height: 6rem;
+        }
+
+        .form input:focus {
+            outline: none;
+        }
+
+    .buttons {
+        display: flex;
+        gap: 1.2rem;
+    }
+
+    .submit {
+        border: 2px solid #242424;
+        margin: 0 auto;
+        background-color: #242424;
+        font-size: 1.6rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: inherit;
+        width: 14rem;
+    }
+
+        .submit:hover {
+            background-color: #333333;
+        }
+
+    .cancel {
+        background-color: #333333;
+    }
+
+        .cancel:hover {
+            background-color: #242424;
+        }
+
+    .uploadPhotoNew {
+        width: 12rem;
+        height: 6rem;
+        background-color: #242424;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .uploadPhoto {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+    }
+</style>
+
+@model Save__plan_your_trips.Models.DbConnectModels.AddAlbumRequest
+
+<div class="container">
+    <form class="form">
+        <label>
+            <span>Place where you have been</span>
+            <input type="text" required="true" id="name" />
+        </label>
+        <label>
+            <span>Your impressions</span>
+            <textarea id="description"></textarea>
+        </label>
+        <label>
+            <span>Download some photos</span>
+            <span class="uploadPhotoNew">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="44"
+                     height="44"
+                     fill="currentColor"
+                     className="bi bi-plus-circle"
+                     viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </span>
+            <input type="file" class="uploadPhoto" id="file"/>
+        </label>
+        <div class="buttons">
+            <button class="submit">
+                Cancel
+            </button>
+            <button type="submit" class="submit">
+                Add album
+            </button>
+        </div>
+    </form>
+</div>

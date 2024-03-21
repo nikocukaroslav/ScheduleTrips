@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .homepage {
+        background-image: linear-gradient( rgba(36, 42, 46, 0.7), rgba(36, 42, 46, 0.7) ), url("https://wallup.net/wp-content/uploads/2016/06/23/381683-nature-landscape-photography-river-grass-sunset-trees.jpg");
+        background-size: cover;
+        background-position: center center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+
+    .homepageContentContainer {
+        margin-top: -13rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 5rem;
+        position: relative;
+    }
+
+
+    .slogan {
+        color: #e3fafc;
+        padding-bottom: 3rem;
+        text-align: center;
+    }
+
+
+    .button {
+        text-decoration: none;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        padding: 0.6em 1.2em;
+        font-size: 1em;
+        font-weight: 500;
+        font-family: inherit;
+        background-color: #15aabf;
+        color: #242424;
+        cursor: pointer;
+        transition: all 0.3s
+    }
+
+        .button:hover {
+            background-color: #22b8cf;
+        }
+
+    .footer {
+        position: absolute;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 30px 0;
+        bottom: 0;
+        width: 100%;
+    }
+
+</style>
+
+
+<div class="homepage">
+    <div class="homepageContentContainer">
+        <h2 class="slogan">
+            Your trip's album –<br /> save your most valuable memories
+        </h2>
+        <a class="button">
+            Save memories now
+        </a>
+    </div>
+</div>
+
+<footer class="footer">
+    &copy; 2024 - ScheduleTrips - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+</footer>

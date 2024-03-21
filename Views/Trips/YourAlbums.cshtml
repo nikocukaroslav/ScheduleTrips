@@ -1,0 +1,112 @@
+﻿
+<style>
+    .tripsPage {
+        display: flex
+    }
+
+    .albumContainer {
+        width: 100%;
+    }
+
+    .newAlbum {
+        position: absolute;
+        background-color: darkgray;
+        width: 7rem;
+        height: 7rem;
+        color: #242424;
+        right: 3rem;
+        bottom: 3rem;
+        border-radius: 50%;
+        transition: all 0.3s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .newAlbum:hover {
+            background-color: #e3fafc;
+        }
+
+    .plus {
+        display: flex;
+        align-content: center;
+        justify-items: center;
+    }
+
+    .tripsList {
+        padding: 0.8rem;
+        display: flex;
+        list-style: none;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .place {
+        width: 20rem;
+        height: 5rem;
+        background-color: darkgray;
+        color: #242424;
+        padding: 1.2rem;
+        display: flex;
+        align-items: center;
+        font-size: 1.8rem;
+        font-weight: 600;
+        border-radius: 6px;
+        transition: all 0.2s;
+    }
+
+        .place:hover {
+            background-color: #e3fafc;
+        }
+
+    .active {
+        background-color: #e3fafc;
+        ;
+    }
+
+    .header {
+        background-color: #333333;
+        height: 6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 1.8rem;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+        margin: 0.8rem;
+    }
+</style>
+
+
+<section class="tripsPage">
+    <ul class="tripsList ">
+        <li class="place">Berlin</li>
+    </ul>
+    <a class="newAlbum" asp-area="" asp-controller="Trips" asp-action="AddAlbum">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="28"
+             height="28"
+             fill="currentColor"
+             class="plus"
+             viewBox="0 0 16 16">
+            <path fillRule="evenodd"
+                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+        </svg>
+    </a>
+    <div class="albumContainer">
+        <section class="container">
+            <header class="header">
+                You in Berlin
+            </header>
+            <TripGallery />
+        </section>
+    </div>
+</section>
+
+
