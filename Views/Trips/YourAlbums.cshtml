@@ -81,12 +81,58 @@
         gap: 1.6rem;
         margin: 0.8rem;
     }
-</style>
 
+
+    .uploadPhotoNew {
+        width: 12rem;
+        height: 6rem;
+        background-color: #242424;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .uploadPhoto {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.6rem;
+    }
+
+    .photo {
+        width: 22rem;
+        height: 15rem;
+        background-color: #333333;
+        border-radius: 6px;
+    }
+</style>
+@model IEnumerable<Save__plan_your_trips.Models.Domain.Album?>
 
 <section class="tripsPage">
     <ul class="tripsList ">
-        <li class="place">Berlin</li>
+        @{
+            string currentAlbum = "";
+        }
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                currentAlbum = item.Name;
+                <li class="place">@item.Name</li>
+            }
+        }
+        else
+        {
+            <p>No trips yet</p>
+        }
     </ul>
     <a class="newAlbum" asp-area="" asp-controller="Trips" asp-action="AddAlbum">
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -96,15 +142,48 @@
              class="plus"
              viewBox="0 0 16 16">
             <path fillRule="evenodd"
-                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
         </svg>
     </a>
     <div class="albumContainer">
         <section class="container">
             <header class="header">
-                You in Berlin
+                @if (!string.IsNullOrEmpty(currentAlbum))
+                {
+                    <p>You in @currentAlbum</p>
+                }
+                else
+                {
+                    <p>No album selected</p>
+                }
             </header>
-            <TripGallery />
+      
+        <div class="gallery">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    currentAlbum = item.Image;
+                    <img src="@item.Image" alt="album-photo" class="photo"/>
+                }
+            }
+            else
+            {
+                
+            }
+            <span class="uploadPhotoNew photo">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="72"
+                     height="72"
+                     fill="currentColor"
+                     className="bi bi-plus-circle"
+                     viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                </svg>
+            </span>
+            <input type="file" class="uploadPhoto" id="image"/>
+        </div>
         </section>
     </div>
 </section>

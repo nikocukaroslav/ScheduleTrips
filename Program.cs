@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Save__plan_your_trips.Data;
+using Save__plan_your_trips.Repopositories;
+using Save__plan_your_trips.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +11,25 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ScheduleTripsDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ScheduleTripsDbConnectionString")));
+
+builder.Services.AddDbContext<AuthDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ScheduleTripsAuthDbConnectionString")));
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<AuthDbContext>();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 0;
+});
+
+builder.Services.AddScoped<ITripsRepository, TripsRepository>();
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
 
 var app = builder.Build();
 
@@ -24,10 +46,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Preview}/{action=StarterPage}/{id?}");
 
 app.Run();

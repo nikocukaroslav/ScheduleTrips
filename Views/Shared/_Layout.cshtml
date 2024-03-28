@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<IdentityUser> signInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -46,14 +50,14 @@
             transition: all 0.3s
         }
 
-        button:hover {
-            background-color: #22b8cf;
-        }
+            button:hover {
+                background-color: #22b8cf;
+            }
 
-        button:focus,
-        button:focus-visible {
-            outline: 4px auto -webkit-focus-ring-color;
-        }
+            button:focus,
+            button:focus-visible {
+                outline: 4px auto -webkit-focus-ring-color;
+            }
 
         .nav ul {
             list-style: none;
@@ -74,6 +78,14 @@
             color: #242424;
         }
 
+        .authPages {
+            display: flex;
+            gap: 1.6rem;
+        }
+
+        .userName {
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -81,19 +93,43 @@
         <nav class="nav">
             <ul>
                 <div class="mainPages">
-                <li>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Logo</a>
-                </li>
-                <li>
-                    <a class="naark" asp-area="" asp-controller="Trips" asp-action="YourAlbums">Trips</a>
-                </li>
-                <li>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Scheduled">Scheduled</a>
-                </li>
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">Logo</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Trips" asp-action="YourAlbums">Trips</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Scheduled">Scheduled</a>
+                    </li>
+                    }
+                    else
+                    {
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">Logo</a>
+                    </li>
+                    }
                 </div>
-                <li>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Log in</a>
-                </li>
+                <div class="authPages">
+                    @if (signInManager.IsSignedIn(User))
+                    {
+
+                        <div class="userName">@User.Identity.Name</div>
+                    <li> <a asp-area="" asp-controller="Auth" asp-action="SignIn">Logout</a></li>
+
+                    }
+                    else
+                    {
+                    <li>
+                        <a asp-area="" asp-controller="Auth" asp-action="SignIn">Sign In</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Auth" asp-action="SignUp">Sign Up</a>
+                    </li>
+                    }
+                </div>
             </ul>
         </nav>
     </header>
@@ -103,7 +139,6 @@
         </main>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

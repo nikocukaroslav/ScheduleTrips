@@ -8,8 +8,8 @@
 
     .form {
         font-size: 1.8rem;
-        margin-top: 7%;
-        padding: 3.6rem;
+        margin-top: 10%;
+        padding: 2.4rem 3.6rem;
         background-color: #333333;
         display: flex;
         flex-direction: column;
@@ -24,7 +24,7 @@
             gap: 0.4rem;
         }
 
-        .form input, textarea {
+        .form input {
             padding: 0.8rem;
             border: 2px solid #242424;
             height: 3rem;
@@ -32,13 +32,9 @@
             border-radius: 6px;
         }
 
-        .form textarea {
-            height: 6rem;
-        }
-
-        .form input:focus {
-            outline: none;
-        }
+            .form input:focus {
+                outline: none;
+            }
 
     .buttons {
         display: flex;
@@ -61,8 +57,21 @@
         }
 
     .cancel {
+        color: inherit;
+        text-decoration: none;
+        font-weight: bold;
+        border: 2px solid #242424;
+        font-size: 1.6rem;
+        cursor: pointer;
+        transition: all 0.2s;
         background-color: #333333;
+        width: 14rem;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
+
 
         .cancel:hover {
             background-color: #242424;
@@ -87,17 +96,13 @@
     }
 </style>
 
-@model Save__plan_your_trips.Models.DbConnectModels.AddAlbumRequest
+@model Save__plan_your_trips.Models.ViewModels.AddAlbumRequest
 
 <div class="container">
-    <form class="form">
+    <form class="form" method="post" enctype="multipart/form-data">
         <label>
             <span>Place where you have been</span>
-            <input type="text" required="true" id="name" />
-        </label>
-        <label>
-            <span>Your impressions</span>
-            <textarea id="description"></textarea>
+            <input type="text" required="true" id="name" asp-for="Name"/>
         </label>
         <label>
             <span>Download some photos</span>
@@ -112,15 +117,41 @@
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                 </svg>
             </span>
-            <input type="file" class="uploadPhoto" id="file"/>
+            <input type="file" class="uploadPhoto" id="image" asp-for="Image" />
         </label>
         <div class="buttons">
-            <button class="submit">
+            <a class="cancel" asp-area="" asp-controller="Trips" asp-action="YourAlbums">
                 Cancel
-            </button>
+            </a>
             <button type="submit" class="submit">
                 Add album
             </button>
         </div>
     </form>
 </div>
+
+@section Scripts {
+    <script>
+        const UploadElement = document.getElementById('image'); 
+
+        async function uploadImage(e) {
+            console.log(e.target.files[0]);
+
+            let data = new FormData();
+            data.append('file', e.target.files[0]);
+
+            await fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*',
+                },
+                body: data
+            }).then(response => response.json())
+                .then(result => {
+                    featuredImageUrlElement.value = result.link;
+                });
+        }
+       UploadElement.addEventListener('change', uploadImage);
+
+    </script>
+}

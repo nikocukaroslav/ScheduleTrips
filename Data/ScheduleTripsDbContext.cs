@@ -1,14 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Save__plan_your_trips.Models;
+using Save__plan_your_trips.Models.Domain;
 
 namespace Save__plan_your_trips.Data
 {
     public class ScheduleTripsDbContext : DbContext
     {
-        public ScheduleTripsDbContext(DbContextOptions options) : base(options)
+        public ScheduleTripsDbContext(DbContextOptions<ScheduleTripsDbContext> options) : base(options)
         {
         }
-        public DbSet<Photo> Photos { get; set; }
-        public DbSet<Album> Albums { get; set; }
+        public DbSet<Album> Album { get; set; }
     }
 }
