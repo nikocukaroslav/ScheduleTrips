@@ -61,7 +61,6 @@
 
     .active {
         background-color: #e3fafc;
-        ;
     }
 
     .header {
@@ -113,8 +112,16 @@
         background-color: #333333;
         border-radius: 6px;
     }
+
+    .noTrips {
+        width: 22.5rem;
+        text-align: center;
+    }
+
 </style>
-@model IEnumerable<Save__plan_your_trips.Models.Domain.Album?>
+
+@using Save__plan_your_trips.Models.Domain
+@model IEnumerable<Album?>
 
 <section class="tripsPage">
     <ul class="tripsList ">
@@ -131,7 +138,7 @@
         }
         else
         {
-            <p>No trips yet</p>
+            <p class="noTrips">No trips yet</p>
         }
     </ul>
     <a class="newAlbum" asp-area="" asp-controller="Trips" asp-action="AddAlbum">
@@ -142,12 +149,13 @@
              class="plus"
              viewBox="0 0 16 16">
             <path fillRule="evenodd"
-                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
         </svg>
     </a>
     <div class="albumContainer">
         <section class="container">
             <header class="header">
+
                 @if (!string.IsNullOrEmpty(currentAlbum))
                 {
                     <p>You in @currentAlbum</p>
@@ -156,36 +164,34 @@
                 {
                     <p>No album selected</p>
                 }
+
             </header>
-      
-        <div class="gallery">
-            @if (Model != null && Model.Any())
-            {
-                foreach (var item in Model)
+
+            <div class="gallery">
+                @if (Model != null)
                 {
-                    currentAlbum = item.Image;
-                    <img src="@item.Image" alt="album-photo" class="photo"/>
+                    @foreach (var album in Model)
+                    {
+                       
+                            <img src="@album alt="Image" class="photo" />
+                        
+                    }
+
+                    <span class="uploadPhotoNew photo">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="72"
+                             height="72"
+                             fill="currentColor"
+                             className="bi bi-plus-circle"
+                             viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                        </svg>
+                    </span>
+                    <input type="file" class="uploadPhoto" id="image" />
                 }
-            }
-            else
-            {
-                
-            }
-            <span class="uploadPhotoNew photo">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="72"
-                     height="72"
-                     fill="currentColor"
-                     className="bi bi-plus-circle"
-                     viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                </svg>
-            </span>
-            <input type="file" class="uploadPhoto" id="image"/>
-        </div>
+            </div>
         </section>
     </div>
 </section>
-
-
+<div />

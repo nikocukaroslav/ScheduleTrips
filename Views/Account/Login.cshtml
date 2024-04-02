@@ -1,4 +1,5 @@
 ﻿<style>
+
     body {
         overflow: hidden;
         display: flex;
@@ -61,29 +62,40 @@
     .nav {
         display: none;
     }
+
+    .textDanger {
+        color: #e03131;
+        font-size: 1.4rem;
+        margin-bottom:2.2rem;
+        display:block;
+        margin-top:-2.2rem;
+    }
+
+    .block {
+        display: block;
+    }
 </style>
 
-@model Save__plan_your_trips.Models.ViewModels.SignUpRequest
+@model Save__plan_your_trips.Models.ViewModels.SignInRequest
 
 <form method="post">
     <div class="container">
-        <p>Please fill in this form to create an account.</p>
+        <p>Please fill in this form to log in.</p>
         <hr>
 
-        <label for="email"><b>Nickname</b></label>
-        <input type="text" placeholder="Enter Nickname" id="userName" asp-for="Nickname" required>
+        <label for="nickname" class="block"><strong>Nickname</strong></label>
+        <input type="text" placeholder="Enter Nickname" id="nickname" asp-for="Nickname" required>
+        <span class="textDanger" asp-validation-for="Nickname"></span>
 
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Email" id="email" asp-for="Email" required>
-
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" id="psw" asp-for="Password" required>
+        <label for="password" class="block"><strong>Password</strong></label>
+        <input type="password" placeholder="Enter Password" id="password" asp-for="Password" required minlength="6">
+        <span class="textDanger" asp-validation-for="Password"></span>
 
         <hr>
 
-        <button type="submit" class="registerbtn">Register</button>
+        <button type="submit" class="registerbtn">Log in</button>
         <div class="signin">
-            <p>Already have an account? <a asp-area="" asp-controller="Auth" asp-action="SignIn" a>Sign in</a></p>
+            <p>Have no account? <a asp-area="" asp-controller="Account" asp-action="SignUp" a>Sign up</a>.</p>
         </div>
     </div>
 </form>

@@ -3,33 +3,14 @@
 }
 <style>
     .homepage {
-        background-image: linear-gradient( rgba(36, 42, 46, 0.7), rgba(36, 42, 46, 0.7) ), url("https://wallup.net/wp-content/uploads/2016/06/23/381683-nature-landscape-photography-river-grass-sunset-trees.jpg");
+        background-image: linear-gradient( rgba(36, 42, 46, 0.7), rgba(36, 42, 46, 0.7) ), url("https://th.bing.com/th/id/R.ff248f0499987180ef7f89a72b8708e5?rik=7zGYwp0xNHcl%2fA&pid=ImgRaw&r=0");
         background-size: cover;
         background-position: center center;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
         min-height: 100vh;
     }
-
-
-    .homepageContentContainer {
-        margin-top: -13rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 5rem;
-        position: relative;
-    }
-
-
-    .slogan {
-        color: #e3fafc;
-        padding-bottom: 3rem;
-        text-align: center;
-    }
-
 
     .button {
         text-decoration: none;
@@ -49,29 +30,48 @@
             background-color: #22b8cf;
         }
 
-    .footer {
-        position: absolute;
-        background-color: #333;
-        color: #fff;
-        text-align: center;
-        padding: 30px 0;
-        bottom: 0;
-        width: 100%;
+    body {
+        overflow: hidden;
     }
 
-    body{
-        overflow:hidden;
+    .photo {
+        width: 32rem;
+        height: 20rem;
+        background-color: #333333;
+        border-radius: 6px;
+    }
+
+    .photos {
+        width: 110rem;
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+    h2 {
+        margin-top:6rem;
+        letter-spacing: 2.5px;
+        font-size: 3.2rem;
+        padding: 2rem;
+    }
+
+    .anotherTrip {
+        background-color: #333;
+        width: 60rem;
+        height: 20rem;
+        border-radius:6px;
     }
 </style>
 
 
 <div class="homepage">
-    <div class="homepageContentContainer">
-        <h2 class="slogan">
-            Your trip's album –<br /> save your most valuable memories
-        </h2>
-        <a class="button" asp-area="" asp-controller="Auth" asp-action="SignUp">
-            Save memories now
-        </a>
+    <h2>Your last trip</h2>
+    <div class="photos">
+        @for (var i = 0; i < 3; i++)
+        {
+            <img src="" alt="trip-photo" class="photo" />
+        }
     </div>
+    <h2>Maybe try this one</h2>
+    <div class="anotherTrip"> </div>
 </div>

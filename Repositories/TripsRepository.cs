@@ -2,7 +2,6 @@
 using Save__plan_your_trips.Data;
 using Save__plan_your_trips.Models.Domain;
 
-
 namespace Save__plan_your_trips.Repopositories
 {
     public class TripsRepository : ITripsRepository
@@ -17,7 +16,7 @@ namespace Save__plan_your_trips.Repopositories
 
         public async Task<IEnumerable<Album>> GetAsync()
         {
-            return await scheduleTripsDbContext.Album.ToListAsync();
+            return await scheduleTripsDbContext.Album.Include(a => a.Images).ToListAsync();
         }
 
 
@@ -26,6 +25,13 @@ namespace Save__plan_your_trips.Repopositories
             await scheduleTripsDbContext.Album.AddAsync(album);
             await scheduleTripsDbContext.SaveChangesAsync();
             return album;
+        }
+
+        public async Task<Image> AddAsync(Image image)
+        {
+            await scheduleTripsDbContext.Images.AddAsync(image);
+            await scheduleTripsDbContext.SaveChangesAsync();
+            return image;
         }
     }
 }

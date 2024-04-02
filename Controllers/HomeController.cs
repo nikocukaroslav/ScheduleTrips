@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Save__plan_your_trips.Models;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ namespace Save__plan_your_trips.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
@@ -22,6 +24,8 @@ namespace Save__plan_your_trips.Controllers
         {
             return View();
         }
+
+        [Authorize]
         public IActionResult Scheduled()
         {
             return View();

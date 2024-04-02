@@ -19,15 +19,14 @@ namespace Save__plan_your_trips.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadAsync(IFormFile file)
         {
-            var imageURL = await imageRepository.UploadAsync(file);
+            var imageUrl = await imageRepository.UploadAsync(file);
 
-            if (imageURL == null)
+            if (imageUrl == null)
             {
-                return Problem("Sometihng went wrong!", null, (int)HttpStatusCode.InternalServerError);
+                return Problem("Something went wrong!", null, (int)HttpStatusCode.InternalServerError);
             }
 
-            return new JsonResult(new { link = imageURL });
+            return new JsonResult(new { link = imageUrl });
         }
-
     }
 }

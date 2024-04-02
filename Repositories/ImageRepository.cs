@@ -1,29 +1,23 @@
 ﻿
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
-using Microsoft.EntityFrameworkCore;
-using Save__plan_your_trips.Data;
-using Save__plan_your_trips.Models.Domain;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Save__plan_your_trips.Repositories
 {
     public class ImageRepository : IImageRepository
     {
-        private readonly ScheduleTripsDbContext scheduleTripsDbContext;
 
         private readonly IConfiguration configuration;
         private readonly Account account;
 
-        public ImageRepository(IConfiguration configuration, ScheduleTripsDbContext scheduleTripsDbContext)
+        public ImageRepository(IConfiguration configuration)
         {
-            this.scheduleTripsDbContext = scheduleTripsDbContext;
             this.configuration = configuration;
-            account = new Account(
-                configuration.GetSection("Cloudinary")["dbamhuz47"],
-                configuration.GetSection("Cloudinary")["571855712285968"],
-                configuration.GetSection("Cloudinary")["-l4RZATS8RNz4R2tyyAN2jDR580"]);
+            account = new Account("dbamhuz47", "495485613653551", "QxRvJNMAi87kw2jqlIZfBbp_Rh4");
         }
 
+        [HttpPost]
         public async Task<string> UploadAsync(IFormFile file)
         {
             var client = new Cloudinary(account);
@@ -42,10 +36,6 @@ namespace Save__plan_your_trips.Repositories
             }
 
             return null;
-        }
-        public async Task<IEnumerable<Album>> GetAll()
-        {
-            return await scheduleTripsDbContext.Album.ToListAsync();
         }
     }
 

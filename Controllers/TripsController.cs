@@ -1,43 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Save__plan_your_trips.Models.Domain;
 using Save__plan_your_trips.Models.ViewModels;
 using Save__plan_your_trips.Repopositories;
-using Save__plan_your_trips.Repositories;
 
 
 namespace Save__plan_your_trips.Controllers
 {
+    [Authorize]
     public class TripsController : Controller
     {
 
         private readonly ITripsRepository tripsRepository;
-        private readonly IImageRepository imageRepository;
 
-        public TripsController(ITripsRepository tripsRepository, IImageRepository imageRepository)
+        public TripsController(ITripsRepository tripsRepository)
         {
             this.tripsRepository = tripsRepository;
-            this.imageRepository = imageRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> YourAlbums()
         {
-            var photos = await imageRepository.GetAll();
-            var places = await tripsRepository.GetAsync();
+            var albums = await tripsRepository.GetAsync();
 
-            return View(places);
+            return View(albums);
         }
 
         [HttpGet]
         [HttpPost]
         public async Task<ActionResult> AddAlbum(AddAlbumRequest addAlbumRequest)
         {
-            if (!ModelState.IsValid) return View(addAlbumRequest);
+            if (!ModelState.IsValid) return View();
+
             var album = new Album
             {
                 Name = addAlbumRequest.Name,
-                Image = addAlbumRequest.Image
+                Images = addAlbumRequest.ImageUrls.Select(url => new Image { Url = url }).ToList(),
             };
+
+            foreach (var image in album.Images)
+            {
+                // Assuming AddAsync is a method to add image asynchronously
+                await tripsRepository.AddAsync(image);
+            }
 
             await tripsRepository.AddAsync(album);
 

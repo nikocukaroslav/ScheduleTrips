@@ -1,5 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+
 <style>
+ 
     .container {
         display: flex;
         align-items: center;
@@ -20,8 +22,8 @@
         .form label {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 0.4rem;
+            align-items:flex-start;
+            gap: 0.8rem;
         }
 
         .form input {
@@ -37,6 +39,7 @@
             }
 
     .buttons {
+        margin-top:2rem;
         display: flex;
         gap: 1.2rem;
     }
@@ -77,22 +80,35 @@
             background-color: #242424;
         }
 
-    .uploadPhotoNew {
-        width: 12rem;
-        height: 6rem;
-        background-color: #242424;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .textDanger {
+        color: #e03131;
+        font-size: 1.4rem;
+        margin-bottom: 2.2rem;
+        display: block;
+    }
+
+    input[type="file"] {
+        display: none;
     }
 
     .uploadPhoto {
-        opacity: 0;
-        position: absolute;
-        z-index: -1;
+        border: 2px solid #242424;
+        display: inline-block;
+        border-radius: 6px;
+        padding: 6px 12px;
+        cursor: pointer;
+        width:100%;
+        text-align:center;
+    }
+
+    #imageDisplay {
+        width: 24rem;
+        border-radius: 6px;
+        border: 2px solid #242424;
+        align-self:center;
+    }
+    span{
+        text-align:center;
     }
 </style>
 
@@ -101,23 +117,17 @@
 <div class="container">
     <form class="form" method="post" enctype="multipart/form-data">
         <label>
-            <span>Place where you have been</span>
-            <input type="text" required="true" id="name" asp-for="Name"/>
+            <span>Place where you have been:</span>
+            <input type="text" id="name" asp-for="Name" required />
         </label>
-        <label>
+
+        <label >
+            <span>Photos of your trip:</span>
+            <div class="uploadPhoto">
             <span>Download some photos</span>
-            <span class="uploadPhotoNew">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     width="44"
-                     height="44"
-                     fill="currentColor"
-                     className="bi bi-plus-circle"
-                     viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg>
-            </span>
-            <input type="file" class="uploadPhoto" id="image" asp-for="Image" />
+            <input type="file" id="image" asp-for="ImageUrls" multiple/>
+            </div>
+            <img src="" id="imageDisplay" style=" display:none"/>
         </label>
         <div class="buttons">
             <a class="cancel" asp-area="" asp-controller="Trips" asp-action="YourAlbums">
@@ -132,7 +142,8 @@
 
 @section Scripts {
     <script>
-        const UploadElement = document.getElementById('image'); 
+        const image = document.getElementById('image');
+        const imageDisplay = document.getElementById('imageDisplay');
 
         async function uploadImage(e) {
             console.log(e.target.files[0]);
@@ -148,10 +159,11 @@
                 body: data
             }).then(response => response.json())
                 .then(result => {
-                    featuredImageUrlElement.value = result.link;
+                    imageDisplay.src = result.link;
+                    imageDisplay.style = "display:block;";
                 });
         }
-       UploadElement.addEventListener('change', uploadImage);
+        image.addEventListener('change', uploadImage);
 
     </script>
 }

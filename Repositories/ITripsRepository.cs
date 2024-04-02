@@ -7,5 +7,7 @@ namespace Save__plan_your_trips.Repopositories
         Task<IEnumerable<Album?>> GetAsync();
 
         Task<Album> AddAsync(Album album);
+
+        Task<Image> AddAsync(Image image);
     }
 }
