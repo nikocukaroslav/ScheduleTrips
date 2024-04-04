@@ -2,30 +2,33 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Save__plan_your_trips.Models;
 using System.Diagnostics;
+using Save__plan_your_trips.Repositories;
 
 namespace Save__plan_your_trips.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ITripsRepository tripsRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,ITripsRepository tripsRepository)
         {
             _logger = logger;
+            this.tripsRepository = tripsRepository;
         }
-
-        [Authorize]
-        public IActionResult Index()
+      
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            var albums = await tripsRepository.GetAsync();
 
+            return View(albums);
+        }
         public IActionResult Privacy()
         {
             return View();
         }
-
-        [Authorize]
+        
         public IActionResult Scheduled()
         {
             return View();

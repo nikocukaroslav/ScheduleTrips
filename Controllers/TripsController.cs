@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Save__plan_your_trips.Models.Domain;
 using Save__plan_your_trips.Models.ViewModels;
-using Save__plan_your_trips.Repopositories;
+using Save__plan_your_trips.Repositories;
+using Image = Save__plan_your_trips.Models.Domain.Image;
 
 
 namespace Save__plan_your_trips.Controllers
@@ -10,7 +11,6 @@ namespace Save__plan_your_trips.Controllers
     [Authorize]
     public class TripsController : Controller
     {
-
         private readonly ITripsRepository tripsRepository;
 
         public TripsController(ITripsRepository tripsRepository)
@@ -34,17 +34,19 @@ namespace Save__plan_your_trips.Controllers
 
             var album = new Album
             {
-                Name = addAlbumRequest.Name,
-                Images = addAlbumRequest.ImageUrls.Select(url => new Image { Url = url }).ToList(),
+                Name = addAlbumRequest.Place.Name,
             };
 
-            foreach (var image in album.Images)
-            {
-                // Assuming AddAsync is a method to add image asynchronously
-                await tripsRepository.AddAsync(image);
-            }
-
             await tripsRepository.AddAsync(album);
+
+            foreach (var imageRequest in addAlbumRequest.Images)
+            {
+                var image = new Image
+                {
+                    AlbumId = album.Id,
+                };
+                await tripsRepository.AddAsync(image, imageRequest.File);
+            }
 
             return RedirectToAction("YourAlbums");
         }

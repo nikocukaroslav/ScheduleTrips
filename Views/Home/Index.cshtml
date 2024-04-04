@@ -63,13 +63,18 @@
     }
 </style>
 
+@using Save__plan_your_trips.Models.Domain
+@model IEnumerable<Album?>
 
 <div class="homepage">
     <h2>Your last trip</h2>
     <div class="photos">
-        @for (var i = 0; i < 3; i++)
+        @foreach (var album in Model)
         {
-            <img src="" alt="trip-photo" class="photo" />
+            foreach (var image in album.Images)
+            {
+                <img src="@image.Url" alt="іmage" class="photo"/>
+            }
         }
     </div>
     <h2>Maybe try this one</h2>

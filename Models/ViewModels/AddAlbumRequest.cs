@@ -2,8 +2,8 @@
 {
     public class AddAlbumRequest
     {
-        public string Name { get; set; }
+        public AddPlaceRequest Place { get; set; }
 
-        public List<string> ImageUrls { get; set; }
+        public List<AddImageRequest> Images { get; set; }
     }
 }

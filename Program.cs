@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Save__plan_your_trips.Data;
-using Save__plan_your_trips.Repopositories;
 using Save__plan_your_trips.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);

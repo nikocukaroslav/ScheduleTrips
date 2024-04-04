@@ -118,16 +118,16 @@
     <form class="form" method="post" enctype="multipart/form-data">
         <label>
             <span>Place where you have been:</span>
-            <input type="text" id="name" asp-for="Name" required />
+            <input type="text" id="name" asp-for="Place.Name" required />
         </label>
 
         <label >
             <span>Photos of your trip:</span>
             <div class="uploadPhoto">
             <span>Download some photos</span>
-            <input type="file" id="image" asp-for="ImageUrls" multiple/>
+               <input type="file"  asp-for="Images[0].File" multiple/>
             </div>
-            <img src="" id="imageDisplay" style=" display:none"/>
+            <img src="" id="imageDisplay" alt="image" style=" display:none"/>
         </label>
         <div class="buttons">
             <a class="cancel" asp-area="" asp-controller="Trips" asp-action="YourAlbums">

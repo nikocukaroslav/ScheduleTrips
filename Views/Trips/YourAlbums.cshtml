@@ -1,7 +1,7 @@
-﻿
-<style>
+﻿<style>
     .tripsPage {
-        display: flex
+        display: flex;
+        overflow: hidden;
     }
 
     .albumContainer {
@@ -128,7 +128,7 @@
         @{
             string currentAlbum = "";
         }
-        @if (Model != null && Model.Any())
+        @if (Model.Any())
         {
             foreach (var item in Model)
             {
@@ -149,7 +149,7 @@
              class="plus"
              viewBox="0 0 16 16">
             <path fillRule="evenodd"
-                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
         </svg>
     </a>
     <div class="albumContainer">
@@ -168,30 +168,27 @@
             </header>
 
             <div class="gallery">
-                @if (Model != null)
+                @foreach (var album in Model)
                 {
-                    @foreach (var album in Model)
+                    foreach (var image in album.Images)
                     {
-                       
-                            <img src="@album alt="Image" class="photo" />
-                        
+                        <img src="@image.Url" alt="іmage" class="photo"/>
                     }
-
-                    <span class="uploadPhotoNew photo">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             width="72"
-                             height="72"
-                             fill="currentColor"
-                             className="bi bi-plus-circle"
-                             viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                        </svg>
-                    </span>
-                    <input type="file" class="uploadPhoto" id="image" />
                 }
+
+                <span class="uploadPhotoNew photo">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="72"
+                         height="72"
+                         fill="currentColor"
+                         className="bi bi-plus-circle"
+                         viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                </span>
+                <input type="file" class="uploadPhoto" id="image"/>
             </div>
         </section>
     </div>
 </section>
-<div />
