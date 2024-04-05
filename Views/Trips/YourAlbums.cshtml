@@ -59,9 +59,9 @@
             background-color: #e3fafc;
         }
 
-    .active {
-        background-color: #e3fafc;
-    }
+.active{
+background-color: #e3fafc;
+}
 
     .header {
         background-color: #333333;
@@ -106,7 +106,7 @@
         gap: 1.6rem;
     }
 
-    .photo {
+    .image {
         width: 22rem;
         height: 15rem;
         background-color: #333333;
@@ -120,20 +120,15 @@
 
 </style>
 
-@using Save__plan_your_trips.Models.Domain
-@model IEnumerable<Album?>
+@model IEnumerable<Save__plan_your_trips.Models.Domain.Album?>
 
 <section class="tripsPage">
     <ul class="tripsList ">
-        @{
-            string currentAlbum = "";
-        }
         @if (Model.Any())
         {
             foreach (var item in Model)
             {
-                currentAlbum = item.Name;
-                <li class="place">@item.Name</li>
+                <li class="place" id="place" data-album-id="@item.Id">@item.Name</li>
             }
         }
         else
@@ -155,16 +150,7 @@
     <div class="albumContainer">
         <section class="container">
             <header class="header">
-
-                @if (!string.IsNullOrEmpty(currentAlbum))
-                {
-                    <p>You in @currentAlbum</p>
-                }
-                else
-                {
-                    <p>No album selected</p>
-                }
-
+                    <p >You in <span class="currentAlbum"></span></p>
             </header>
 
             <div class="gallery">
@@ -172,11 +158,11 @@
                 {
                     foreach (var image in album.Images)
                     {
-                        <img src="@image.Url" alt="іmage" class="photo"/>
+                        <img src="@image.Url" alt="іmage" class="image" data-album-id="@album.Id"/>
                     }
                 }
 
-                <span class="uploadPhotoNew photo">
+                <span class="uploadPhotoNew image">
                     <svg xmlns="http://www.w3.org/2000/svg"
                          width="72"
                          height="72"
@@ -187,8 +173,44 @@
                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                     </svg>
                 </span>
-                <input type="file" class="uploadPhoto" id="image"/>
+                <input type="file" class="uploadPhoto" id="image" multiple/>
             </div>
         </section>
     </div>
 </section>
+
+@section Scripts
+{
+    <script>
+ 
+   document.addEventListener("DOMContentLoaded", function () {
+         const places = document.querySelectorAll(".place")
+          const images = document.querySelectorAll(".image")
+          const currentAlbum = document.querySelector(".currentAlbum")
+   
+       places.forEach(place => {
+           place.addEventListener("click", function () {
+              const albumId = this.dataset.albumId;
+   
+               places.forEach((p) => {
+                   p.classList.remove("active");
+               });
+   
+               this.classList.add("active")
+   
+               images.forEach(image => {
+                   if (image.dataset.albumId === albumId) {
+                       image.style.display = "block";
+                   } else {
+                       image.style.display = "none";
+                   }
+               });
+   
+               currentAlbum.textContent = place.textContent;
+           });
+       });
+         if (places.length > 0)
+             places[0].click();
+   });
+</script>
+}

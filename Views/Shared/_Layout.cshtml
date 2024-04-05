@@ -7,20 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Save__plan_your_trips</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <style>
-        :root {
-            font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-            line-height: 1.5;
-            font-weight: 400;
-            color-scheme: light dark;
-            color: rgba(255, 255, 255, 0.87);
-            background-color: #242424;
-            font-synthesis: none;
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -33,6 +24,12 @@
 
         body {
             font-size: 1.6rem;
+             font-family: "Rubik", sans-serif;
+             line-height: 1.5;
+          font-weight: 400;
+              color-scheme: light dark;
+         color: rgba(255, 255, 255, 0.87);
+           background-color: #242424;
         }
 
         button {
@@ -74,6 +71,10 @@
             font-weight: 600;
             text-decoration: none;
             color: #242424;
+            transition: all 0.3s;
+        }
+ .nav a:hover {
+            color: #096072;
         }
 
         .authPages {
@@ -103,7 +104,7 @@
                         <a asp-area="" asp-controller="Trips" asp-action="YourAlbums">Trips</a>
                     </li>
                     <li>
-                        <a asp-area="" asp-controller="Home" asp-action="Scheduled">Scheduled</a>
+                        <a asp-area="" asp-controller="Scheduled" asp-action="ScheduledTrips">Scheduled</a>
                     </li>
                     }
                     else

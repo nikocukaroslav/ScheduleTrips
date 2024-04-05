@@ -29,11 +29,6 @@ namespace Save__plan_your_trips.Controllers
             return View();
         }
         
-        public IActionResult Scheduled()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

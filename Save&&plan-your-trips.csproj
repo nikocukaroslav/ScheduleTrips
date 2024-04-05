@@ -17,4 +17,12 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="Views\Home\Scheduled.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\Scheduled\ScheduledTrips.cshtml.cs" />
+  </ItemGroup>
+
 </Project>

@@ -10,6 +10,7 @@
         flex-direction: column;
         align-items: center;
         min-height: 100vh;
+        gap: 4rem;
     }
 
     .button {
@@ -39,20 +40,23 @@
         height: 20rem;
         background-color: #333333;
         border-radius: 6px;
+        box-shadow:  0 5px 15px 10px rgba(0,0,0, 0.1);
     }
 
     .photos {
-        width: 110rem;
+        width: 115rem;
         display: flex;
         justify-content: space-between;
-
+        padding: 0 2.4rem;
     }
 
     h2 {
-        margin-top:6rem;
-        letter-spacing: 2.5px;
+    text-align: center;
+        margin-top:5rem;
+        letter-spacing: 2.2px;
         font-size: 3.2rem;
         padding: 2rem;
+        text-shadow: 2px 2px 4px #222;
     }
 
     .anotherTrip {
@@ -60,23 +64,46 @@
         width: 60rem;
         height: 20rem;
         border-radius:6px;
+        box-shadow:  0 5px 15px 10px rgba(0,0,0, 0.1);
+        display: grid;
+        grid-template-columns: 3fr 1fr;
     }
 </style>
 
-@using Save__plan_your_trips.Models.Domain
-@model IEnumerable<Album?>
+@model IEnumerable<Save__plan_your_trips.Models.Domain.Album?>
 
 <div class="homepage">
-    <h2>Your last trip</h2>
-    <div class="photos">
-        @foreach (var album in Model)
-        {
-            foreach (var image in album.Images)
+    <div>
+
+        <h2>Your last trip</h2>
+        <div class="photos">
+
+            @foreach (var album in Model)
             {
-                <img src="@image.Url" alt="іmage" class="photo"/>
+                if (album?.Images != null)
+                {
+                    foreach (var image in album.Images)
+                    {
+                        <img src="@image.Url" alt="іmage" class="photo"/>
+                    }
+                }
+                else
+                {
+                    <p>Start from adding first album!</p>
+                }
             }
-        }
+        </div>
     </div>
-    <h2>Maybe try this one</h2>
-    <div class="anotherTrip"> </div>
+    <div>
+        <h2>Maybe try this one</h2>
+        <div class="anotherTrip">
+
+            <img alt="image" id="image"src=""/>
+            <div class="details">
+                <span> Rating:</span>
+                <span> Country:</span>
+                <span> City:</span>
+            </div>
+        </div>
+    </div>
 </div>
