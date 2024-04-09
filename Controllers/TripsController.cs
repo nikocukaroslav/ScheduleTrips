@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Save__plan_your_trips.Models.Domain;
 using Save__plan_your_trips.Models.ViewModels;
@@ -39,16 +40,65 @@ namespace Save__plan_your_trips.Controllers
 
             await tripsRepository.AddAsync(album);
 
-            foreach (var imageRequest in addAlbumRequest.Images)
+            foreach (var imageRequest in addAlbumRequest.Images.File)
             {
                 var image = new Image
                 {
                     AlbumId = album.Id,
                 };
-                await tripsRepository.AddAsync(image, imageRequest.File);
+                await tripsRepository.AddAsync(image, imageRequest);
             }
 
             return RedirectToAction("YourAlbums");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditAlbum(Guid id)
+        {
+            var album = await tripsRepository.GetSingleAsync(id);
+            if (album != null)
+            {
+                var model = new EditAlbumRequest
+                {
+                    Id = album.Id,
+                    Name = album.Name,
+                    Images = new List<Image>(),
+                    ImageUrls = string.Join("\n\n", album.Images.Select(i => i.Url)),
+                };
+                foreach (var image in album.Images)
+                {
+                    var existingImage = new Image { Url = image.Url };
+                    model.Images.Add(existingImage);
+                }
+
+                return View(model);
+            }
+
+            return View(null);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditAlbum(EditAlbumRequest editAlbumRequest)
+        {
+            var editedAlbum = new Album
+            {
+                Id = editAlbumRequest.Id,   
+                Name = editAlbumRequest.Name,
+            };
+            var result = await tripsRepository.EditAsync(editedAlbum);
+            if (result != null)
+                return RedirectToAction("YourAlbums");
+            return RedirectToAction("EditAlbum");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteAlbum(EditAlbumRequest editAlbumRequest)
+        {
+            var deletedAlbum = await tripsRepository.DeleteAsync(editAlbumRequest.Id);
+
+            if (deletedAlbum != null)
+                return RedirectToAction("YourAlbums");
+            return RedirectToAction("EditAlbum", new { id = editAlbumRequest.Id });
         }
     }
 }

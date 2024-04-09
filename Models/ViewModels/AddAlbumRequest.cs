@@ -4,6 +4,6 @@
     {
         public AddPlaceRequest Place { get; set; }
 
-        public List<AddImageRequest> Images { get; set; }
+        public AddImageRequest Images { get; set; }
     }
 }

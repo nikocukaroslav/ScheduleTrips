@@ -3,6 +3,6 @@
     public class AddImageRequest
     {
         public Guid AlbumId { get; set; }
-        public IFormFile File { get; set; }
+        public List<IFormFile> File { get; set; }
     }
 }

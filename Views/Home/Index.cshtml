@@ -74,22 +74,13 @@
 
 <div class="homepage">
     <div>
-
         <h2>Your last trip</h2>
         <div class="photos">
-
-            @foreach (var album in Model)
+            @foreach (var album in Model.TakeLast(1))
             {
-                if (album?.Images != null)
+                foreach (var image in album.Images.TakeLast(3))
                 {
-                    foreach (var image in album.Images)
-                    {
-                        <img src="@image.Url" alt="іmage" class="photo"/>
-                    }
-                }
-                else
-                {
-                    <p>Start from adding first album!</p>
+                    <img src="@image.Url" alt="image" class="photo"/>
                 }
             }
         </div>

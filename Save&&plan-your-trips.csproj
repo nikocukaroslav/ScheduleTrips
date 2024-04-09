@@ -25,4 +25,8 @@
     <Compile Remove="Views\Scheduled\ScheduledTrips.cshtml.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Views\Trips\style.css" />
+  </ItemGroup>
+
 </Project>
