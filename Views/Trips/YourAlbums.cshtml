@@ -1,6 +1,7 @@
-﻿<style> body{
+﻿<style>
+ body{
 overflow: hidden;
-}
+} 
     .tripsPage {
         display: flex;
         overflow: hidden;
@@ -98,6 +99,14 @@ background-color: #e3fafc;
         height: 15rem;
         background-color: #333333;
         border-radius: 6px;
+        cursor: pointer;
+       border: 2px #242424 solid;
+       transition: all 0.2s;
+
+    }
+    
+    .image:hover{
+     border: 2px #e3fafc solid;
     }
 
     .noTrips {
@@ -111,7 +120,53 @@ background-color: #e3fafc;
     color: #333;
     } 
  
-
+   .selectedImage {
+       position: fixed;
+       top: 50%;
+       left: 50%;
+       transform: translate(-50%, -50%);
+       width: auto;
+       height: 85vh;
+       z-index: 1;
+       cursor: default;
+       box-shadow: 0 0 1000px 1000px rgba(0,0,0,0.7);
+       border: none;
+   }
+   
+   .selectedImage:hover{
+       border: none;
+   }
+   
+   body.imageIsActive * {
+       pointer-events: none;
+   }
+   
+   .activeEvents{
+   pointer-events: all;
+   }
+   
+   .back{
+    color: inherit;
+           border: 2px solid #242424;
+           transition: all 0.2s;
+           background-color: #333333;
+           border-radius: 50%;
+           height: 4rem;
+           width: 4rem;
+           display: none;
+           align-items: center;
+           justify-content: center; 
+           position: absolute;
+           top: 7rem;
+           left: 10rem;
+           z-index: 2;
+   }
+   
+   .back:hover{
+   border: 2px solid #333;
+   background-color: #242424;
+   }
+   
 </style>
 
 @model IEnumerable<Save__plan_your_trips.Models.Domain.Album?>
@@ -164,6 +219,7 @@ background-color: #e3fafc;
                     }
                 }
             </div>
+            <button class="back"> &larr;</button>
         </section>
     </div>
 </section>
@@ -176,6 +232,7 @@ background-color: #e3fafc;
          const places = document.querySelectorAll(".place")
           const images = document.querySelectorAll(".image")
           const currentAlbum = document.querySelector(".currentAlbum")
+          const back = document.querySelector(".back")
    
        places.forEach(place => {
            place.addEventListener("click", function () {
@@ -199,6 +256,42 @@ background-color: #e3fafc;
        });
          if (places.length > 0)
              places[0].click();
-   });
+         
+         
+             images.forEach(image => {
+               image.addEventListener("click", function (e){
+                   image.classList.add("selectedImage");
+                   document.body.classList.add("imageIsActive");
+                   back.classList.add("activeEvents");
+                    back.style.display = "flex"
+               }) 
+             })
+               
+               addEventListener("keydown", function (e){
+                  if (e.key === "Escape"){
+                      images.forEach(image => image.classList.remove("selectedImage"))
+                      document.body.classList.remove("imageIsActive");
+                       back.style.display = "none"
+                  }
+                   })
+          
+     document.body.addEventListener("click", function (e){
+         images.forEach(image => {
+             if (!image.contains(e.target)) {
+                 image.classList.remove("selectedImage");
+                 back.style.display = "none";
+                 document.body.classList.remove("imageIsActive");
+             }
+         });
+     });
+
+         back.addEventListener('click', function() {
+             images.forEach(image => {
+                 image.classList.remove('selectedImage');
+                 document.body.classList.remove('imageIsActive');
+                 back.style.display = "none"
+             });
+         });
+   }); 
 </script>
 }

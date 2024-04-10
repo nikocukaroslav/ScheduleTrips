@@ -3,7 +3,6 @@
     public class AddAlbumRequest
     {
         public AddPlaceRequest Place { get; set; }
-
         public AddImageRequest Images { get; set; }
     }
 }

@@ -82,9 +82,19 @@ namespace Save__plan_your_trips.Controllers
         {
             var editedAlbum = new Album
             {
-                Id = editAlbumRequest.Id,   
+                Id = editAlbumRequest.Id,
                 Name = editAlbumRequest.Name,
             };
+            foreach (var imageRequest in editAlbumRequest.AddImageRequest.File)
+            {
+                var image = new Image
+                {
+                    AlbumId = editAlbumRequest.Id,
+                    Url = editAlbumRequest.ImageUrls,
+                };
+                await tripsRepository.AddAsync(image, imageRequest);
+            }
+
             var result = await tripsRepository.EditAsync(editedAlbum);
             if (result != null)
                 return RedirectToAction("YourAlbums");
