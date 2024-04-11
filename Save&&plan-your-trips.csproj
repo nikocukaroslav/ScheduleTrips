@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Content Remove="Views\Home\Scheduled.cshtml" />
+    <Content Remove="wwwroot\css\YourAlbumsStyles.css" />
   </ItemGroup>
 
   <ItemGroup>

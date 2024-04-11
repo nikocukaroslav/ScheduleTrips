@@ -102,11 +102,34 @@ background-color: #e3fafc;
         cursor: pointer;
        border: 2px #242424 solid;
        transition: all 0.2s;
-
     }
     
     .image:hover{
      border: 2px #e3fafc solid;
+    }
+
+.image-container{
+position: relative;
+}
+
+    .deleteImage{
+     border: 2px solid #242424;
+    background-color: #333;
+    border-radius: 50% ;
+    padding: 0.6rem;
+    display: none;
+align-items: center;
+justify-content: center;
+position: absolute;
+top: 0.5rem;
+right: 0.5rem;
+cursor: pointer;
+z-index: 5;
+    }
+    
+    .trash{
+    width: 1.8rem;
+        height: 1.8rem;
     }
 
     .noTrips {
@@ -127,9 +150,8 @@ background-color: #e3fafc;
        transform: translate(-50%, -50%);
        width: auto;
        height: 85vh;
-       z-index: 1;
+       z-index: 10;
        cursor: default;
-       box-shadow: 0 0 1000px 1000px rgba(0,0,0,0.7);
        border: none;
    }
    
@@ -137,29 +159,21 @@ background-color: #e3fafc;
        border: none;
    }
    
-   body.imageIsActive * {
-       pointer-events: none;
-   }
-   
-   .activeEvents{
-   pointer-events: all;
-   }
-   
    .back{
-    color: inherit;
-           border: 2px solid #242424;
-           transition: all 0.2s;
-           background-color: #333333;
-           border-radius: 50%;
-           height: 4rem;
-           width: 4rem;
-           display: none;
-           align-items: center;
-           justify-content: center; 
-           position: absolute;
-           top: 7rem;
-           left: 10rem;
-           z-index: 2;
+       color: inherit;
+       border: 2px solid #242424;
+       transition: all 0.2s;
+       background-color: #333333;
+       border-radius: 50%;
+       height: 4rem;
+       width: 4rem;
+       display: none;
+       align-items: center;
+       justify-content: center; 
+       position: absolute;
+       top: 8%;
+       left: 10%;
+       z-index: 11;
    }
    
    .back:hover{
@@ -167,6 +181,20 @@ background-color: #e3fafc;
    background-color: #242424;
    }
    
+   .back:focus {
+   outline: none;
+   }
+   
+   #overlay {
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background-color: rgba(0, 0, 0, 0.7); 
+       display: none; 
+       z-index: 8; 
+   }
 </style>
 
 @model IEnumerable<Save__plan_your_trips.Models.Domain.Album?>
@@ -180,6 +208,7 @@ background-color: #e3fafc;
                 <li class="place" id="place" data-album-id="@item?.Id">
                     @item?.Name
                     <a asp-controller="Trips" asp-action="EditAlbum" asp-route-id="@item?.Id" class="edit">
+                       
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class=" edit" viewBox="0 0 16 16">
                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
@@ -215,25 +244,37 @@ background-color: #e3fafc;
                 {
                     foreach (var image in album.Images)
                     {
-                        <img src="@image.Url" alt="іmage" class="image" data-album-id="@album.Id"/>
+                        <div class="image-container">
+                            <img src="@image.Url" alt="image" class="image" data-album-id="@album.Id"/>
+                          <span class="deleteImage">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                  </svg>
+                              </span>
+                        </div>
+
                     }
                 }
             </div>
             <button class="back"> &larr;</button>
         </section>
     </div>
+    <div id="overlay"></div>
 </section>
 
 @section Scripts
 {
     <script>
  
-   document.addEventListener("DOMContentLoaded", function () {
+   document.addEventListener("DOMContentLoaded", function () {  
+       const overlay = document.getElementById("overlay")
          const places = document.querySelectorAll(".place")
           const images = document.querySelectorAll(".image")
           const currentAlbum = document.querySelector(".currentAlbum")
-          const back = document.querySelector(".back")
-   
+          const back = document.querySelector(".back")    
+             
+          
        places.forEach(place => {
            place.addEventListener("click", function () {
               const albumId = this.dataset.albumId;
@@ -259,39 +300,52 @@ background-color: #e3fafc;
          
          
              images.forEach(image => {
-               image.addEventListener("click", function (e){
+               image.addEventListener("click", function (e){          
                    image.classList.add("selectedImage");
-                   document.body.classList.add("imageIsActive");
-                   back.classList.add("activeEvents");
                     back.style.display = "flex"
+                    overlay.style.display = 'block';
                }) 
              })
+               
+              /* images.forEach(image => {
+                   const deleteImage = image.querySelector('.deleteImage');
+               
+                   image.addEventListener("mouseover", function (){
+                       deleteImage.style.display="flex";
+                   });
+               
+                   image.addEventListener("mouseout", function (){
+                       deleteImage.style.display="none";
+                   });
+               });*/
+
+    
                
                addEventListener("keydown", function (e){
                   if (e.key === "Escape"){
                       images.forEach(image => image.classList.remove("selectedImage"))
-                      document.body.classList.remove("imageIsActive");
                        back.style.display = "none"
+                       overlay.style.display = 'none';
                   }
                    })
           
-     document.body.addEventListener("click", function (e){
+     overlay.addEventListener("click", function (e){
          images.forEach(image => {
              if (!image.contains(e.target)) {
                  image.classList.remove("selectedImage");
                  back.style.display = "none";
-                 document.body.classList.remove("imageIsActive");
+                 overlay.style.display = 'none';
              }
          });
      });
 
-         back.addEventListener('click', function() {
-             images.forEach(image => {
-                 image.classList.remove('selectedImage');
-                 document.body.classList.remove('imageIsActive');
-                 back.style.display = "none"
-             });
-         });
+        back.addEventListener('click', function() {
+            images.forEach(image => {
+                image.classList.remove('selectedImage');
+                back.style.display = "none";
+                overlay.style.display = 'none';
+            });
+        });
    }); 
 </script>
 }

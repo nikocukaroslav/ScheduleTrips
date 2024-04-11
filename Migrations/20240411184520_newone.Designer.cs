@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Save__plan_your_trips.Data;
 
@@ -11,9 +12,11 @@ using Save__plan_your_trips.Data;
 namespace Save__plan_your_trips.Migrations
 {
     [DbContext(typeof(ScheduleTripsDbContext))]
-    partial class ScheduleTripsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240411184520_newone")]
+    partial class newone
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,16 +77,11 @@ namespace Save__plan_your_trips.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ScheduledTripId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Task")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ScheduledTripId");
 
                     b.ToTable("ToDo");
                 });
@@ -99,25 +97,9 @@ namespace Save__plan_your_trips.Migrations
                     b.Navigation("Album");
                 });
 
-            modelBuilder.Entity("Save__plan_your_trips.Models.Domain.ToDo", b =>
-                {
-                    b.HasOne("Save__plan_your_trips.Models.Domain.ScheduledTrip", "ScheduledTrip")
-                        .WithMany("ToDo")
-                        .HasForeignKey("ScheduledTripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ScheduledTrip");
-                });
-
             modelBuilder.Entity("Save__plan_your_trips.Models.Domain.Album", b =>
                 {
                     b.Navigation("Images");
-                });
-
-            modelBuilder.Entity("Save__plan_your_trips.Models.Domain.ScheduledTrip", b =>
-                {
-                    b.Navigation("ToDo");
                 });
 #pragma warning restore 612, 618
         }

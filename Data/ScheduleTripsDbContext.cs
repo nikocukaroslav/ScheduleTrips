@@ -9,7 +9,8 @@ namespace Save__plan_your_trips.Data
         {
         }
         public DbSet<Album> Album { get; set; }
-
         public DbSet<Image> Images { get; set; }
+        public DbSet<ScheduledTrip> ScheduledTrip { get; set; }
+        public DbSet<ToDo> ToDo { get; set; }
     }
 }

@@ -1,4 +1,173 @@
-﻿
-<div>
+﻿<head>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+
+<style>
+ body{
+overflow: hidden;
+} 
+    .scheduleTripsPage {
+        display: flex;
+        overflow: hidden;
+    }
+
+    .albumContainer {
+        width: 100%;
+    }
+
+    .newAlbum {
+        position: absolute;
+        background-color: darkgray;
+        width: 7rem;
+        height: 7rem;
+        color: #242424;
+        right: 3rem;
+        bottom: 3rem;
+        border-radius: 50%;
+        transition: all 0.3s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .newAlbum:hover {
+            background-color: #e3fafc;
+        }
+
+    .plus {
+        display: flex;
+        align-content: center;
+        justify-items: center;
+    }
+
+    .scheduledTripsList {
+        padding:0 0.8rem 0.8rem 0.8rem;
+        display: flex;
+        list-style: none;
+        flex-direction: column;
+        gap: 0.8rem;
+        max-height: 93vh;
+      
+    }
+
+    .place {
+        width: 20rem;
+        height: 5rem;
+        background-color: darkgray;
+        color: #242424;
+        padding: 1.2rem;
+        display: flex;
+        align-items: center;
+        font-size: 1.8rem;
+        font-weight: 600;
+        border-radius: 6px;
+        transition: all 0.2s;
+        justify-content: space-between;
+      
+    }
+
+        .place:hover {
+            background-color: #e3fafc;
+        }
+
+.active{
+background-color: #e3fafc;
+}
+
+    .secondHeader {
+        background-color: #333333;
+        height: 6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.8rem;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+    }
+
+    .edit{
+    width: 1.8rem;
+    cursor: pointer;
+    color: #333;
+    } 
     
-</div>
+ .firstHeader{
+ width: 20rem;
+         height: 6rem;
+         background-color: darkgray;
+         color: #242424;
+         padding: 1.2rem;
+         display: flex;
+         align-items: center;
+         font-size: 1.8rem;
+         font-weight: 600;
+         margin: 0.8rem;
+         border-radius: 6px;
+ }
+ 
+ .headers{
+ margin: 0.8rem;
+ display: flex;
+ justify-content: space-between;
+ gap: 1rem;
+ }
+ 
+ .headers h3 {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ width:50%;
+ height: 6rem;
+ background-color: #333;
+ border: 3px solid #333;
+ border-radius: 6px;
+transition: all 0.2s;
+ }
+ 
+  .headers h3:hover{
+  background-color: #242424;
+  
+  }
+</style>
+
+
+
+<section class="scheduleTripsPage">
+    <section>
+        
+        <header class="firstHeader">Scheduled trips</header>
+        <ul class="scheduledTripsList">
+            <li class="place"><a></a></li>
+            <li class="place"><a></a></li>
+            <li class="place"><a></a></li>
+            <li class="place"><a></a></li>
+        </ul>
+    </section>
+
+    <a class="newAlbum" asp-area="" asp-controller="Trips" asp-action="AddAlbum">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="28"
+             height="28"
+             fill="currentColor"
+             class="plus"
+             viewBox="0 0 16 16">
+            <path fillRule="evenodd"
+                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+        </svg>
+    </a>
+    <div class="albumContainer">
+        <section >
+            <div class="headers">
+            <h3>Purposes</h3>
+            <h3>Marshoot</h3>
+            </div>
+        </section>
+    </div>
+
+</section>
+
