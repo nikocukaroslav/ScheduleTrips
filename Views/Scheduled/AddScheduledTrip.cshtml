@@ -46,6 +46,9 @@ gap: 0.8rem;
    }
 
     .todos{
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
     list-style: none;
     border-radius: 6px;
     padding: 1.2rem;
@@ -66,6 +69,7 @@ gap: 0.8rem;
     border-radius: 6px;
     margin-bottom: 0.8rem;
    }
+   
    .map{
    border-radius: 6px;
    width: 100%;
@@ -79,19 +83,22 @@ gap: 0.8rem;
    
 </style>
 
+
+@model Save__plan_your_trips.Models.ViewModels.AddScheduledTripRequest
+
 <section class="scheduleTripsPage">
     <form method="post" class="formContainer">
         <h3>Write your todos</h3>
         <div class="inputContainer">
-            <input type="text" id="todo"/>
-            <button type="submit">Add</button>
+            <input type="text" id="todo" asp-for="@Model.ToDo"/>
+            <button id="addLi">Add</button>
         </div>
         <ul class="todos">
-            <li>Swim Tisa</li>
+
         </ul>
         <h3>Schedule date</h3>
         <div class="inputContainer">
-            <input type="date" id="date"/>
+            <input type="date" id="date" asp-for="DateTime"/>
             <button type="submit">Confirm</button>
         </div>
     </form>
@@ -106,3 +113,35 @@ gap: 0.8rem;
     </section>
 </section>
 
+
+@section Scripts
+{
+    <script>
+       const addLi =document.getElementById("addLi")
+       const input = document.getElementById("todo")
+       const todos = document.querySelector(".todos")
+       
+        addLi.addEventListener("click", function (e){
+          e.preventDefault() 
+        
+          const newToDo = document.createElement("li");    
+          
+          newToDo.textContent = input.value;
+          
+          todos.appendChild(newToDo);
+          
+           const allTodos = Array.from(todos.children).map(li => li.textContent);
+       
+           fetch('/YourController/AddScheduledTrip', {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json',
+               },
+               body: JSON.stringify(allTodos),
+           });
+        
+        input.value = "";
+        })
+        
+    </script>
+}

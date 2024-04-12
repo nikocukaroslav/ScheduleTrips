@@ -29,6 +29,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.AddScoped<ITripsRepository, TripsRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IScheduledRepository, ScheduledRepository>();
 
 var app = builder.Build();
 
