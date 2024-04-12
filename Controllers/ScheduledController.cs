@@ -4,8 +4,15 @@ namespace Save__plan_your_trips.Controllers;
 
 public class ScheduledController : Controller
 {
-    // GET
+    [HttpGet]
     public IActionResult ScheduledTrips()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    [HttpPost]
+    public IActionResult AddScheduledTrip()
     {
         return View();
     }

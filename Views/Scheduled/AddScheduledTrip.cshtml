@@ -1,0 +1,108 @@
+﻿<style>
+body{
+overflow: hidden;
+}
+
+.scheduleTripsPage{
+display: grid;
+grid-template-columns: 1fr 4fr;
+gap: 0.8rem;
+}
+
+    h3{
+    height: 5rem;
+    background-color: darkgray;
+    color: #242424;
+    padding: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 600;
+    border-radius: 6px;
+    margin-bottom:0.8rem ;
+    }
+    
+    .inputContainer{
+    display: flex;
+    margin: 0.8rem 0;
+    justify-content: space-between;
+    }
+    
+    input{
+    border-radius: 6px;
+    padding: 1.2rem;
+    border: none;
+    width: 68%;
+    }
+    
+    button {
+    width: 30%;
+    }
+    
+   .formContainer{
+    width: 100%;
+    margin: 0.8rem;
+   }
+
+    .todos{
+    list-style: none;
+    border-radius: 6px;
+    padding: 1.2rem;
+    height:65vh;
+    background-color: #333;
+    margin-bottom: 0.8rem;
+    }
+    
+   .mapHeader{
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:auto;
+    height: 5rem;
+    background-color: #333;
+    border-radius: 6px;
+    margin-bottom: 0.8rem;
+   }
+   .map{
+   border-radius: 6px;
+   width: 100%;
+   height:83vh;
+   border:none;
+   }
+    
+   .mapContainer{
+    margin: 0.8rem;
+   }
+   
+</style>
+
+<section class="scheduleTripsPage">
+    <form method="post" class="formContainer">
+        <h3>Write your todos</h3>
+        <div class="inputContainer">
+            <input type="text" id="todo"/>
+            <button type="submit">Add</button>
+        </div>
+        <ul class="todos">
+            <li>Swim Tisa</li>
+        </ul>
+        <h3>Schedule date</h3>
+        <div class="inputContainer">
+            <input type="date" id="date"/>
+            <button type="submit">Confirm</button>
+        </div>
+    </form>
+    <section class="mapContainer">
+        <header class="mapHeader">Plan your marshoot</header>
+        <div>
+            <iframe class="map"
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d40812.351682017834!2d28.6829387!3d50.25884285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sua!4v1712906141139!5m2!1sru!2sua" 
+                    allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </section>
+</section>
+
