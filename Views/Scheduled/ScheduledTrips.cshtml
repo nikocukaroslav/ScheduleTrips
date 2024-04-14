@@ -1,8 +1,4 @@
-﻿<head>
-    <link rel="stylesheet" href="style.css"/>
-</head>
-
-<style>
+﻿<style>
  body{
 overflow: hidden;
 } 
@@ -120,17 +116,23 @@ transition: all 0.2s;
   }
 </style>
 
-
+@model IEnumerable<Save__plan_your_trips.Models.Domain.ScheduledTrip>
 
 <section class="scheduleTripsPage">
     <section>
-        
         <header class="firstHeader">Scheduled trips</header>
         <ul class="scheduledTripsList">
-            <li class="place"><a></a></li>
-            <li class="place"><a></a></li>
-            <li class="place"><a></a></li>
-            <li class="place"><a></a></li>
+            @if (Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <li class="place">@item.Name</li>
+                }
+            }
+            else
+            {
+                <p>No scheduled trips yet</p>
+            }
         </ul>
     </section>
 
@@ -148,11 +150,10 @@ transition: all 0.2s;
     <div class="albumContainer">
         <section >
             <div class="headers">
-            <h3>Purposes</h3>
-            <h3>Marshoot</h3>
+                <h3>Purposes</h3>
+                <h3>Marshoot</h3>
             </div>
         </section>
     </div>
 
 </section>
-

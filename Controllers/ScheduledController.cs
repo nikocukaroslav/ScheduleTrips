@@ -15,9 +15,10 @@ public class ScheduledController : Controller
     }
 
     [HttpGet]
-    public IActionResult ScheduledTrips()
+    public async Task<IActionResult>  ScheduledTrips()
     {
-        return View();
+        var scheduledTrips = await scheduledRepository.GetAllAsync();
+        return View(scheduledTrips);
     }
 
     [HttpGet]
@@ -27,32 +28,26 @@ public class ScheduledController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddScheduledTrip(ScheduledTrip scheduledTrip,
-        [FromBody] List<AddScheduledTripRequest> todoRequests)
+    public async Task<IActionResult> AddScheduledTrip(AddScheduledTripRequest addScheduledTripRequest)
     {
-        if (ModelState.IsValid)
         {
-            var newScheduledTrip = new ScheduledTrip
+            if (ModelState.IsValid)
             {
-                DateTime = scheduledTrip.DateTime,
-                ToDo = new List<ToDo>(),
-            };
-
-            foreach (var todoRequest in todoRequests)
-            {
-                foreach (var toDo in todoRequest.ToDo)
+                var newScheduledTrip = new ScheduledTrip
                 {
-                    var newToDo = new ToDo
-                    {
-                        Task = toDo.Task,
-                    };
-                    await scheduledRepository.AddTodo(newToDo);
-                }
+                    Name = addScheduledTripRequest.Name,
+                    First = addScheduledTripRequest.First,
+                    Second = addScheduledTripRequest.Second,
+                    Third = addScheduledTripRequest.Third,
+                    Fourth = addScheduledTripRequest.Fourth,
+                    Fifth = addScheduledTripRequest.Fifth,
+                    DateTime = addScheduledTripRequest.DateTime,
+                };
+
+                await scheduledRepository.AddScheduledTrip(newScheduledTrip);
             }
 
-            await scheduledRepository.AddScheduledTrip(newScheduledTrip);
+            return RedirectToAction("ScheduledTrips");
         }
-
-        return RedirectToAction("ScheduledTrips");
     }
 }

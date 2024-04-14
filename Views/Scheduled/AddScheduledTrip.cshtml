@@ -1,14 +1,14 @@
 ﻿<style>
-body{
-overflow: hidden;
-}
-
-.scheduleTripsPage{
-display: grid;
-grid-template-columns: 1fr 4fr;
-gap: 0.8rem;
-}
-
+    body{
+    overflow: hidden;
+    }
+    
+    .scheduleTripsPage{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 0.8rem;
+    }
+    
     h3{
     height: 5rem;
     background-color: darkgray;
@@ -23,40 +23,19 @@ gap: 0.8rem;
     margin-bottom:0.8rem ;
     }
     
-    .inputContainer{
-    display: flex;
-    margin: 0.8rem 0;
-    justify-content: space-between;
-    }
-    
     input{
     border-radius: 6px;
     padding: 1.2rem;
     border: none;
-    width: 68%;
+    width: 100%;
     }
     
-    button {
-    width: 30%;
-    }
     
    .formContainer{
     width: 100%;
     margin: 0.8rem;
    }
 
-    .todos{
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    list-style: none;
-    border-radius: 6px;
-    padding: 1.2rem;
-    height:65vh;
-    background-color: #333;
-    margin-bottom: 0.8rem;
-    }
-    
    .mapHeader{
     font-size: 1.8rem;
     font-weight: bold;
@@ -67,20 +46,41 @@ gap: 0.8rem;
     height: 5rem;
     background-color: #333;
     border-radius: 6px;
-    margin-bottom: 0.8rem;
+    margin-bottom: 1.2rem;
    }
    
    .map{
-   border-radius: 6px;
-   width: 100%;
-   height:83vh;
-   border:none;
+    border-radius: 6px;
+    width: 100%;
+    height: 82vh;
+    border:none;
    }
     
    .mapContainer{
     margin: 0.8rem;
    }
    
+   label{
+   display: flex;
+   flex-direction:column ;
+   gap: 0.4rem;
+   }
+   
+   .todos{
+   display: flex;
+   flex-direction: column;
+   gap: 0.8rem;
+   }
+   
+   .marginTop{
+       margin-top: 1.6rem;
+   }
+   
+   button{
+   margin-top: 1.6rem;
+   width: 100%;
+   height: 5rem;
+   }
 </style>
 
 
@@ -88,60 +88,48 @@ gap: 0.8rem;
 
 <section class="scheduleTripsPage">
     <form method="post" class="formContainer">
-        <h3>Write your todos</h3>
-        <div class="inputContainer">
-            <input type="text" id="todo" asp-for="@Model.ToDo"/>
-            <button id="addLi">Add</button>
-        </div>
-        <ul class="todos">
+        <label>
+            <h3>Trip's name</h3>
+            <input type="text" id="name" asp-for="Name"/>
+        </label>
 
-        </ul>
-        <h3>Schedule date</h3>
-        <div class="inputContainer">
-            <input type="date" id="date" asp-for="DateTime"/>
-            <button type="submit">Confirm</button>
+        <h3 class="marginTop">Top 5 todos</h3>
+        <div class="todos">
+            <label>
+                <span>The most valuable</span>
+                <input type="text" id="first" asp-for="@Model.First"/>
+            </label>
+            <label>
+                <span>Valuable</span>
+                <input type="text" id="second" asp-for="@Model.Second"/>
+            </label>
+            <label>
+                <span>Less valuable</span>
+                <input type="text" id="third" asp-for="@Model.Third"/>
+            </label>
+            <label>
+                <span>Optional</span>
+                <input type="text" id="fourth" asp-for="@Model.Fourth"/>
+            </label>
+            <label>
+                <span>Optional</span>
+                <input type="text" id="fifth" asp-for="@Model.Fifth"/>
+            </label>
         </div>
+        <label>
+            <h3 class="marginTop">Schedule date</h3>
+            <input type="date" id="date" asp-for="DateTime"/>
+        </label>
+        <button type="submit">Add 
+            </button>
     </form>
     <section class="mapContainer">
         <header class="mapHeader">Plan your marshoot</header>
         <div>
             <iframe class="map"
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d40812.351682017834!2d28.6829387!3d50.25884285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sua!4v1712906141139!5m2!1sru!2sua" 
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d40812.351682017834!2d28.6829387!3d50.25884285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sua!4v1712906141139!5m2!1sru!2sua"
                     allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
             </iframe>
         </div>
     </section>
 </section>
-
-
-@section Scripts
-{
-    <script>
-       const addLi =document.getElementById("addLi")
-       const input = document.getElementById("todo")
-       const todos = document.querySelector(".todos")
-       
-        addLi.addEventListener("click", function (e){
-          e.preventDefault() 
-        
-          const newToDo = document.createElement("li");    
-          
-          newToDo.textContent = input.value;
-          
-          todos.appendChild(newToDo);
-          
-           const allTodos = Array.from(todos.children).map(li => li.textContent);
-       
-           fetch('/YourController/AddScheduledTrip', {
-               method: 'POST',
-               headers: {
-                   'Content-Type': 'application/json',
-               },
-               body: JSON.stringify(allTodos),
-           });
-        
-        input.value = "";
-        })
-        
-    </script>
-}

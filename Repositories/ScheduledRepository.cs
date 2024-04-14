@@ -20,20 +20,8 @@ public class ScheduledRepository : IScheduledRepository
         return scheduledTrip;
     }
 
-    public async Task<ToDo> AddTodo(ToDo toDo)
+    public async Task<IEnumerable<ScheduledTrip>> GetAllAsync()
     {
-        await scheduleTripsDbContext.ToDo.AddAsync(toDo);
-        await scheduleTripsDbContext.SaveChangesAsync();
-        return toDo;
-    }
-
-    public Task<ToDo> DeleteToDo()
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<List<ToDo>> GetAsync()
-    {
-        return await scheduleTripsDbContext.ToDo.ToListAsync();
+        return await scheduleTripsDbContext.ScheduledTrip.ToListAsync();
     }
 }
