@@ -9,5 +9,5 @@ public class ScheduledTrip
     public string Third { get; set; }
     public string Fourth { get; set; }
     public string Fifth { get; set; }
-    public DateTime DateTime { get; set; }
+    public DateTime DateTime{ get; set; }
 }

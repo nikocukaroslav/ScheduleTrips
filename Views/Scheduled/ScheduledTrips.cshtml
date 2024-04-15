@@ -3,15 +3,10 @@
 overflow: hidden;
 } 
     .scheduleTripsPage {
-        display: flex;
-        overflow: hidden;
+        display: grid;
+        grid-template-columns: 1fr 10fr;
     }
-
-    .albumContainer {
-        width: 100%;
-    }
-
-    .newAlbum {
+    .newScheduledTrip {
         position: absolute;
         background-color: darkgray;
         width: 7rem;
@@ -26,7 +21,7 @@ overflow: hidden;
         align-items: center;
     }
 
-        .newAlbum:hover {
+        .newScheduledTrip:hover {
             background-color: #e3fafc;
         }
 
@@ -37,13 +32,12 @@ overflow: hidden;
     }
 
     .scheduledTripsList {
-        padding:0 0.8rem 0.8rem 0.8rem;
+        padding: 0 0.8rem 0.8rem 0.8rem;
         display: flex;
         list-style: none;
         flex-direction: column;
         gap: 0.8rem;
         max-height: 93vh;
-      
     }
 
     .place {
@@ -59,61 +53,98 @@ overflow: hidden;
         border-radius: 6px;
         transition: all 0.2s;
         justify-content: space-between;
-      
     }
 
         .place:hover {
             background-color: #e3fafc;
         }
 
-.active{
-background-color: #e3fafc;
-}
-
-    .edit{
-    width: 1.8rem;
-    cursor: pointer;
-    color: #333;
-    } 
+     .active{
+     background-color: #e3fafc;
+     }
     
  .firstHeader{
- width: 20rem;
-         height: 6rem;
-         background-color: darkgray;
-         color: #242424;
-         padding: 1.2rem;
-         display: flex;
-         align-items: center;
-         font-size: 1.8rem;
-         font-weight: 600;
-         margin: 0.8rem;
-         border-radius: 6px;
+  width: 20rem;
+  height: 6rem;
+  background-color: darkgray;
+  color: #242424;
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0.8rem;
+  border-radius: 6px;
  }
  
- .headers{
- margin: 0.8rem;
+ .scheduledTripsNav{
  display: flex;
- justify-content: space-between;
- gap: 1rem;
+  margin: 0.8rem;
+  gap: 0.8rem;
  }
- 
- .headers h3 {
+
+ .scheduledTripsNav h3 {
+ width: 100%;
  color: #ddd;
  display: flex;
  align-items: center;
  justify-content: center;
- width:50%;
  height: 6rem;
  background-color: #333;
  border: 3px solid #333;
  border-radius: 6px;
-transition: all 0.2s;
+ transition: all 0.2s;
  }
  
-  .headers h3:hover{
+  .scheduledTripsNav h3:hover{
   background-color: #242424;
-  
   }
+  
+  .purposes{
+  margin: 0.8rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  }
+  
+  .todoList{
+  height: 82vh;
+  border-radius: 6px;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  border: 3px solid #333;
+  }
+  
+  
+  .performed{
+  border-radius: 6px;
+  padding: 0.8rem;
+  border: 3px solid #333;
+  }
+  
+  label{
+  display: flex;
+  gap: 0.6rem;
+  }
+  
+    .map{
+      margin: 0 0.8rem;
+      border-radius: 6px;
+      width: 100%;
+      height: 82vh;
+      border:none;
+     }
+     
+     .completed{
+     color: darkgray;
+     text-decoration: line-through;
+     }
+     
+     .dateTime{
+     font-size: 1.6rem;
+     }
 </style>
 
 @model IEnumerable<Save__plan_your_trips.Models.Domain.ScheduledTrip>
@@ -124,9 +155,10 @@ transition: all 0.2s;
         <ul class="scheduledTripsList">
             @if (Model.Any())
             {
-                foreach (var item in Model)
+                foreach (var item in Model.Reverse())
                 {
-                    <li class="place">@item.Name</li>
+                    <li class="place" data-scheduledTrip-id="@item.Id">@item.Name
+                        <time class="dateTime">@item.DateTime.ToShortDateString()</time></li>
                 }
             }
             else
@@ -135,8 +167,7 @@ transition: all 0.2s;
             }
         </ul>
     </section>
-
-    <a class="newAlbum" asp-area="" asp-controller="Scheduled" asp-action="AddScheduledTrip">
+    <a class="newScheduledTrip" asp-area="" asp-controller="Scheduled" asp-action="AddScheduledTrip">
         <svg xmlns="http://www.w3.org/2000/svg"
              width="28"
              height="28"
@@ -147,13 +178,132 @@ transition: all 0.2s;
                   d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
         </svg>
     </a>
-    <div class="albumContainer">
-        <section >
-            <div class="headers">
-                <h3>Purposes</h3>
-                <h3>Marshoot</h3>
-            </div>
-        </section>
-    </div>
-
+    <main >
+        <nav class="scheduledTripsNav">
+            <h3 class="todoHeader">Purposes</h3>
+            <h3 class="mapHeader">Marshoot</h3>
+        </nav>
+            <section class="purposes">
+                    <div class="todoList">
+                        <h4>Planed to do</h4>
+                        @foreach (var item in Model)
+                        {
+                            <label >
+                                <input type="checkbox" class="todo"
+                                       data-scheduledTrip-id="@item.Id"><span>@item.First</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" class="todo"
+                                       data-scheduledTrip-id="@item.Id"><span>@item.Second</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" class="todo"
+                                       data-scheduledTrip-id="@item.Id"><span>@item.Third</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" class="todo"
+                                       data-scheduledTrip-id="@item.Id"><span>@item.Fourth</span>
+                            </label>
+                            <label >
+                                <input type="checkbox" class="todo"
+                                       data-scheduledTrip-id="@item.Id"><span>@item.Fifth</span>
+                            </label>
+                        }
+                    </div>
+                    <div class="performed todoList">
+                        <h4>Performed</h4>
+                    </div>
+            </section>
+            <section class="mapPage">
+                <iframe class="map"
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d40812.351682017834!2d28.6829387!3d50.25884285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sua!4v1712906141139!5m2!1sru!2sua"
+                        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </section>
+    </main>
 </section>
+
+@section Scripts
+{
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {  
+        const todos = document.querySelectorAll(".todo");
+        const places = document.querySelectorAll(".place")
+        const mapPage = document.querySelector(".mapPage");
+        const purposesPage = document.querySelector(".purposes");
+        const todoHeader = document.querySelector(".todoHeader");
+        const mapHeader = document.querySelector(".mapHeader");
+        const newScheduledTrip = document.querySelector(".newScheduledTrip");
+        const performed = document.querySelector(".performed")
+        const todoList = document.querySelector(".todoList")
+
+        mapPage.style.display = "none"
+        
+      localStorage.setItem('todos', JSON.stringify(todos));
+      
+
+              todos.forEach(todo => {
+                  todo.addEventListener("change", function (){
+                      if (todo.checked){
+                          let parentLabel = todo.parentNode;
+                          parentLabel.parentNode.removeChild(parentLabel);
+                          performed.appendChild(parentLabel);
+                          parentLabel.classList.add("completed");
+                      }
+                      else{
+                          let parentLabel = todo.parentNode;
+                          parentLabel.parentNode.removeChild(parentLabel);
+                          todoList.appendChild(parentLabel);
+                          parentLabel.classList.remove("completed");
+                      }
+                  });
+              });
+          
+
+
+
+
+        places.forEach(place => {
+            place.addEventListener("click", function () {
+                const placeId = this.getAttribute('data-scheduledTrip-id');
+                
+                places.forEach((p) => {
+                    p.classList.remove("active");
+                });
+                this.classList.add("active");
+                
+                todos.forEach((todo) => {
+                    if (todo.getAttribute('data-scheduledTrip-id') === placeId) {
+                        todo.parentElement.style.display = "flex";
+                    } else {
+                        todo.parentElement.style.display = "none";
+                    }
+                });
+            });
+        });
+
+
+
+        
+        mapHeader.addEventListener("click", function (){
+            newScheduledTrip.style.display = "none"
+            mapPage.style.display = "block"
+            mapHeader.style.backgroundColor = "#242424"
+            todoHeader.style.backgroundColor = "#333"
+            purposesPage.style.display = "none"
+        })
+        
+        todoHeader.addEventListener("click", function (){
+            newScheduledTrip.style.display = "flex"
+            mapPage.style.display = "none"
+            mapHeader.style.backgroundColor = "#333"
+            todoHeader.style.backgroundColor = "#242424"
+            purposesPage.style.display = "grid"
+        })
+        
+        todoHeader.click();
+        if (places.length > 0)
+            places[0].click();
+        })
+    </script>
+}

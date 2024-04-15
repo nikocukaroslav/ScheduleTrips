@@ -5,7 +5,6 @@ namespace Save__plan_your_trips.Models.ViewModels;
 
 public class AddScheduledTripRequest
 {
-    public Guid ScheduleTripId { get; set; }
     public string Name { get; set; }
     public string First { get; set; }
     public string Second { get; set; }

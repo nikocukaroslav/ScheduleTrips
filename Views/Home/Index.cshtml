@@ -44,14 +44,13 @@
     }
 
     .photos {
-        width: 115rem;
         display: flex;
-        justify-content: space-between;
+        gap: 8rem;
         padding: 0 2.4rem;
     }
 
     h2 {
-    text-align: center;
+        text-align: center;
         margin-top:5rem;
         letter-spacing: 2.2px;
         font-size: 3.2rem;
@@ -67,6 +66,11 @@
         box-shadow:  0 5px 15px 10px rgba(0,0,0, 0.1);
         display: grid;
         grid-template-columns: 3fr 1fr;
+    }
+    
+    #image{
+    width: 30rem;
+    height: 20rem;
     }
 </style>
 
@@ -89,7 +93,9 @@
         <h2>Maybe try this one</h2>
         <div class="anotherTrip">
 
-            <img alt="image" id="image"src=""/>
+            <img alt="image" id="image" 
+                 src=""/>
+            
             <div class="details">
                 <span> Rating:</span>
                 <span> Country:</span>
@@ -98,3 +104,29 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+    var data = 'https://api-ninjas.com';
+    var category = 'nature';
+    
+    fetch('https://api.api-ninjas.com/v1/randomimage?category=' + category, {
+        method: 'GET',
+        headers: {
+            'X-Api-Key': 'JpffhF6QMJNcG/oiCz7pwQ==DKDtvj6nJeAc8btm',
+            'Accept': 'image/jpg'
+        }
+    })
+    .then(response => response.blob())
+    .then(imageBlob => {
+        let imageElement = document.getElementById('image');
+        let imageUrl = URL.createObjectURL(imageBlob);
+        imageElement.src = imageUrl;
+    })
+    .catch(error => {
+        console.error('Error: ', error);
+    });
+
+    </script>
+}
