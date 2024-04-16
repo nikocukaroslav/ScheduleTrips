@@ -145,6 +145,19 @@ overflow: hidden;
      .dateTime{
      font-size: 1.6rem;
      }
+     
+     .noTrips{
+     padding: 1.2rem;
+     text-align: center;
+     }
+     
+     .noTripsMain{
+     font-weight: bold;
+     font-size: 1.8rem;
+     display: flex;
+     align-items: center;
+     justify-content: center;   
+     }
 </style>
 
 @model IEnumerable<Save__plan_your_trips.Models.Domain.ScheduledTrip>
@@ -157,13 +170,15 @@ overflow: hidden;
             {
                 foreach (var item in Model.Reverse())
                 {
-                    <li class="place" data-scheduledTrip-id="@item.Id">@item.Name
-                        <time class="dateTime">@item.DateTime.ToShortDateString()</time></li>
+                    <li class="place" data-scheduledTrip-id="@item.Id">
+                        @item.Name
+                        <time class="dateTime">@item.DateTime.ToShortDateString()</time>
+                    </li>
                 }
             }
             else
             {
-                <p>No scheduled trips yet</p>
+                <p class="noTrips">No scheduled trips yet</p>
             }
         </ul>
     </section>
@@ -178,49 +193,65 @@ overflow: hidden;
                   d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
         </svg>
     </a>
+    @if (@Model.Any())
+    {
+        
+ 
     <main >
         <nav class="scheduledTripsNav">
             <h3 class="todoHeader">Purposes</h3>
             <h3 class="mapHeader">Marshoot</h3>
         </nav>
-            <section class="purposes">
-                    <div class="todoList">
-                        <h4>Planed to do</h4>
-                        @foreach (var item in Model)
-                        {
-                            <label >
-                                <input type="checkbox" class="todo"
-                                       data-scheduledTrip-id="@item.Id"><span>@item.First</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" class="todo"
-                                       data-scheduledTrip-id="@item.Id"><span>@item.Second</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" class="todo"
-                                       data-scheduledTrip-id="@item.Id"><span>@item.Third</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" class="todo"
-                                       data-scheduledTrip-id="@item.Id"><span>@item.Fourth</span>
-                            </label>
-                            <label >
-                                <input type="checkbox" class="todo"
-                                       data-scheduledTrip-id="@item.Id"><span>@item.Fifth</span>
-                            </label>
-                        }
-                    </div>
-                    <div class="performed todoList">
-                        <h4>Performed</h4>
-                    </div>
-            </section>
-            <section class="mapPage">
-                <iframe class="map"
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d40812.351682017834!2d28.6829387!3d50.25884285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sua!4v1712906141139!5m2!1sru!2sua"
-                        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </section>
+        <section class="purposes">
+            <div class="todoList">
+                <h4>Planed to do</h4>
+                @foreach (var item in Model)
+                {
+                    <label >
+                        <input type="checkbox" class="todo"
+                               data-scheduledTrip-id="@item.Id"><span>@item.First</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" class="todo"
+                               data-scheduledTrip-id="@item.Id"><span>@item.Second</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" class="todo"
+                               data-scheduledTrip-id="@item.Id"><span>@item.Third</span>
+                    </label>
+                    @if (@item.Fourth != null)
+                    {
+                        <label>
+                            <input type="checkbox" class="todo"
+                                   data-scheduledTrip-id="@item.Id"><span>@item.Fourth</span>
+                        </label>
+                    }
+
+                    @if (@item.Fifth != null)
+                    {
+                        <label >
+                            <input type="checkbox" class="todo"
+                                   data-scheduledTrip-id="@item.Id"><span>@item.Fifth</span>
+                        </label>
+                    }
+                }
+            </div>
+            <div class="performed todoList">
+                <h4>Performed</h4>
+            </div>
+        </section>
+        <section class="mapPage">
+            <iframe class="map"
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d40812.351682017834!2d28.6829387!3d50.25884285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sua!4v1712906141139!5m2!1sru!2sua"
+                    allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </section>
     </main>
+    }
+    else
+    {
+        <p class="noTripsMain"> Start from scheduling your first trip!</p>
+    }
 </section>
 
 @section Scripts
@@ -258,11 +289,7 @@ overflow: hidden;
                       }
                   });
               });
-          
-
-
-
-
+         
         places.forEach(place => {
             place.addEventListener("click", function () {
                 const placeId = this.getAttribute('data-scheduledTrip-id');

@@ -133,8 +133,9 @@ z-index: 5;
     }
 
     .noTrips {
-        width: 22.5rem;
-        text-align: center;
+    padding: 1.2rem;
+    text-align: center;
+    width: 22.5rem; 
     }
     
     .edit{
@@ -236,7 +237,14 @@ z-index: 5;
     <div class="albumContainer">
         <section class="container">
             <header class="header">
+                @if (Model.Any())
+                {
                 <p>You in <span class="currentAlbum"></span></p>
+                }
+                else
+                {
+                    <p>Start from adding your first album!</p>
+                }
             </header>
 
             <div class="gallery">

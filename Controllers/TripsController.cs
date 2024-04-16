@@ -40,14 +40,15 @@ namespace Save__plan_your_trips.Controllers
 
             await tripsRepository.AddAsync(album);
 
-            foreach (var imageRequest in addAlbumRequest.Images.File)
-            {
-                var image = new Image
+            if (addAlbumRequest.Images?.File != null)
+                foreach (var imageRequest in addAlbumRequest.Images.File)
                 {
-                    AlbumId = album.Id,
-                };
-                await tripsRepository.AddAsync(image, imageRequest);
-            }
+                    var image = new Image
+                    {
+                        AlbumId = album.Id,
+                    };
+                    await tripsRepository.AddAsync(image, imageRequest);
+                }
 
             return RedirectToAction("YourAlbums");
         }

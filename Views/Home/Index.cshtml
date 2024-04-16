@@ -36,7 +36,7 @@
     }
 
     .photo {
-        width: 32rem;
+        width: 30rem;
         height: 20rem;
         background-color: #333333;
         border-radius: 6px;
@@ -51,26 +51,40 @@
 
     h2 {
         text-align: center;
-        margin-top:5rem;
+        margin-top:4.2rem;
         letter-spacing: 2.2px;
         font-size: 3.2rem;
-        padding: 2rem;
+        padding: 2.4rem;
         text-shadow: 2px 2px 4px #222;
     }
 
     .anotherTrip {
+    overflow: hidden;
         background-color: #333;
         width: 60rem;
         height: 20rem;
         border-radius:6px;
         box-shadow:  0 5px 15px 10px rgba(0,0,0, 0.1);
-        display: grid;
-        grid-template-columns: 3fr 1fr;
+        display: flex;
     }
     
     #image{
-    width: 30rem;
-    height: 20rem;
+    width: 40rem;
+    height: auto;
+    }
+    
+    .details{
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.2rem;
+    }
+    
+    .noTrips{
+    display: flex;
+    align-items: center;
+    height: 28rem;
     }
 </style>
 
@@ -78,6 +92,8 @@
 
 <div class="homepage">
     <div>
+        @if (Model.Any())
+        {
         <h2>Your last trip</h2>
         <div class="photos">
             @foreach (var album in Model.TakeLast(1))
@@ -87,7 +103,13 @@
                     <img src="@image.Url" alt="image" class="photo"/>
                 }
             }
+ 
         </div>
+        }
+        else
+        {
+            <h2 class="noTrips">3 photos of your last trip will be there!</h2>   
+        }
     </div>
     <div>
         <h2>Maybe try this one</h2>
