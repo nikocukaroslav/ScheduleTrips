@@ -15,7 +15,7 @@ public class ScheduledController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult>  ScheduledTrips()
+    public async Task<IActionResult> ScheduledTrips()
     {
         var scheduledTrips = await scheduledRepository.GetAllAsync();
         return View(scheduledTrips);
@@ -49,5 +49,54 @@ public class ScheduledController : Controller
 
             return RedirectToAction("ScheduledTrips");
         }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditScheduledTrip(Guid id)
+    {
+        var scheduledTrip = await scheduledRepository.GetSingleAsync(id);
+        if (scheduledTrip == null) return View(null);
+        var model = new EditScheduledTripRequest
+        {
+            Id = scheduledTrip.Id,
+            Name = scheduledTrip.Name,
+            First = scheduledTrip.First,
+            Second = scheduledTrip.Second,
+            Third = scheduledTrip.Third,
+            Fourth = scheduledTrip.Fourth,
+            Fifth = scheduledTrip.Fifth,
+            DateTime = scheduledTrip.DateTime,
+        };
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditScheduledTrip(EditScheduledTripRequest editScheduledTripRequest)
+    {
+        var editedScheduledTrip = new ScheduledTrip
+        {
+            Id = editScheduledTripRequest.Id,
+            Name = editScheduledTripRequest.Name,
+            First = editScheduledTripRequest.First,
+            Second = editScheduledTripRequest.Second,
+            Third = editScheduledTripRequest.Third,
+            Fourth = editScheduledTripRequest.Fourth,
+            Fifth = editScheduledTripRequest.Fifth,
+            DateTime = editScheduledTripRequest.DateTime,
+        };
+
+        var result = await scheduledRepository.EditScheduledTrip(editedScheduledTrip);
+        if (result != null)
+            return RedirectToAction("ScheduledTrips");
+        return RedirectToAction("EditScheduledTrip");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteScheduledTrip(EditScheduledTripRequest editScheduledTripRequest)
+    {
+        var deletedAlbum = await scheduledRepository.DeleteScheduledTrip(editScheduledTripRequest.Id);
+        if (deletedAlbum != null)
+            return RedirectToAction("ScheduledTrips");
+        return RedirectToAction("EditScheduledTrip",new { id = editScheduledTripRequest.Id });
     }
 }

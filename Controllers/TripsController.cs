@@ -57,25 +57,21 @@ namespace Save__plan_your_trips.Controllers
         public async Task<IActionResult> EditAlbum(Guid id)
         {
             var album = await tripsRepository.GetSingleAsync(id);
-            if (album != null)
+            if (album == null) return View(null);
+            var model = new EditAlbumRequest
             {
-                var model = new EditAlbumRequest
-                {
-                    Id = album.Id,
-                    Name = album.Name,
-                    Images = new List<Image>(),
-                    ImageUrls = string.Join("\n\n", album.Images.Select(i => i.Url)),
-                };
-                foreach (var image in album.Images)
-                {
-                    var existingImage = new Image { Url = image.Url };
-                    model.Images.Add(existingImage);
-                }
-
-                return View(model);
+                Id = album.Id,
+                Name = album.Name,
+                Images = new List<Image>(),
+                ImageUrls = string.Join("\n\n", album.Images.Select(i => i.Url)),
+            };
+            foreach (var image in album.Images)
+            {
+                var existingImage = new Image { Url = image.Url };
+                model.Images.Add(existingImage);
             }
 
-            return View(null);
+            return View(model);
         }
 
         [HttpPost]
@@ -86,14 +82,18 @@ namespace Save__plan_your_trips.Controllers
                 Id = editAlbumRequest.Id,
                 Name = editAlbumRequest.Name,
             };
-            foreach (var imageRequest in editAlbumRequest.AddImageRequest.File)
+            
+            if (editAlbumRequest.AddImageRequest.File != null)
             {
-                var image = new Image
+                foreach (var imageRequest in editAlbumRequest.AddImageRequest.File)
                 {
-                    AlbumId = editAlbumRequest.Id,
-                    Url = editAlbumRequest.ImageUrls,
-                };
-                await tripsRepository.AddAsync(image, imageRequest);
+                    var image = new Image
+                    {
+                        AlbumId = editAlbumRequest.Id,
+                        Url = editAlbumRequest.ImageUrls,
+                    };
+                    await tripsRepository.AddAsync(image, imageRequest);
+                }
             }
 
             var result = await tripsRepository.EditAsync(editedAlbum);

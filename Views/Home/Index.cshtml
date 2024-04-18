@@ -94,34 +94,43 @@
     <div>
         @if (Model.Any())
         {
-        <h2>Your last trip</h2>
-        <div class="photos">
-            @foreach (var album in Model.TakeLast(1))
-            {
-                foreach (var image in album.Images.TakeLast(3))
+            <h2>Your last trip</h2>
+            <div class="photos">
+                @foreach (var album in Model.TakeLast(1))
                 {
-                    <img src="@image.Url" alt="image" class="photo"/>
+                    foreach (var image in album.Images.TakeLast(3))
+                    {
+                        <img src="@image.Url" alt="image" class="photo"/>
+                    }
                 }
-            }
- 
-        </div>
+
+            </div>
         }
         else
         {
-            <h2 class="noTrips">3 photos of your last trip will be there!</h2>   
+            <h2 class="noTrips">3 photos of your last trip will be there!</h2>
         }
     </div>
     <div>
         <h2>Maybe try this one</h2>
         <div class="anotherTrip">
 
-            <img alt="image" id="image" 
+            <img alt="image" id="image"
                  src=""/>
-            
+
             <div class="details">
-                <span> Rating:</span>
-                <span> Country:</span>
-                <span> City:</span>
+                <div>
+                    <span> Rating:</span>
+                    <span>5 stars</span>
+                </div>
+                <div>
+                    <span> Country:</span>
+                    <span>Ukraine</span>
+                </div>
+                <div>
+                    <span> City:</span>
+                    <span>Zhitomir</span>
+                </div>
             </div>
         </div>
     </div>

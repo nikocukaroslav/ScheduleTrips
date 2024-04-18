@@ -170,8 +170,10 @@
             <textarea id="imageNames" type="text" asp-for="ImageUrls" readonly> </textarea>
         </label>
         <div class="buttons">
-            <button type="submit" class="delete" asp-action="DeleteAlbum" asp-controller="Trips">Delete</button>
-            <button type="submit" class="submit">
+            <button type="submit" class="delete" asp-action="DeleteAlbum" asp-controller="Trips">
+                Delete
+            </button>
+            <button type="submit" class="submit" asp-action="EditAlbum" asp-controller="Trips">
                 Edit
             </button>
         </div>
