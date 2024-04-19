@@ -1,124 +1,124 @@
 ﻿<style>
-    body{
-    overflow: hidden;
+    body {
+        overflow: hidden;
     }
-    
-    .scheduleTripsPage{
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-    gap: 0.8rem;
-    }
-    
-    h3{
-    height: 5rem;
-    background-color: darkgray;
-    color: #242424;
-    padding: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    font-weight: 600;
-    border-radius: 6px;
-    margin-bottom:0.8rem ;
-    }
-    
-    input{
-    border-radius: 6px;
-    padding: 1.2rem;
-    border: none;
-    width: 100%;
-    }
-    
-    
-   .formContainer{
-    width: 100%;
-    margin: 0.8rem;
-   }
 
-   .mapHeader{
-    font-size: 1.8rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width:auto;
-    height: 5rem;
-    background-color: #333;
-    border-radius: 6px;
-    margin-bottom: 1.2rem;
-   }
-   
-   .map{
-    border-radius: 6px;
-    width: 100%;
-    height: 82vh;
-    border:none;
-   }
-    
-   .mapContainer{
-    margin: 0.8rem;
-   }
-   
-   label{
-   display: flex;
-   flex-direction:column ;
-   gap: 0.4rem;
-   }
-   
-   .todos{
-   display: flex;
-   flex-direction: column;
-   gap: 0.8rem;
-   }
-   
-   .marginTop{
-       margin-top: 1.6rem;
-   }
-   
-   button{
-   margin-top: 1.6rem;
-   width: 100%;
-   height: 5rem;
-   }
+    .scheduleTripsPage {
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        gap: 0.8rem;
+    }
+
+    h3 {
+        height: 5rem;
+        background-color: darkgray;
+        color: #242424;
+        padding: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        font-weight: 600;
+        border-radius: 6px;
+        margin-bottom: 0.8rem;
+    }
+
+    input {
+        border-radius: 6px;
+        padding: 1.2rem;
+        border: none;
+        width: 100%;
+    }
+
+
+    .formContainer {
+        width: 100%;
+        margin: 0.8rem;
+    }
+
+    .mapHeader {
+        font-size: 1.8rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        height: 5rem;
+        background-color: #333;
+        border-radius: 6px;
+        margin-bottom: 1.2rem;
+    }
+
+    .map {
+        border-radius: 6px;
+        width: 100%;
+        height: 82vh;
+        border: none;
+    }
+
+    .mapContainer {
+        margin: 0.8rem;
+    }
+
+    label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .todos {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .marginTop {
+        margin-top: 1.6rem;
+    }
+
+    button {
+        margin-top: 1.6rem;
+        width: 100%;
+        height: 5rem;
+    }
 </style>
 
 
-@model Save__plan_your_trips.Models.ViewModels.AddScheduledTripRequest
+@model Save__plan_your_trips.Models.ViewModels.AddScheduledTripViewModel
 
 <section class="scheduleTripsPage">
     <form method="post" class="formContainer">
         <label>
             <h3>Trip's name</h3>
-            <input type="text" id="name" asp-for="Name" required/>
+            <input type="text" id="name" asp-for="AddScheduledTripRequest.Name" required/>
         </label>
 
         <h3 class="marginTop">Top 5 todos</h3>
         <div class="todos">
             <label>
                 <span>The most valuable</span>
-                <input type="text" id="first" asp-for="@Model.First" required/>
+                <input type="text" id="first" asp-for="AddScheduledTripRequest.First" required/>
             </label>
             <label>
                 <span>More valuable</span>
-                <input type="text" id="second" asp-for="@Model.Second" required/>
+                <input type="text" id="second" asp-for="AddScheduledTripRequest.Second" required/>
             </label>
             <label>
                 <span>Valuable</span>
-                <input type="text" id="third" asp-for="@Model.Third" required/>
+                <input type="text" id="third" asp-for="AddScheduledTripRequest.Third" required/>
             </label>
-                <label>
-                    <span>Optional</span>
-                    <input type="text" id="fourth" asp-for="@Model.Fourth"/>
-                </label>
-                <label>
-                    <span>Optional</span>
-                    <input type="text" id="fifth" asp-for="@Model.Fifth"/>
-                </label>
+            <label>
+                <span>Optional</span>
+                <input type="text" id="fourth" asp-for="AddScheduledTripRequest.Fourth"/>
+            </label>
+            <label>
+                <span>Optional</span>
+                <input type="text" id="fifth" asp-for="AddScheduledTripRequest.Fifth"/>
+            </label>
         </div>
         <label>
             <h3 class="marginTop">Schedule date</h3>
-            <input type="date" id="date" asp-for="DateTime" required/>
+            <input type="date" id="date" asp-for="AddScheduledTripRequest.DateTime" required/>
         </label>
         <button type="submit">
             Add

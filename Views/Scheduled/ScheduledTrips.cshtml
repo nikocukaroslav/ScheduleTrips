@@ -1,11 +1,13 @@
 ﻿<style>
- body{
-overflow: hidden;
-} 
+    body {
+        overflow: hidden;
+    }
+
     .scheduleTripsPage {
         display: grid;
         grid-template-columns: 1fr 10fr;
     }
+
     .newScheduledTrip {
         position: absolute;
         background-color: darkgray;
@@ -21,9 +23,9 @@ overflow: hidden;
         align-items: center;
     }
 
-        .newScheduledTrip:hover {
-            background-color: #e3fafc;
-        }
+    .newScheduledTrip:hover {
+        background-color: #e3fafc;
+    }
 
     .plus {
         display: flex;
@@ -57,129 +59,128 @@ overflow: hidden;
         line-height: 1.1;
     }
 
-        .place:hover {
-            background-color: #e3fafc;
-        }
+    .place:hover {
+        background-color: #e3fafc;
+    }
 
-     .active{
-     background-color: #e3fafc;
-     }
+    .active {
+        background-color: #e3fafc;
+    }
+
+    .firstHeader {
+        width: 20rem;
+        height: 6rem;
+        background-color: darkgray;
+        color: #242424;
+        padding: 1.2rem;
+        display: flex;
+        align-items: center;
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0.8rem;
+        border-radius: 6px;
+    }
+
+    .scheduledTripsNav {
+        display: flex;
+        margin: 0.8rem;
+        gap: 0.8rem;
+    }
+
+    .scheduledTripsNav h3 {
+        width: 100%;
+        color: #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 6rem;
+        background-color: #333;
+        border: 3px solid #333;
+        border-radius: 6px;
+        transition: all 0.2s;
+    }
+
+    .scheduledTripsNav h3:hover {
+        background-color: #242424;
+    }
+
+    .purposes {
+        margin: 0.8rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+    }
+
+    .todoList {
+        height: 82vh;
+        border-radius: 6px;
+        padding: 0.8rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        border: 3px solid #333;
+    }
     
- .firstHeader{
-  width: 20rem;
-  height: 6rem;
-  background-color: darkgray;
-  color: #242424;
-  padding: 1.2rem;
-  display: flex;
-  align-items: center;
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin: 0.8rem;
-  border-radius: 6px;
- }
- 
- .scheduledTripsNav{
- display: flex;
-  margin: 0.8rem;
-  gap: 0.8rem;
- }
+    .performed {
+        border-radius: 6px;
+        padding: 0.8rem;
+        border: 3px solid #333;
+    }
 
- .scheduledTripsNav h3 {
- width: 100%;
- color: #ddd;
- display: flex;
- align-items: center;
- justify-content: center;
- height: 6rem;
- background-color: #333;
- border: 3px solid #333;
- border-radius: 6px;
- transition: all 0.2s;
- }
- 
-  .scheduledTripsNav h3:hover{
-  background-color: #242424;
-  }
-  
-  .purposes{
-  margin: 0.8rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.8rem;
-  }
-  
-  .todoList{
-  height: 82vh;
-  border-radius: 6px;
-  padding: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  border: 3px solid #333;
-  }
-  
-  
-  .performed{
-  border-radius: 6px;
-  padding: 0.8rem;
-  border: 3px solid #333;
-  }
-  
-  label{
-  display: flex;
-  gap: 0.6rem;
-  }
-  
-    .map{
-      margin: 0 0.8rem;
-      border-radius: 6px;
-      width: 100%;
-      height: 82vh;
-      border:none;
-     }
-     
-     .completed{
-     color: darkgray;
-     text-decoration: line-through;
-     }
-     
-     .dateTime{
-     font-size: 1.6rem;
-     }
-     
-     .noTrips{
-     padding: 1.2rem;
-     text-align: center;
-     }
-     
-     .noTripsMain{
-     font-weight: bold;
-     font-size: 1.8rem;
-     display: flex;
-     align-items: center;
-     justify-content: center;   
-     }
-     
-     .past{
-     background-color: gray;
-     color: #555;
-     }
-     
-    .deleteImage{
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     position: absolute;
-     cursor: pointer;
-     left: 19rem;
-     padding: 1.2rem;
-     }
-     
-     .edit{
-     height: 1.6rem;
-     fill: #ddd;
-     }
+    label {
+        display: flex;
+        gap: 0.6rem;
+    }
+
+    .map {
+        margin: 0 0.8rem;
+        border-radius: 6px;
+        width: 100%;
+        height: 82vh;
+        border: none;
+    }
+
+    .completed {
+        color: darkgray;
+        text-decoration: line-through;
+    }
+
+    .dateTime {
+        font-size: 1.6rem;
+    }
+
+    .noTrips {
+        padding: 1.2rem;
+        text-align: center;
+    }
+
+    .noTripsMain {
+        font-weight: bold;
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .past {
+        background-color: gray;
+        color: #555;
+    }
+
+    .deleteImage {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        cursor: pointer;
+        left: 19rem;
+        padding: 1.2rem;
+    }
+
+    .edit {
+        height: 1.6rem;
+        fill: #ddd;
+    }
 </style>
 
 @model IEnumerable<Save__plan_your_trips.Models.Domain.ScheduledTrip>
@@ -190,23 +191,26 @@ overflow: hidden;
         <ul class="scheduledTripsList">
             @if (Model.Any())
             {
-                foreach (var item in Model.Reverse())
-                {
-                    <li class="@(item.DateTime < DateTime.Now ? "past" : "") place" data-scheduledTrip-id="@item.Id">
-                        @item.Name
-                        <time class="dateTime">@item.DateTime.ToShortDateString()</time>
-                        <a class="deleteImage" asp-action="EditScheduledTrip" asp-controller="Scheduled" asp-route-id="@item.Id">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="edit" viewBox="0 0 16 16">
-                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                            </svg>
-                        </a>
-                    </li>
-                }
+            foreach (var item in Model.Reverse())
+            {
+            <li class="@(item.DateTime < DateTime.Now ? "past" : "") place" data-scheduledTrip-id="@item.Id">
+                @item.Name
+                <time class="dateTime">@item.DateTime.ToShortDateString()</time>
+                <a class="deleteImage" asp-action="EditScheduledTrip" asp-controller="Scheduled"
+                   asp-route-id="@item.Id">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="edit" viewBox="0 0 16 16">
+                        <path
+                            d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd"
+                              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                    </svg>
+                </a>
+            </li>
+            }
             }
             else
             {
-                <p class="noTrips">No scheduled trips yet</p>
+            <p class="noTrips">No scheduled trips yet</p>
             }
         </ul>
     </section>
@@ -223,67 +227,69 @@ overflow: hidden;
     </a>
     @if (@Model.Any())
     {
-        <main >
-            <nav class="scheduledTripsNav">
-                <h3 class="todoHeader">Purposes</h3>
-                <h3 class="mapHeader">Marshoot</h3>
-            </nav>
-            <section class="purposes">
-                <div class="todoList">
-                    <h4>Planed to do</h4>
-                    @foreach (var item in Model)
-                    {
-                        <label >
-                            <input type="checkbox" class="todo"
-                                   data-scheduledTrip-id="@item.Id"><span>@item.First</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" class="todo"
-                                   data-scheduledTrip-id="@item.Id"><span>@item.Second</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" class="todo"
-                                   data-scheduledTrip-id="@item.Id"><span>@item.Third</span>
-                        </label>
-                        @if (@item.Fourth != null)
-                        {
-                            <label>
-                                <input type="checkbox" class="todo"
-                                       data-scheduledTrip-id="@item.Id"><span>@item.Fourth</span>
-                            </label>
-                        }
+    <main>
+        <nav class="scheduledTripsNav">
+            <h3 class="todoHeader">Purposes</h3>
+            <h3 class="mapHeader">Marshoot</h3>
+        </nav>
+        <section class="purposes">
+            <div class="todoList">
+                <h4>Planed to do</h4>
+                @foreach (var item in Model)
+                {
+                <label>
+                    <input type="checkbox" class="todo"
+                           data-scheduledTrip-id="@item.Id"><span>@item.First</span>
+                </label>
+                <label>
+                    <input type="checkbox" class="todo"
+                           data-scheduledTrip-id="@item.Id"><span>@item.Second</span>
+                </label>
+                <label>
+                    <input type="checkbox" class="todo"
+                           data-scheduledTrip-id="@item.Id"><span>@item.Third</span>
+                </label>
+                @if (@item.Fourth != null)
+                {
+                <label>
+                    <input type="checkbox" class="todo"
+                           data-scheduledTrip-id="@item.Id"><span>@item.Fourth</span>
+                </label>
+                }
 
-                        @if (@item.Fifth != null)
-                        {
-                            <label >
-                                <input type="checkbox" class="todo"
-                                       data-scheduledTrip-id="@item.Id"><span>@item.Fifth</span>
-                            </label>
-                        }
-                    }
-                </div>
-                <div class="performed todoList">
-                    <h4>Performed</h4>
-                </div>
-            </section>
-            <section class="mapPage">
-                <iframe class="map"
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d40812.351682017834!2d28.6829387!3d50.25884285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sua!4v1712906141139!5m2!1sru!2sua"
-                        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </section>
-        </main>
+                @if (@item.Fifth != null)
+                {
+                <label>
+                    <input type="checkbox" class="todo"
+                           data-scheduledTrip-id="@item.Id"><span>@item.Fifth</span>
+                </label>
+                }
+                }
+            </div>
+            <div class="performed todoList">
+                <h4>Performed</h4>
+            </div>
+        </section>
+        <section class="mapPage">
+            <iframe class="map"
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d40812.351682017834!2d28.6829387!3d50.25884285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sua!4v1712906141139!5m2!1sru!2sua"
+                    allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </section>
+    </main>
     }
     else
     {
-        <p class="noTripsMain"> Start from scheduling your first trip!</p>
+    <p class="noTripsMain"> Start from scheduling your first trip!</p>
     }
 </section>
 
 @section Scripts
 {
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {  
+<script>
+
+
+    document.addEventListener("DOMContentLoaded", function () {
         const todos = document.querySelectorAll(".todo");
         const places = document.querySelectorAll(".place")
         const mapPage = document.querySelector(".mapPage");
@@ -293,52 +299,48 @@ overflow: hidden;
         const newScheduledTrip = document.querySelector(".newScheduledTrip");
         const performed = document.querySelector(".performed")
         const todoList = document.querySelector(".todoList")
-        
+
         mapPage.style.display = "none"
-        
+
         places.forEach(place => {
             const deleteImage = place.querySelector(".deleteImage");
 
             deleteImage.style.display = "none"
-            
-            place.addEventListener("mouseover", function() {
+
+            place.addEventListener("mouseover", function () {
                 deleteImage.style.display = "flex";
             });
-        
-            place.addEventListener("mouseout", function() {
+
+            place.addEventListener("mouseout", function () {
                 deleteImage.style.display = "none";
             });
         });
-        
-        
-      localStorage.setItem('todos', JSON.stringify(todos));
- 
-              todos.forEach(todo => {
-                  todo.addEventListener("change", function (){
-                      if (todo.checked){
-                          let parentLabel = todo.parentNode;
-                          parentLabel.parentNode.removeChild(parentLabel);
-                          performed.appendChild(parentLabel);
-                          parentLabel.classList.add("completed");
-                      }
-                      else{
-                          let parentLabel = todo.parentNode;
-                          parentLabel.parentNode.removeChild(parentLabel);
-                          todoList.appendChild(parentLabel);
-                          parentLabel.classList.remove("completed");
-                      }
-                  });
-              });
-         
+
+        todos.forEach(todo => {
+            todo.addEventListener("change", function () {
+                if (todo.checked) {
+                    let parentLabel = todo.parentNode;
+                    parentLabel.parentNode.removeChild(parentLabel);
+                    performed.appendChild(parentLabel);
+                    parentLabel.classList.add("completed");
+                } else {
+                    let parentLabel = todo.parentNode;
+                    parentLabel.parentNode.removeChild(parentLabel);
+                    todoList.appendChild(parentLabel);
+                    parentLabel.classList.remove("completed");
+                }
+            });
+        });
+
         places.forEach(place => {
             place.addEventListener("click", function () {
                 const placeId = this.getAttribute('data-scheduledTrip-id');
-                
+
                 places.forEach((p) => {
                     p.classList.remove("active");
                 });
                 this.classList.add("active");
-                
+
                 todos.forEach((todo) => {
                     if (todo.getAttribute('data-scheduledTrip-id') === placeId) {
                         todo.parentElement.style.display = "flex";
@@ -349,28 +351,26 @@ overflow: hidden;
             });
         });
 
-
-
-        
-        mapHeader.addEventListener("click", function (){
+        mapHeader.addEventListener("click", function () {
             newScheduledTrip.style.display = "none"
             mapPage.style.display = "block"
             mapHeader.style.backgroundColor = "#242424"
             todoHeader.style.backgroundColor = "#333"
             purposesPage.style.display = "none"
         })
-        
-        todoHeader.addEventListener("click", function (){
+
+        todoHeader.addEventListener("click", function () {
             newScheduledTrip.style.display = "flex"
             mapPage.style.display = "none"
             mapHeader.style.backgroundColor = "#333"
             todoHeader.style.backgroundColor = "#242424"
             purposesPage.style.display = "grid"
         })
-        
+
         todoHeader.click();
         if (places.length > 0)
             places[0].click();
-        })
-    </script>
+    })
+
+</script>
 }

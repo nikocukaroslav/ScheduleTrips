@@ -67,6 +67,7 @@ public class ScheduledController : Controller
             Fifth = scheduledTrip.Fifth,
             DateTime = scheduledTrip.DateTime,
         };
+        
         return View(model);
     }
 
@@ -88,7 +89,7 @@ public class ScheduledController : Controller
         var result = await scheduledRepository.EditScheduledTrip(editedScheduledTrip);
         if (result != null)
             return RedirectToAction("ScheduledTrips");
-        return RedirectToAction("EditScheduledTrip");
+        return RedirectToAction("ScheduledTrips");
     }
 
     [HttpPost]
