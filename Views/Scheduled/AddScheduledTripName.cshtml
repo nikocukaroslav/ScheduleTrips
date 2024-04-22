@@ -1,0 +1,9 @@
+﻿@model Save__plan_your_trips.Models.ViewModels.AddScheduledTripViewModel
+
+<form method="post" asp-action="AddScheduledTripName" asp-controller="Scheduled">
+    <label>
+        <h3>Trip's name</h3>
+        <input type="text" id="name" asp-for="AddScheduledTripRequest.Name" required/>
+    </label>
+    <button type="submit" asp-action="AddScheduledTripName" asp-controller="Scheduled">Create scheduled trip</button>
+</form>

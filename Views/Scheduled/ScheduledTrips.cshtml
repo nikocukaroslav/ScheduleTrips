@@ -39,7 +39,7 @@
         list-style: none;
         flex-direction: column;
         gap: 0.8rem;
-        max-height: 93vh;
+        max-height:82vh;
     }
 
     .place {
@@ -214,7 +214,7 @@
             }
         </ul>
     </section>
-    <a class="newScheduledTrip" asp-controller="Scheduled" asp-action="AddScheduledTrip">
+    <a class="newScheduledTrip" asp-controller="Scheduled" asp-action="AddScheduledTripName">
         <svg xmlns="http://www.w3.org/2000/svg"
              width="28"
              height="28"
@@ -237,33 +237,8 @@
                 <h4>Planed to do</h4>
                 @foreach (var item in Model)
                 {
-                <label>
-                    <input type="checkbox" class="todo"
-                           data-scheduledTrip-id="@item.Id"><span>@item.First</span>
-                </label>
-                <label>
-                    <input type="checkbox" class="todo"
-                           data-scheduledTrip-id="@item.Id"><span>@item.Second</span>
-                </label>
-                <label>
-                    <input type="checkbox" class="todo"
-                           data-scheduledTrip-id="@item.Id"><span>@item.Third</span>
-                </label>
-                @if (@item.Fourth != null)
-                {
-                <label>
-                    <input type="checkbox" class="todo"
-                           data-scheduledTrip-id="@item.Id"><span>@item.Fourth</span>
-                </label>
-                }
-
-                @if (@item.Fifth != null)
-                {
-                <label>
-                    <input type="checkbox" class="todo"
-                           data-scheduledTrip-id="@item.Id"><span>@item.Fifth</span>
-                </label>
-                }
+                
+                
                 }
             </div>
             <div class="performed todoList">

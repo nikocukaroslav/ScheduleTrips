@@ -67,8 +67,19 @@
     }
 
     .todos {
+        margin-top: 0.8rem;
+        border-radius: 6px;
+        background-color: #333;
+        min-height: 55vh;
         display: flex;
         flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .addTodos {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         gap: 0.8rem;
     }
 
@@ -76,54 +87,60 @@
         margin-top: 1.6rem;
     }
 
-    button {
-        margin-top: 1.6rem;
+    .submitButton {
         width: 100%;
         height: 5rem;
     }
-</style>
 
+    .noTodos {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
 
 @model Save__plan_your_trips.Models.ViewModels.AddScheduledTripViewModel
 
 <section class="scheduleTripsPage">
-    <form method="post" class="formContainer">
-        <label>
-            <h3>Trip's name</h3>
-            <input type="text" id="name" asp-for="AddScheduledTripRequest.Name" required/>
-        </label>
-
-        <h3 class="marginTop">Top 5 todos</h3>
-        <div class="todos">
+    <div class="formContainer">
+        <form method="post" asp-action="AddToDo" asp-controller="Scheduled">
+            <h3>Add some todos</h3>
+            <div class="addTodos">
+                <input type="text" asp-for="AddToDoRequest.Task"/>
+                <input type="hidden" asp-for="AddToDoRequest.ScheduledTripId" value="@Model.ScheduledTrip?.Id" />
+                <button class="add" asp-action="AddToDo" asp-controller="Scheduled">Add</button>
+            </div>
+        </form>
+        <ul class="todos">
+            @if (Model.ScheduledTrip.ToDos.Any())
+            {
+                foreach (var item in Model.ScheduledTrip.ToDos)
+                {
+                    if (item.Task.Any())
+                    {
+                        <label>
+                            <li>@item.Task</li>
+                        </label>
+                    }
+                    else
+                    {
+                        <p class="noTodos">No todos yet</p>
+                    }
+                }
+            }
+        </ul>
+        <form method="post">
             <label>
-                <span>The most valuable</span>
-                <input type="text" id="first" asp-for="AddScheduledTripRequest.First" required/>
+                <h3 class="marginTop">Planned date</h3>
+                <input type="date" id="date" asp-for="AddScheduledTripRequest.DateTime" required/>
             </label>
-            <label>
-                <span>More valuable</span>
-                <input type="text" id="second" asp-for="AddScheduledTripRequest.Second" required/>
-            </label>
-            <label>
-                <span>Valuable</span>
-                <input type="text" id="third" asp-for="AddScheduledTripRequest.Third" required/>
-            </label>
-            <label>
-                <span>Optional</span>
-                <input type="text" id="fourth" asp-for="AddScheduledTripRequest.Fourth"/>
-            </label>
-            <label>
-                <span>Optional</span>
-                <input type="text" id="fifth" asp-for="AddScheduledTripRequest.Fifth"/>
-            </label>
-        </div>
-        <label>
-            <h3 class="marginTop">Schedule date</h3>
-            <input type="date" id="date" asp-for="AddScheduledTripRequest.DateTime" required/>
-        </label>
-        <button type="submit">
-            Add
-        </button>
-    </form>
+            <button type="submit" class="submitButton marginTop">
+                Schedule
+            </button>
+        </form>
+    </div>
     <section class="mapContainer">
         <header class="mapHeader">Check marshoot to your destination</header>
 

@@ -21,6 +21,18 @@ public class ScheduledRepository : IScheduledRepository
         return scheduledTrip;
     }
 
+    public async Task<ToDo> AddToDo(ToDo todo)
+    {
+        await scheduleTripsDbContext.ToDos.AddAsync(todo);
+        await scheduleTripsDbContext.SaveChangesAsync();
+        return todo;
+    }
+
+    public async Task<IEnumerable<ToDo>> GetAllToDos()
+    {
+        return await scheduleTripsDbContext.ToDos.ToListAsync();
+    }
+
     public async Task<IEnumerable<ScheduledTrip>> GetAllAsync()
     {
         return await scheduleTripsDbContext.ScheduledTrip.ToListAsync();
@@ -28,7 +40,7 @@ public class ScheduledRepository : IScheduledRepository
 
     public async Task<ScheduledTrip?> GetSingleAsync(Guid id)
     {
-        return await scheduleTripsDbContext.ScheduledTrip.FirstOrDefaultAsync(x => x.Id == id);
+        return await scheduleTripsDbContext.ScheduledTrip.Include(x => x.ToDos).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<ScheduledTrip> EditScheduledTrip(ScheduledTrip scheduledTrip)
@@ -39,11 +51,7 @@ public class ScheduledRepository : IScheduledRepository
         if (editedScheduledTrip != null)
         {
             editedScheduledTrip.Name = scheduledTrip.Name;
-            editedScheduledTrip.First = scheduledTrip.First;
-            editedScheduledTrip.Second = scheduledTrip.Second;
-            editedScheduledTrip.Third = scheduledTrip.Third;
-            editedScheduledTrip.Fourth = scheduledTrip.Fourth;
-            editedScheduledTrip.Fifth = scheduledTrip.Fifth;
+
             editedScheduledTrip.DateTime = scheduledTrip.DateTime;
         }
 
@@ -55,11 +63,11 @@ public class ScheduledRepository : IScheduledRepository
 
         return null;
     }
-    
+
     public async Task<ScheduledTrip> DeleteScheduledTrip(Guid id)
     {
         var deletedScheduledTrip = await scheduleTripsDbContext.ScheduledTrip.FindAsync(id);
-        
+
         if (deletedScheduledTrip != null)
         {
             scheduleTripsDbContext.ScheduledTrip.Remove(deletedScheduledTrip);

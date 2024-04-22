@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Save__plan_your_trips.Data;
 
@@ -11,9 +12,11 @@ using Save__plan_your_trips.Data;
 namespace Save__plan_your_trips.Migrations
 {
     [DbContext(typeof(ScheduleTripsDbContext))]
-    partial class ScheduleTripsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240419201549_AfterRebuidling")]
+    partial class AfterRebuidling
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,7 +84,7 @@ namespace Save__plan_your_trips.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ScheduledTripId")
+                    b.Property<Guid?>("ScheduledTripId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Task")
@@ -92,7 +95,7 @@ namespace Save__plan_your_trips.Migrations
 
                     b.HasIndex("ScheduledTripId");
 
-                    b.ToTable("ToDos");
+                    b.ToTable("ToDo");
                 });
 
             modelBuilder.Entity("Save__plan_your_trips.Models.Domain.Image", b =>
@@ -108,13 +111,9 @@ namespace Save__plan_your_trips.Migrations
 
             modelBuilder.Entity("Save__plan_your_trips.Models.Domain.ToDo", b =>
                 {
-                    b.HasOne("Save__plan_your_trips.Models.Domain.ScheduledTrip", "ScheduledTrip")
+                    b.HasOne("Save__plan_your_trips.Models.Domain.ScheduledTrip", null)
                         .WithMany("ToDos")
-                        .HasForeignKey("ScheduledTripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ScheduledTrip");
+                        .HasForeignKey("ScheduledTripId");
                 });
 
             modelBuilder.Entity("Save__plan_your_trips.Models.Domain.Album", b =>

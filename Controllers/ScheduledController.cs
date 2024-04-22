@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Save__plan_your_trips.Models.Domain;
 using Save__plan_your_trips.Models.ViewModels;
 using Save__plan_your_trips.Repositories;
@@ -22,34 +23,74 @@ public class ScheduledController : Controller
     }
 
     [HttpGet]
-    public IActionResult AddScheduledTrip()
+    public IActionResult AddScheduledTripName()
     {
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddScheduledTrip(AddScheduledTripRequest addScheduledTripRequest)
+    public async Task<IActionResult> AddScheduledTripName(AddScheduledTripRequest addScheduledTripRequest)
     {
+        var scheduledTrip = new ScheduledTrip
         {
-            if (ModelState.IsValid)
-            {
-                var newScheduledTrip = new ScheduledTrip
-                {
-                    Name = addScheduledTripRequest.Name,
-                    First = addScheduledTripRequest.First,
-                    Second = addScheduledTripRequest.Second,
-                    Third = addScheduledTripRequest.Third,
-                    Fourth = addScheduledTripRequest.Fourth,
-                    Fifth = addScheduledTripRequest.Fifth,
-                    DateTime = addScheduledTripRequest.DateTime,
-                };
+            Name = addScheduledTripRequest.Name,
+            DateTime = DateTime.Now,
+        };
 
-                await scheduledRepository.AddScheduledTrip(newScheduledTrip);
-            }
-
-            return RedirectToAction("ScheduledTrips");
+        if (scheduledTrip != null)
+        {
+            await scheduledRepository.AddScheduledTrip(scheduledTrip);
+            return RedirectToAction("AddScheduledTrip", new { id = scheduledTrip.Id });
         }
+
+        return RedirectToAction("AddScheduledTripName");
     }
+
+    [HttpGet]
+    public async Task<IActionResult> AddScheduledTrip(Guid id)
+    {
+        var scheduledTrip = await scheduledRepository.GetSingleAsync(id);
+
+        var model = new AddScheduledTripViewModel
+        {
+            ScheduledTrip = scheduledTrip,
+            ToDoList =scheduledTrip.ToDos,
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddScheduledTrip(Guid id, AddScheduledTripRequest addScheduledTripRequest)
+    {
+        if (ModelState.IsValid)
+        {
+            var scheduledTrip = await scheduledRepository.GetSingleAsync(id);
+
+            scheduledTrip.DateTime = addScheduledTripRequest.DateTime;
+            await scheduledRepository.AddScheduledTrip(scheduledTrip);
+        }
+
+        return RedirectToAction("ScheduledTrips");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddToDo(AddToDoRequest addToDoRequest)
+    {
+        if (ModelState.IsValid)
+        {
+            var todo = new ToDo
+            {
+                Task = addToDoRequest.Task,
+                ScheduledTripId = addToDoRequest.ScheduledTripId,
+            };
+            
+            await scheduledRepository.AddToDo(todo);
+        }
+
+        return View("AddScheduledTrip");
+    }
+
 
     [HttpGet]
     public async Task<IActionResult> EditScheduledTrip(Guid id)
@@ -59,15 +100,9 @@ public class ScheduledController : Controller
         var model = new EditScheduledTripRequest
         {
             Id = scheduledTrip.Id,
-            Name = scheduledTrip.Name,
-            First = scheduledTrip.First,
-            Second = scheduledTrip.Second,
-            Third = scheduledTrip.Third,
-            Fourth = scheduledTrip.Fourth,
-            Fifth = scheduledTrip.Fifth,
             DateTime = scheduledTrip.DateTime,
         };
-        
+
         return View(model);
     }
 
@@ -77,12 +112,7 @@ public class ScheduledController : Controller
         var editedScheduledTrip = new ScheduledTrip
         {
             Id = editScheduledTripRequest.Id,
-            Name = editScheduledTripRequest.Name,
-            First = editScheduledTripRequest.First,
-            Second = editScheduledTripRequest.Second,
-            Third = editScheduledTripRequest.Third,
-            Fourth = editScheduledTripRequest.Fourth,
-            Fifth = editScheduledTripRequest.Fifth,
+
             DateTime = editScheduledTripRequest.DateTime,
         };
 
@@ -95,9 +125,9 @@ public class ScheduledController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteScheduledTrip(EditScheduledTripRequest editScheduledTripRequest)
     {
-        var deletedAlbum = await scheduledRepository.DeleteScheduledTrip(editScheduledTripRequest.Id);
-        if (deletedAlbum != null)
+        var deletedScheduledTrip= await scheduledRepository.DeleteScheduledTrip(editScheduledTripRequest.Id);
+        if (deletedScheduledTrip != null)
             return RedirectToAction("ScheduledTrips");
-        return RedirectToAction("EditScheduledTrip",new { id = editScheduledTripRequest.Id });
+        return RedirectToAction("EditScheduledTrip", new { id = editScheduledTripRequest.Id });
     }
 }
