@@ -29,12 +29,11 @@ public class ScheduledController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddScheduledTripName(AddScheduledTripRequest addScheduledTripRequest)
+    public async Task<IActionResult> AddScheduledTripName(AddScheduledTripNameRequest addScheduledTripNameRequest)
     {
         var scheduledTrip = new ScheduledTrip
         {
-            Name = addScheduledTripRequest.Name,
-            DateTime = DateTime.Now,
+            Name = addScheduledTripNameRequest.Name,
         };
 
         if (scheduledTrip != null)
@@ -50,28 +49,37 @@ public class ScheduledController : Controller
     public async Task<IActionResult> AddScheduledTrip(Guid id)
     {
         var scheduledTrip = await scheduledRepository.GetSingleAsync(id);
-        
-            var model = new AddScheduledTripViewModel
-            {
-                ScheduledTrip = scheduledTrip,
-                ToDoList = scheduledTrip?.ToDos,
-            };
 
-            return View(model);
+        if (scheduledTrip == null)
+        {
+            return NotFound();
+        }
+
+        var model = new AddScheduledTripViewModel
+        {
+            ScheduledTrip = scheduledTrip,
+            ToDoList = scheduledTrip?.ToDos,
+        };
+
+        return View(model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddScheduledTrip(Guid id, AddScheduledTripRequest addScheduledTripRequest)
+    public async Task<IActionResult> AddScheduledTripDate( AddScheduledTripDateRequest addScheduledTripDateRequest)
     {
         if (ModelState.IsValid)
         {
-            var scheduledTrip = await scheduledRepository.GetSingleAsync(id);
-
-            scheduledTrip.DateTime = addScheduledTripRequest.DateTime;
-            await scheduledRepository.AddScheduledTrip(scheduledTrip);
+            var scheduledTripDateTime = new ScheduledTrip
+            {
+                Name = addScheduledTripDateRequest.Name,
+                DateTime = addScheduledTripDateRequest.DateTime,
+            }; 
+            
+            await scheduledRepository.AddScheduledTrip(scheduledTripDateTime);
+            return RedirectToAction("ScheduledTrips");
         }
 
-        return RedirectToAction("ScheduledTrips");
+        return NotFound();
     }
 
     [HttpPost]

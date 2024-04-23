@@ -11,7 +11,6 @@
         border: 2px solid #242424;
         height: 3rem;
         width: 100%;
-      
     }
 
     form {
@@ -21,7 +20,7 @@
         background-color: #333;
         display: flex;
         flex-direction: column;
-        gap: 0.8rem;
+        gap: 1.2rem;
     }
 
     label {
@@ -39,7 +38,7 @@
     <form method="post" asp-action="AddScheduledTripName" asp-controller="Scheduled">
         <label>
             <h3>Trip's name</h3>
-            <input type="text" id="name" asp-for="AddScheduledTripRequest.Name" required/>
+            <input type="text" id="name" asp-for="AddScheduledTripNameRequest.Name" required/>
         </label>
         <button type="submit" asp-action="AddScheduledTripName" asp-controller="Scheduled">Create scheduled trip
         </button>
