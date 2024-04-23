@@ -41,7 +41,6 @@ namespace Save__plan_your_trips.Controllers
 
                     if (roleIdentityResult.Succeeded)
                         return RedirectToAction("Index", "Home");
-
                 }
             }
 
@@ -60,11 +59,19 @@ namespace Save__plan_your_trips.Controllers
             if (ModelState.IsValid)
             {
                 var signInResult = await signInManager.PasswordSignInAsync
-                        (signInRequest.Nickname, signInRequest.Password, false, false);
+                    (signInRequest.Nickname, signInRequest.Password, false, false);
 
                 if (signInResult.Succeeded)
+                {
                     return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login or password");
+                    return View(signInRequest);
+                }
             }
+
             return View();
         }
 

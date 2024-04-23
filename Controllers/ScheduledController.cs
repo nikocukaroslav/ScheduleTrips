@@ -9,7 +9,6 @@ namespace Save__plan_your_trips.Controllers;
 public class ScheduledController : Controller
 {
     private ScheduledRepository? scheduledRepository;
-
     public ScheduledController(IScheduledRepository scheduledRepository)
     {
         this.scheduledRepository = (ScheduledRepository?)scheduledRepository;
@@ -19,7 +18,15 @@ public class ScheduledController : Controller
     public async Task<IActionResult> ScheduledTrips()
     {
         var scheduledTrips = await scheduledRepository.GetAllAsync();
-        return View(scheduledTrips);
+        var todos = await scheduledRepository.GetAllToDos();
+
+        var scheduledTripsPageViewModel = new ScheduledTripsPageViewModel
+        {
+            ScheduledTrips = scheduledTrips,
+            ToDos = todos,
+        };
+        
+        return View(scheduledTripsPageViewModel);
     }
 
     [HttpGet]
@@ -65,17 +72,17 @@ public class ScheduledController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddScheduledTripDate( AddScheduledTripDateRequest addScheduledTripDateRequest)
+    public async Task<IActionResult> AddScheduledTripDate(AddScheduledTripDateRequest addScheduledTripDateRequest)
     {
         if (ModelState.IsValid)
         {
             var scheduledTripDateTime = new ScheduledTrip
             {
-                Name = addScheduledTripDateRequest.Name,
+                Id = addScheduledTripDateRequest.Id,
                 DateTime = addScheduledTripDateRequest.DateTime,
-            }; 
-            
-            await scheduledRepository.AddScheduledTrip(scheduledTripDateTime);
+            };
+
+            await scheduledRepository.SubmitDate(scheduledTripDateTime);
             return RedirectToAction("ScheduledTrips");
         }
 
@@ -96,6 +103,11 @@ public class ScheduledController : Controller
             await scheduledRepository.AddToDo(todo);
         }
 
+        if (!string.IsNullOrEmpty(addToDoRequest.ReturnUrl))
+        {
+            return Redirect(addToDoRequest.ReturnUrl);
+        }
+
         return RedirectToAction("AddScheduledTrip", new { id = addToDoRequest.ScheduledTripId });
     }
 
@@ -104,12 +116,17 @@ public class ScheduledController : Controller
     public async Task<IActionResult> EditScheduledTrip(Guid id)
     {
         var scheduledTrip = await scheduledRepository.GetSingleAsync(id);
-        if (scheduledTrip == null) return View(null);
-        var model = new EditScheduledTripRequest
+        if (scheduledTrip == null) return NotFound();
+        var model = new AddScheduledTripViewModel
         {
-            Id = scheduledTrip.Id,
-            Name = scheduledTrip.Name,
-            DateTime = scheduledTrip.DateTime,
+            EditScheduledTripRequest = new EditScheduledTripRequest
+            {
+                Id = scheduledTrip.Id,
+                Name = scheduledTrip.Name,
+                DateTime = scheduledTrip.DateTime,
+            },
+            ScheduledTrip = scheduledTrip,
+            ToDoList = scheduledTrip?.ToDos,
         };
 
         return View(model);
@@ -125,9 +142,7 @@ public class ScheduledController : Controller
             DateTime = editScheduledTripRequest.DateTime,
         };
 
-        var result = await scheduledRepository.EditScheduledTrip(editedScheduledTrip);
-        if (result != null)
-            return RedirectToAction("ScheduledTrips");
+        await scheduledRepository.EditScheduledTrip(editedScheduledTrip);
         return RedirectToAction("ScheduledTrips");
     }
 
@@ -143,9 +158,12 @@ public class ScheduledController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteToDo(DeleteToDoRequest deleteToDoRequest)
     {
-        var deletedToDo = await scheduledRepository.DeleteToDo(deleteToDoRequest.Id);
-        if (deletedToDo != null)
-            return RedirectToAction("AddScheduledTrip", new { id = deleteToDoRequest.ScheduledTripId });
+        await scheduledRepository.DeleteToDo(deleteToDoRequest.Id);
+        if (!string.IsNullOrEmpty(deleteToDoRequest.ReturnUrl))
+        {
+            return Redirect(deleteToDoRequest.ReturnUrl);
+        }
+
         return NotFound();
     }
 }

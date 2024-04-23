@@ -22,7 +22,10 @@ namespace Save__plan_your_trips.Controllers
         [HttpGet]
         public async Task<IActionResult> YourAlbums()
         {
-            var albums = await tripsRepository.GetAsync();
+            var albums = new YourAlbumsPageViewModel
+            {
+                Albums = await tripsRepository.GetAsync(),
+            };
 
             return View(albums);
         }
@@ -82,7 +85,7 @@ namespace Save__plan_your_trips.Controllers
                 Id = editAlbumRequest.Id,
                 Name = editAlbumRequest.Name,
             };
-            
+
             if (editAlbumRequest.AddImageRequest.File != null)
             {
                 foreach (var imageRequest in editAlbumRequest.AddImageRequest.File)
@@ -110,6 +113,14 @@ namespace Save__plan_your_trips.Controllers
             if (deletedAlbum != null)
                 return RedirectToAction("YourAlbums");
             return RedirectToAction("EditAlbum", new { id = editAlbumRequest.Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteImage(DeleteImageRequest deleteImageRequest)
+        {
+            await tripsRepository.DeleteImage(deleteImageRequest.Id);
+
+            return RedirectToAction("YourAlbums");
         }
     }
 }

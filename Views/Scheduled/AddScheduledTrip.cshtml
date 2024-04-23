@@ -20,7 +20,7 @@
         font-size: 1.8rem;
         font-weight: 600;
         border-radius: 6px;
-        margin-bottom: 0.8rem;
+        margin-bottom: 1.2rem;
     }
 
     input {
@@ -63,14 +63,13 @@
     label {
         display: flex;
         flex-direction: column;
-        gap: 0.4rem;
     }
 
     .todos {
         margin-top: 0.8rem;
         border-radius: 6px;
         background-color: #333;
-        height: 55vh;
+        height: 47rem;
         display: flex;
         flex-direction: column;
         gap: 0.8rem;
@@ -139,8 +138,9 @@
 <section class="scheduleTripsPage">
     <div class="formContainer">
         <form method="post" asp-action="AddToDo" asp-controller="Scheduled">
-            <h3>Add some todos</h3>
+            <h3>Edit your todos</h3>
             <div class="addTodos">
+                <input type="hidden" asp-for="AddToDoRequest.ReturnUrl" value="@Context.Request.Path" />
                 <input type="text" asp-for="AddToDoRequest.Task"/>
                 <input type="hidden" asp-for="AddToDoRequest.ScheduledTripId" value="@Model.ScheduledTrip?.Id"/>
                 <button class="add" asp-action="AddToDo" asp-controller="Scheduled">Add</button>
@@ -149,33 +149,34 @@
         <ul class="todos">
             @if (Model.ScheduledTrip.ToDos.Any())
             {
-                foreach (var item in Model.ScheduledTrip.ToDos)
-                {
-                    <li class="todo">
-                        <span class="task">@item.Task</span>
-                        <form method="post" asp-action="DeleteToDo" asp-controller="Scheduled" class="deleteTodo">
-                            <input type="hidden" value="@item.Id" asp-for="DeleteToDoRequest.Id"/>
-                            <input type="hidden" value="@item.ScheduledTripId" asp-for="DeleteToDoRequest.ScheduledTripId"/>
-                            <button type="submit" class="noStyle" asp-action="DeleteToDo" asp-controller="Scheduled">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="trash" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                                </svg>
-                            </button>
-                        </form>
-                    </li>
-                }
+            foreach (var item in Model.ScheduledTrip.ToDos)
+            {
+            <li class="todo">
+                <span class="task">@item.Task</span>
+                <form method="post" asp-action="DeleteToDo" asp-controller="Scheduled" class="deleteTodo">
+                    <input type="hidden" value="@item.Id" asp-for="DeleteToDoRequest.Id"/>
+                    <input type="hidden" asp-for="DeleteToDoRequest.ReturnUrl" value="@Context.Request.Path" />
+                    <input type="hidden" value="@item.ScheduledTripId" asp-for="DeleteToDoRequest.ScheduledTripId"/>
+                    <button type="submit" class="noStyle" asp-action="DeleteToDo" asp-controller="Scheduled">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                        </svg>
+                    </button>
+                </form>
+            </li>
+            }
             }
             else
             {
-                <p class="noTodos">No todos yet</p>
+            <p class="noTodos">No todos yet</p>
             }
         </ul>
         <form method="post" asp-action="AddScheduledTripDate" asp-controller="Scheduled">
             <label>
                 <h3 class="marginTop">Planned date</h3>
-                <input type="hidden" value="@Model.ScheduledTrip.Name" asp-for="AddScheduledTripDateRequest.Name"/>
                 <input type="date" id="date" asp-for="AddScheduledTripDateRequest.DateTime" required/>
+                <input type="hidden" id="id" asp-for="AddScheduledTripDateRequest.Id" value="@Model.ScheduledTrip.Id" required/>
             </label>
             <button type="submit" class="submitButton marginTop" asp-action="AddScheduledTripDate" >
                 Schedule

@@ -88,7 +88,7 @@
     }
 </style>
 
-@model IEnumerable<Save__plan_your_trips.Models.Domain.Album?>
+@model IEnumerable<Save__plan_your_trips.Models.Domain.Image?>
 
 <div class="homepage">
     <div>
@@ -96,14 +96,10 @@
         {
             <h2>Your last trip</h2>
             <div class="photos">
-                @foreach (var album in Model.TakeLast(1))
+                @foreach (var image in Model.TakeLast(3))
                 {
-                    foreach (var image in album.Images.TakeLast(3))
-                    {
-                        <img src="@image.Url" alt="image" class="photo"/>
-                    }
+                    <img src="@image?.Url" alt="image" class="photo"/>
                 }
-
             </div>
         }
         else

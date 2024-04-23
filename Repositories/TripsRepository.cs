@@ -19,6 +19,10 @@ namespace Save__plan_your_trips.Repositories
         {
             return await scheduleTripsDbContext.Album.Include(a => a.Images).ToListAsync();
         }
+        public async Task<IEnumerable<Image?>> GetImages()
+        {
+            return await scheduleTripsDbContext.Images.ToListAsync();
+        }
 
         public async Task<Album?> GetSingleAsync(Guid id)
         {
@@ -68,6 +72,21 @@ namespace Save__plan_your_trips.Repositories
 
                 await scheduleTripsDbContext.SaveChangesAsync();
                 return deletedAlbum;
+            }
+
+            return null;
+        }
+
+        public async Task<Image?> DeleteImage(Guid id)
+        {
+            var deletedImage = await scheduleTripsDbContext.Images.FindAsync(id);
+
+            if (deletedImage != null)
+            {
+                scheduleTripsDbContext.Images.Remove(deletedImage);
+
+                await scheduleTripsDbContext.SaveChangesAsync();
+                return deletedImage;
             }
 
             return null;

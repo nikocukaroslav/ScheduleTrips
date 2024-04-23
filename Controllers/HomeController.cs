@@ -20,9 +20,9 @@ namespace Save__plan_your_trips.Controllers
       
         public async Task<IActionResult> Index()
         {
-            var albums = await tripsRepository.GetAsync();
+            var images = await tripsRepository.GetImages();
 
-            return View(albums);
+            return View(images);
         }
         public IActionResult Privacy()
         {

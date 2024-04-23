@@ -6,4 +6,5 @@ public class AddToDoRequest
 {
     public string Task { get; set; }
     public Guid ScheduledTripId { get; set; }
+    public string? ReturnUrl { get; set; }
 }

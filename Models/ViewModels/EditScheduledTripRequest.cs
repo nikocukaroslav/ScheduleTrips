@@ -7,6 +7,5 @@ public class EditScheduledTripRequest
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public List<ToDo> ToDos { get; set; }
     [Required] public DateTime DateTime { get; set; }
 }

@@ -12,4 +12,5 @@ public interface IScheduledRepository
     Task<ScheduledTrip?> GetSingleAsync(Guid id);
     Task<ScheduledTrip> DeleteScheduledTrip(Guid id);
     Task<ScheduledTrip> EditScheduledTrip(ScheduledTrip scheduledTrip);
+    Task<ScheduledTrip> SubmitDate(ScheduledTrip scheduledTrip);
 }

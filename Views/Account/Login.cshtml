@@ -90,6 +90,16 @@
         <input type="password" placeholder="Enter Password" id="password" asp-for="Password" required minlength="6">
         <span class="textDanger" asp-validation-for="Password"></span>
 
+        @if (!ViewData.ModelState.IsValid)
+        {
+        <div class="textDanger">
+            @foreach (var error in ViewData.ModelState.Root.Errors)
+            {
+            <p>@error.ErrorMessage</p>
+            }
+        </div>
+        }
+        
         <hr>
 
         <button type="submit" class="registerbtn">Log in</button>

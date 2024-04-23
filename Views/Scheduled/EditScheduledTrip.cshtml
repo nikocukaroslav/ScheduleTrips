@@ -1,15 +1,15 @@
-﻿﻿<style>
-    body{
+﻿<style>
+    body {
         overflow: hidden;
     }
 
-    .scheduleTripsPage{
+    .scheduleTripsPage {
         display: grid;
         grid-template-columns: 1fr 4fr;
         gap: 0.8rem;
     }
 
-    h3{
+    h3 {
         height: 5rem;
         background-color: darkgray;
         color: #242424;
@@ -20,10 +20,10 @@
         font-size: 1.8rem;
         font-weight: 600;
         border-radius: 6px;
-        margin-bottom:0.8rem ;
+        margin-bottom: 0.8rem;
     }
 
-    input{
+    input {
         border-radius: 6px;
         padding: 1.2rem;
         border: none;
@@ -31,49 +31,111 @@
     }
 
 
-    .formContainer{
+    .formContainer {
         width: 100%;
         margin: 0.8rem;
     }
 
-    .mapHeader{
+    .mapHeader {
         font-size: 1.8rem;
         font-weight: bold;
         display: flex;
         align-items: center;
         justify-content: center;
-        width:auto;
+        width: auto;
         height: 5rem;
         background-color: #333;
         border-radius: 6px;
         margin-bottom: 1.2rem;
     }
 
-    .map{
+    .map {
         border-radius: 6px;
         width: 100%;
         height: 82vh;
-        border:none;
+        border: none;
     }
 
-    .mapContainer{
+    .mapContainer {
         margin: 0.8rem;
     }
 
-    label{
+    label {
         display: flex;
-        flex-direction:column ;
+        flex-direction: column;
         gap: 0.4rem;
     }
 
-    .todos{
+    .todos {
+        margin-top: 0.8rem;
+        border-radius: 6px;
+        background-color: #333;
+        height: 41vh;
         display: flex;
         flex-direction: column;
         gap: 0.8rem;
+        padding: 1.2rem;
+        list-style: none;
+        overflow: auto;
     }
 
-    .marginTop{
+    .todo{
+        padding-bottom: 0.4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .trash{
+        height: 1.8rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        fill: #cc3535;
+        cursor: pointer;
+    }
+
+    .addTodos {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+    }
+
+    .marginTop {
         margin-top: 1.6rem;
+    }
+
+    .submitButton {
+        width: 100%;
+        height: 5rem;
+    }
+
+    .noTodos {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .noStyle{
+        display: flex;
+        margin: 0;
+        padding: 0.4rem;
+        background-color: unset;
+    }
+
+    .task{
+        max-width: 18rem;
+        word-wrap: break-word;
+    }
+
+    .buttons {
+        height: 5rem;
+        display: flex;
+        gap: 0.8rem;
     }
 
     .delete{
@@ -88,53 +150,80 @@
     .delete:hover{
         background-color: #e03131;
     }
-
-    .buttons {
-        height: 5rem;
-        display: flex;
-        gap: 0.8rem;
-    }
-
+    
     .submit{
         width: 100%;
     }
 </style>
 
-
-@model Save__plan_your_trips.Models.ViewModels.EditScheduledTripRequest
+@model Save__plan_your_trips.Models.ViewModels.AddScheduledTripViewModel
 
 <section class="scheduleTripsPage">
-    <form method="post" class="formContainer">
-        <label style="display: none;">
-            <input type="hidden" id="id" asp-for="@Model.Id" readonly/>
-        </label>
-        <label>
-            <h3>Trip's name</h3>
-            <input type="text" id="name" asp-for="Name" required/>
-        </label>
-
-        <h3 class="marginTop">Top 5 todos</h3>
-        <div class="todos">
-        </div>
-        <label>
-            <h3 class="marginTop">Schedule date</h3>
-            <input type="date" id="date" asp-for="DateTime" required/>
-        </label>
-        <div class="buttons marginTop">
-
-            <button type="submit" class="delete" asp-action="DeleteScheduledTrip" asp-controller="Scheduled">
-                Delete
-            </button>
-            <button type="submit" class="submit" asp-action="EditScheduledTrip" asp-controller="Scheduled">
-                Edit
-            </button>
-        </div>
-    </form>
+    <div class="formContainer">
+        <form method="post" asp-action="AddToDo" asp-controller="Scheduled">
+            <h3>Edit your todos</h3>
+            <div class="addTodos">
+                <input type="hidden" asp-for="AddToDoRequest.ReturnUrl" value="@Context.Request.Path" />
+                <input type="text" asp-for="AddToDoRequest.Task"/>
+                <input type="hidden" asp-for="AddToDoRequest.ScheduledTripId" value="@Model.ScheduledTrip?.Id"/>
+                <button class="add" asp-action="AddToDo" asp-controller="Scheduled">Add</button>
+            </div>
+        </form>
+        <ul class="todos">
+            @if (Model.ScheduledTrip.ToDos.Any())
+            {
+                foreach (var item in Model.ScheduledTrip.ToDos)
+                {
+                    <li class="todo">
+                        <span class="task">@item.Task</span>
+                        <form method="post" asp-action="DeleteToDo" asp-controller="Scheduled" class="deleteTodo">
+                            <input type="hidden" value="@item.Id" asp-for="DeleteToDoRequest.Id"/>
+                            <input type="hidden" asp-for="DeleteToDoRequest.ReturnUrl" value="@Context.Request.Path" />
+                            <input type="hidden" value="@item.ScheduledTripId" asp-for="DeleteToDoRequest.ScheduledTripId"/>
+                            <button type="submit" class="noStyle" asp-action="DeleteToDo" asp-controller="Scheduled">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </li>
+                }
+            }
+            else
+            {
+                <p class="noTodos">No todos yet</p>
+            }
+        </ul>
+        <form method="post" asp-action="EditScheduledTrip" asp-controller="Scheduled" class="marginTop">
+            <label>
+                <h3>Trip's name</h3>
+                <input type="text" id="name" asp-for="EditScheduledTripRequest.Name" required/>
+            </label>
+            <label>
+                <input type="hidden" id="id" asp-for="EditScheduledTripRequest.Id" readonly/>
+            </label>
+            <label>
+                <h3 class="marginTop">Planned date</h3>
+                <input type="date" id="date" asp-for="EditScheduledTripRequest.DateTime" required/>
+            </label>
+            <div class="buttons marginTop">
+                <button type="submit" class="delete" asp-action="DeleteScheduledTrip" asp-controller="Scheduled">
+                    Delete
+                </button>
+                <button type="submit" class="submit" asp-action="EditScheduledTrip" asp-controller="Scheduled">
+                    Edit
+                </button>
+            </div>
+        </form>
+    </div>
     <section class="mapContainer">
         <header class="mapHeader">Check marshoot to your destination</header>
+
         <iframe class="map"
                 src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d40812.351682017834!2d28.6829387!3d50.25884285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sua!4v1712906141139!5m2!1sru!2sua"
                 allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
+
     </section>
 </section>

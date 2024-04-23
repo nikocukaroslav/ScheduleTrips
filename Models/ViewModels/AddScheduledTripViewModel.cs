@@ -9,5 +9,6 @@ public class AddScheduledTripViewModel
     public AddScheduledTripDateRequest AddScheduledTripDateRequest { get; set; }
     public ScheduledTrip? ScheduledTrip { get; set; } = new();
     public List<ToDo>? ToDoList { get; set; }
+    public EditScheduledTripRequest EditScheduledTripRequest { get; set; }
     public DeleteToDoRequest DeleteToDoRequest { get; set; }
 }

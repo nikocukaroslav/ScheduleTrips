@@ -65,16 +65,26 @@ public class ScheduledRepository : IScheduledRepository
         if (editedScheduledTrip != null)
         {
             editedScheduledTrip.Name = scheduledTrip.Name;
-
             editedScheduledTrip.DateTime = scheduledTrip.DateTime;
-        }
-
-        if (editedScheduledTrip != null)
-        {
+            
             await scheduleTripsDbContext.SaveChangesAsync();
             return editedScheduledTrip;
         }
+        
+        return null;
+    }
+    public async Task<ScheduledTrip> SubmitDate(ScheduledTrip scheduledTrip)
+    {
+        var editedScheduledTrip =
+            await scheduleTripsDbContext.ScheduledTrip.FirstOrDefaultAsync(x => x.Id == scheduledTrip.Id);
 
+        if (editedScheduledTrip != null)
+        {
+            editedScheduledTrip.DateTime = scheduledTrip.DateTime;
+            
+            await scheduleTripsDbContext.SaveChangesAsync();
+            return editedScheduledTrip;
+        }
         return null;
     }
 
