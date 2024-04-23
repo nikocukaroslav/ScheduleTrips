@@ -33,6 +33,20 @@ public class ScheduledRepository : IScheduledRepository
         return await scheduleTripsDbContext.ToDos.ToListAsync();
     }
 
+    public async Task<ToDo> DeleteToDo(Guid id)
+    {
+        var deletedToDo = await scheduleTripsDbContext.ToDos.FindAsync(id);
+        
+        if (deletedToDo != null)
+        {
+            scheduleTripsDbContext.ToDos.Remove(deletedToDo);
+            await scheduleTripsDbContext.SaveChangesAsync();
+            return deletedToDo;
+        }
+
+        return null;
+    }
+
     public async Task<IEnumerable<ScheduledTrip>> GetAllAsync()
     {
         return await scheduleTripsDbContext.ScheduledTrip.ToListAsync();
