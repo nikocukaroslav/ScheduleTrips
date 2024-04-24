@@ -4,7 +4,8 @@
     }
 
     .tripsPage {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 10fr;
         overflow: hidden;
     }
 
@@ -21,10 +22,11 @@
         right: 3rem;
         bottom: 3rem;
         border-radius: 50%;
-        transition: all 0.3s;
+        transition: all 0.2s;
         display: flex;
         justify-content: center;
         align-items: center;
+        box-shadow: 0 0 10px 5px rgba(0,0,0,0.1);
     }
 
     .newAlbum:hover {
@@ -38,16 +40,17 @@
     }
 
     .tripsList {
+        width: 20rem;
         padding: 0.8rem;
         display: flex;
         list-style: none;
         flex-direction: column;
         gap: 0.8rem;
         max-height: 93vh;
+        overflow: auto;
     }
 
     .place {
-        width: 20rem;
         height: 5rem;
         background-color: darkgray;
         color: #242424;
@@ -92,6 +95,8 @@
         display: flex;
         flex-wrap: wrap;
         gap: 1.6rem;
+        max-height: 85vh;
+        overflow: auto;
     }
 
     .image {
@@ -126,8 +131,8 @@
         cursor: pointer;
         z-index: 5;
     }
-    
-    .deleteImage:hover{
+
+    .deleteImage:hover {
         background-color: #242424;
     }
 
@@ -203,17 +208,19 @@
         z-index: 8;
     }
 
-    .noStyle{
+    .noStyle {
         color: #ddd;
         display: flex;
         margin: 0;
         padding: 0;
         background-color: unset;
     }
-    .noStyle:hover{
+
+    .noStyle:hover {
         background-color: unset;
     }
-    .noStyle:focus{
+
+    .noStyle:focus {
         outline: none;
     }
 </style>
@@ -224,27 +231,68 @@
     <ul class="tripsList ">
         @if (Model.Albums.Any())
         {
-            foreach (var item in Model.Albums.Reverse())
-            {
-                <li class="place" data-album-id="@item?.Id">
-                    @item?.Name
-                    <a asp-controller="Trips" asp-action="EditAlbum" asp-route-id="@item?.Id" class="edit">
+        foreach (var item in Model.Albums.Reverse())
+        {
+        <li class="place" data-album-id="@item?.Id">
+            @item?.Name
+            <a asp-controller="Trips" asp-action="EditAlbum" asp-route-id="@item?.Id" class="edit">
 
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="edit" viewBox="0 0 16 16">
-                            <path
-                                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                            <path fill-rule="evenodd"
-                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                        </svg>
-                    </a>
-                </li>
-            }
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="edit" viewBox="0 0 16 16">
+                    <path
+                        d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                    <path fill-rule="evenodd"
+                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                </svg>
+            </a>
+        </li>
+        }
         }
         else
         {
-            <p class="noTrips">No trips yet</p>
+        <p class="noTrips">No trips yet</p>
         }
     </ul>
+    <div class="albumContainer">
+        <section class="container">
+            <header class="header">
+                @if (Model.Albums.Any())
+                {
+                <p>You in <span class="currentAlbum"></span></p>
+                }
+                else
+                {
+                <p>Start from adding your first album!</p>
+                }
+            </header>
+
+            <div class="gallery">
+                @foreach (var album in Model.Albums)
+                {
+                foreach (var image in album.Images)
+                {
+                <div class="imageContainer" data-album-id="@album.Id">
+                    <img src="@image.Url" alt="image" class="image"/>
+                    <form class="deleteImage" asp-action="DeleteImage" asp-controller="Trips">
+                        <input type="hidden" asp-for="DeleteImageRequest.Id" value="@image.Id"/>
+                        <input type="hidden" asp-for="DeleteImageRequest.AlbumId" value="@image.AlbumId"/>
+                        <button class="noStyle" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="trash" viewBox="0 0 16 16">
+                                <path
+                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                <path
+                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+                }
+                }
+            </div>
+            <button class="back"> &larr;</button>
+        </section>
+    </div>
+    <div id="overlay"></div>
     <a class="newAlbum" asp-controller="Trips" asp-action="AddAlbum">
         <svg xmlns="http://www.w3.org/2000/svg"
              width="28"
@@ -256,52 +304,11 @@
                   d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
         </svg>
     </a>
-    <div class="albumContainer">
-        <section class="container">
-            <header class="header">
-                @if (Model.Albums.Any())
-                {
-                    <p>You in <span class="currentAlbum"></span></p>
-                }
-                else
-                {
-                    <p>Start from adding your first album!</p>
-                }
-            </header>
-
-            <div class="gallery">
-                @foreach (var album in Model.Albums)
-                {
-                    foreach (var image in album.Images)
-                    {
-                        <div class="imageContainer" data-album-id="@album.Id">
-                            <img src="@image.Url" alt="image" class="image"/>
-                            <form class="deleteImage" asp-action="DeleteImage" asp-controller="Trips">
-                                <input type="hidden" asp-for="DeleteImageRequest.Id" value="@image.Id"/>
-                                <input type="hidden" asp-for="DeleteImageRequest.AlbumId" value="@image.AlbumId"/>
-                                <button class="noStyle" type="submit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         class="trash" viewBox="0 0 16 16">
-                                        <path
-                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                        <path
-                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
-                    }
-                }
-            </div>
-            <button class="back"> &larr;</button>
-        </section>
-    </div>
-    <div id="overlay"></div>
 </section>
 
 @section Scripts
 {
-    <script>
+<script>
 
     document.addEventListener("DOMContentLoaded", function () {
         const overlay = document.getElementById("overlay")
@@ -310,10 +317,10 @@
         const currentAlbum = document.querySelector(".currentAlbum")
         const back = document.querySelector(".back")
         const imageContainers = document.querySelectorAll(".imageContainer")
-        
+
         places.forEach(place => {
             place.addEventListener("click", function () {
-                
+
                 const albumId = this.dataset.albumId;
 
                 places.forEach((p) => {
@@ -343,10 +350,10 @@
             else if (places.length > 0) {
                 places[0].click();
             }
-        }else if (places.length > 0) {
+        } else if (places.length > 0) {
             places[0].click();
         }
-        
+
 
         images.forEach(image => {
             image.addEventListener("click", function (e) {
@@ -361,18 +368,18 @@
 
             deleteImage.style.display = "none";
 
-            deleteImage.addEventListener("mouseover", function (){
-                deleteImage.style.display="flex";
+            deleteImage.addEventListener("mouseover", function () {
+                deleteImage.style.display = "flex";
             });
-            image.addEventListener("mouseover", function (){
-                deleteImage.style.display="flex";
+            image.addEventListener("mouseover", function () {
+                deleteImage.style.display = "flex";
             });
 
-            image.addEventListener("mouseout", function (){
-                deleteImage.style.display="none";
-            }); 
-            deleteImage.addEventListener("mouseout", function (){
-                deleteImage.style.display="none";
+            image.addEventListener("mouseout", function () {
+                deleteImage.style.display = "none";
+            });
+            deleteImage.addEventListener("mouseout", function () {
+                deleteImage.style.display = "none";
             });
         });
 

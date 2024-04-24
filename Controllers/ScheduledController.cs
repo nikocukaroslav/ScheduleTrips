@@ -111,7 +111,25 @@ public class ScheduledController : Controller
         return RedirectToAction("AddScheduledTrip", new { id = addToDoRequest.ScheduledTripId });
     }
 
+    [HttpPost]
+    public async Task<IActionResult> SortTodo(List<PerformToDoRequest> todos)
+    {
+        foreach (var todo in todos)
+        {
+            if (todo.IsPerformed)
+            {
+                var performedTodo = new ToDo
+                {
+                    Id = todo.Id,
+                    IsPerformed = todo.IsPerformed,
+                };
+                await scheduledRepository.UpdateToDo(performedTodo);
+            }
+        }
 
+        return RedirectToAction("ScheduledTrips");
+    }
+  
     [HttpGet]
     public async Task<IActionResult> EditScheduledTrip(Guid id)
     {

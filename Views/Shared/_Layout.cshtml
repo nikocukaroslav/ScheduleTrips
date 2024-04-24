@@ -71,6 +71,7 @@
             list-style: none;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 2.4rem;
             background-color: #22b8cf;
         }
@@ -78,6 +79,7 @@
         .mainPages {
             display: flex;
             gap: 1.6rem;
+            align-items: center;
         }
 
         .nav a {
@@ -99,6 +101,10 @@
         .userName {
             color: #333;
         }
+
+        .logo {
+            height: 2.4rem;
+        }
     </style>
 </head>
 
@@ -112,7 +118,9 @@
                 @if (signInManager.IsSignedIn(User))
                 {
                 <li>
-                    <a asp-area="" asp-controller="Home" asp-action="Index">Logo</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Index">
+                        Home
+                    </a>
                 </li>
                 <li>
                     <a asp-area="" asp-controller="Trips" asp-action="YourAlbums">Trips</a>

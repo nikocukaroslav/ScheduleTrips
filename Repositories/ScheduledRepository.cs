@@ -33,6 +33,20 @@ public class ScheduledRepository : IScheduledRepository
         return await scheduleTripsDbContext.ToDos.ToListAsync();
     }
 
+    public async Task<ToDo> UpdateToDo(ToDo todo)
+    {
+        var updatedToDo = await scheduleTripsDbContext.ToDos.FirstOrDefaultAsync(x => x.Id == todo.Id);
+
+        if (updatedToDo != null)
+        {
+            updatedToDo.IsPerformed = todo.IsPerformed;
+            await scheduleTripsDbContext.SaveChangesAsync();
+            return updatedToDo;
+        }
+
+        return null;
+    }
+    
     public async Task<ToDo> DeleteToDo(Guid id)
     {
         var deletedToDo = await scheduleTripsDbContext.ToDos.FindAsync(id);

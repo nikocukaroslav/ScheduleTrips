@@ -9,18 +9,16 @@
     }
 
     .newScheduledTrip {
-        position: absolute;
         background-color: darkgray;
-        width: 7rem;
-        height: 7rem;
+        width: 3rem;
+        height: 3rem;
         color: #242424;
-        right: 3rem;
-        bottom: 3rem;
         border-radius: 50%;
-        transition: all 0.3s;
+        transition: all 0.2s;
         display: flex;
         justify-content: center;
         align-items: center;
+        border: 1px solid #555;
     }
 
     .newScheduledTrip:hover {
@@ -28,9 +26,7 @@
     }
 
     .plus {
-        display: flex;
-        align-content: center;
-        justify-items: center;
+        height: 1.8rem;
     }
 
     .scheduledTripsList {
@@ -39,7 +35,7 @@
         list-style: none;
         flex-direction: column;
         gap: 0.8rem;
-        max-height:82vh;
+        max-height: 82vh;
     }
 
     .place {
@@ -74,6 +70,7 @@
         color: #242424;
         padding: 1.2rem;
         display: flex;
+        justify-content: space-between;
         align-items: center;
         font-size: 1.8rem;
         font-weight: 600;
@@ -112,21 +109,11 @@
     }
 
     .todoList {
-        height: 82vh;
-        border-radius: 6px;
-        padding: 0.8rem;
         display: flex;
         flex-direction: column;
         gap: 1.2rem;
-        border: 3px solid #333;
     }
     
-    .performed {
-        border-radius: 6px;
-        padding: 0.8rem;
-        border: 3px solid #333;
-    }
-
     label {
         display: flex;
         gap: 0.6rem;
@@ -167,7 +154,7 @@
         color: #555;
     }
 
-    .deleteImage {
+    .editScheduledTrip {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -181,6 +168,21 @@
         height: 1.6rem;
         fill: #ddd;
     }
+
+    form {
+        height: 70rem;
+        width: 100%;
+        display: flex;
+        gap: 1.2rem;
+        flex-direction: column;
+        border-radius: 6px;
+        padding: 0.8rem;
+        border: 3px solid #333;
+    }
+    
+    .button{
+        margin-top: auto;
+    }
 </style>
 
 @using Save__plan_your_trips.Models.Domain
@@ -188,7 +190,18 @@
 
 <section class="scheduleTripsPage">
     <section>
-        <header class="firstHeader">Scheduled trips</header>
+        <header class="firstHeader">
+            <span>Scheduled trips</span>
+            <a class="newScheduledTrip" asp-controller="Scheduled" asp-action="AddScheduledTripName">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="currentColor"
+                     class="plus"
+                     viewBox="0 0 16 16">
+                    <path fillRule="evenodd"
+                          d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                </svg>
+            </a>
+        </header>
         <ul class="scheduledTripsList">
             @if (Model.ScheduledTrips.Any())
             {
@@ -197,7 +210,7 @@
                     <li class="@(item.DateTime < DateTime.Now ? "past" : "") place" data-scheduledTrip-id="@item.Id">
                         @item.Name
                         <time class="dateTime">@item.DateTime.ToShortDateString()</time>
-                        <a class="deleteImage" asp-action="EditScheduledTrip" asp-controller="Scheduled"
+                        <a class="editScheduledTrip" asp-action="EditScheduledTrip" asp-controller="Scheduled"
                            asp-route-id="@item.Id">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="edit" viewBox="0 0 16 16">
                                 <path
@@ -215,17 +228,6 @@
             }
         </ul>
     </section>
-    <a class="newScheduledTrip" asp-controller="Scheduled" asp-action="AddScheduledTripName">
-        <svg xmlns="http://www.w3.org/2000/svg"
-             width="28"
-             height="28"
-             fill="currentColor"
-             class="plus"
-             viewBox="0 0 16 16">
-            <path fillRule="evenodd"
-                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-        </svg>
-    </a>
     @if (Model.ToDos.Any())
     {
         <main>
@@ -234,22 +236,31 @@
                 <h3 class="mapHeader">Marshoot</h3>
             </nav>
             <section class="purposes">
-                <div class="todoList">
-                    <h4>Planed to do</h4>
-                    @if (Model.ToDos.Any())
-                    {
-                        foreach (var todo in Model.ToDos)
+                <form method="post" asp-action="SortTodo" asp-controller="Scheduled">
+                    <div class="todoList">
+                        <h4>Planed to do</h4>
+                        @foreach (var todo in Model.ToDos)
                         {
                             <label>
-                                <input type="checkbox" class="todo" data-scheduledTrip-id="@todo.ScheduledTripId"/> 
+                                <input type="checkbox" class="todo"
+                                       data-scheduledTrip-id="@todo.ScheduledTripId"
+                                       asp-for="PerformToDoRequest.IsPerformed"/>
+                                <input type="hidden" asp-for="PerformToDoRequest.Id" value="@todo.Id"/>
                                 <span>@todo.Task</span>
                             </label>
                         }
-                    }
-                </div>
-                <div class="performed todoList">
-                    <h4>Performed</h4>
-                </div>
+                    </div>
+                    <button type="submit" class="button" asp-action="SortTodo"
+                            asp-controller="Scheduled">
+                        Add to performed
+                    </button>
+                </form>
+                <form>
+                    <div class="performed todoList">
+                        <h4>Performed</h4>
+                    </div>
+                    <button type="submit" class="button">Remove from performed</button>
+                </form>
             </section>
             <section class="mapPage">
                 <iframe class="map"
@@ -284,20 +295,20 @@
         mapPage.style.display = "none"
 
         places.forEach(place => {
-            const deleteImage = place.querySelector(".deleteImage");
+            const editScheduledTrip = place.querySelector(".editScheduledTrip");
 
-            deleteImage.style.display = "none"
+            editScheduledTrip.style.display = "none"
 
             place.addEventListener("mouseover", function () {
-                deleteImage.style.display = "flex";
+                editScheduledTrip.style.display = "flex";
             });
 
             place.addEventListener("mouseout", function () {
-                deleteImage.style.display = "none";
+                editScheduledTrip.style.display = "none";
             });
         });
 
-        todos.forEach(todo => {
+    /*    todos.forEach(todo => {
             todo.addEventListener("change", function () {
                 if (todo.checked) {
                     let parentLabel = todo.parentNode;
@@ -311,8 +322,9 @@
                     parentLabel.classList.remove("completed");
                 }
             });
-        });
-
+          });
+    */
+    
         places.forEach(place => {
             place.addEventListener("click", function () {
                 const placeId = this.getAttribute('data-scheduledTrip-id');

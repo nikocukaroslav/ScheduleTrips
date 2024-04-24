@@ -6,4 +6,5 @@ public class ScheduledTripsPageViewModel
 {
     public IEnumerable<ScheduledTrip> ScheduledTrips { get; set; }
     public IEnumerable<ToDo> ToDos { get; set; }
+    public PerformToDoRequest PerformToDoRequest { get; set; }
 }
