@@ -185,7 +185,7 @@
     }
 </style>
 
-@using Save__plan_your_trips.Models.Domain
+@using CloudinaryDotNet.Core
 @model Save__plan_your_trips.Models.ViewModels.ScheduledTripsPageViewModel
 
 <section class="scheduleTripsPage">
@@ -239,15 +239,18 @@
                 <form method="post" asp-action="SortTodo" asp-controller="Scheduled">
                     <div class="todoList">
                         <h4>Planed to do</h4>
-                        @foreach (var todo in Model.ToDos)
+                        @for (int i = 0; i < Model.ToDos.Count; i++)
                         {
-                            <label>
-                                <input type="checkbox" class="todo"
-                                       data-scheduledTrip-id="@todo.ScheduledTripId"
-                                       asp-for="PerformToDoRequest.IsPerformed"/>
-                                <input type="hidden" asp-for="PerformToDoRequest.Id" value="@todo.Id"/>
-                                <span>@todo.Task</span>
-                            </label>
+                            @if (!Model.ToDos[i].IsPerformed)
+                            {
+                                <label>
+                                    <input type="checkbox" class="todo"
+                                           data-scheduledTrip-id="@Model.ToDos[i].ScheduledTripId"
+                                           asp-for="@Model.PerformToDoRequests[i].IsPerformed"/>
+                                    <input type="hidden" asp-for="@Model.PerformToDoRequests[i].Id" value="@Model.ToDos[i].Id"/>
+                                    <span>@Model.ToDos[i].Task</span>
+                                </label>
+                            }
                         }
                     </div>
                     <button type="submit" class="button" asp-action="SortTodo"
@@ -255,11 +258,28 @@
                         Add to performed
                     </button>
                 </form>
-                <form>
+                <form method="post" asp-action="SortTodo" asp-controller="Scheduled">
                     <div class="performed todoList">
                         <h4>Performed</h4>
+                        @for (int i = 0; i < Model.ToDos.Count; i++)
+                        {
+                            @if (Model.ToDos[i].IsPerformed)
+                            {
+                                <label class="@(Model.ToDos[i].IsPerformed ? "completed" : "")">
+
+                                    <input type="checkbox" class="todo"
+                                           data-scheduledTrip-id="@Model.ToDos[i].ScheduledTripId"
+                                           asp-for="@Model.ToDos[i].IsPerformed"
+                                           />
+                                    
+
+                                    <input type="hidden" asp-for="@Model.PerformToDoRequests[i].Id" value="@Model.ToDos[i].Id"/>
+                                    <span>@Model.ToDos[i].Task</span>
+                                </label>
+                            }
+                        }
                     </div>
-                    <button type="submit" class="button">Remove from performed</button>
+                    <button type="submit" class="button" asp-action="SortTodo" asp-controller="Scheduled">Remove from performed</button>
                 </form>
             </section>
             <section class="mapPage">
@@ -279,8 +299,6 @@
 @section Scripts
 {
     <script>
-
-
     document.addEventListener("DOMContentLoaded", function () {
         const todos = document.querySelectorAll(".todo");
         const places = document.querySelectorAll(".place")
@@ -289,11 +307,39 @@
         const todoHeader = document.querySelector(".todoHeader");
         const mapHeader = document.querySelector(".mapHeader");
         const newScheduledTrip = document.querySelector(".newScheduledTrip");
-        const performed = document.querySelector(".performed")
-        const todoList = document.querySelector(".todoList")
 
         mapPage.style.display = "none"
+        
+        places.forEach(place => {
+            place.addEventListener("click", function () {
+                const placeId = this.getAttribute('data-scheduledTrip-id');
+                const activePlaceId = this.dataset.scheduledTripId;
+                
+                places.forEach((p) => {
+                    p.classList.remove("active");
+                });
+              place.classList.add("active")
 
+                todos.forEach((todo) => {
+                    if (todo.getAttribute('data-scheduledTrip-id') === placeId) {
+                        todo.parentElement.style.display = "flex";
+                    } else {
+                        todo.parentElement.style.display = "none";
+                    }
+                });
+                localStorage.setItem("activePlaceId", placeId);
+            });
+        });
+        
+        const activePlaceId = localStorage.getItem("activePlaceId");
+
+        if (activePlaceId) {
+            const activePlace = document.querySelector(`.place[data-scheduledTrip-id="${activePlaceId}"]`);
+            if (activePlace) activePlace.click();
+        } else if (places.length > 0) {
+            places[0].click();
+        }
+        
         places.forEach(place => {
             const editScheduledTrip = place.querySelector(".editScheduledTrip");
 
@@ -308,41 +354,6 @@
             });
         });
 
-    /*    todos.forEach(todo => {
-            todo.addEventListener("change", function () {
-                if (todo.checked) {
-                    let parentLabel = todo.parentNode;
-                    parentLabel.parentNode.removeChild(parentLabel);
-                    performed.appendChild(parentLabel);
-                    parentLabel.classList.add("completed");
-                } else {
-                    let parentLabel = todo.parentNode;
-                    parentLabel.parentNode.removeChild(parentLabel);
-                    todoList.appendChild(parentLabel);
-                    parentLabel.classList.remove("completed");
-                }
-            });
-          });
-    */
-    
-        places.forEach(place => {
-            place.addEventListener("click", function () {
-                const placeId = this.getAttribute('data-scheduledTrip-id');
-
-                places.forEach((p) => {
-                    p.classList.remove("active");
-                });
-                this.classList.add("active");
-
-                todos.forEach((todo) => {
-                    if (todo.getAttribute('data-scheduledTrip-id') === placeId) {
-                        todo.parentElement.style.display = "flex";
-                    } else {
-                        todo.parentElement.style.display = "none";
-                    }
-                });
-            });
-        });
 
         mapHeader.addEventListener("click", function () {
             newScheduledTrip.style.display = "none"
@@ -361,8 +372,6 @@
         })
 
         todoHeader.click();
-        if (places.length > 0)
-            places[0].click();
     })
 
 </script>

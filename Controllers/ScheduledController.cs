@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Save__plan_your_trips.Data;
 using Save__plan_your_trips.Models.Domain;
 using Save__plan_your_trips.Models.ViewModels;
 using Save__plan_your_trips.Repositories;
@@ -8,8 +9,10 @@ namespace Save__plan_your_trips.Controllers;
 
 public class ScheduledController : Controller
 {
-    private ScheduledRepository? scheduledRepository;
+    private readonly ScheduledRepository? scheduledRepository;
+
     public ScheduledController(IScheduledRepository scheduledRepository)
+
     {
         this.scheduledRepository = (ScheduledRepository?)scheduledRepository;
     }
@@ -25,7 +28,7 @@ public class ScheduledController : Controller
             ScheduledTrips = scheduledTrips,
             ToDos = todos,
         };
-        
+
         return View(scheduledTripsPageViewModel);
     }
 
@@ -112,24 +115,22 @@ public class ScheduledController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> SortTodo(List<PerformToDoRequest> todos)
+    public async Task<IActionResult> SortTodo(List<PerformToDoRequest> performToDoRequests)
     {
-        foreach (var todo in todos)
+        foreach (var performToDoRequest in performToDoRequests)
         {
-            if (todo.IsPerformed)
+            var todo = await scheduledRepository.GetSingleToDo(performToDoRequest.Id);
+
+            if (todo != null)
             {
-                var performedTodo = new ToDo
-                {
-                    Id = todo.Id,
-                    IsPerformed = todo.IsPerformed,
-                };
-                await scheduledRepository.UpdateToDo(performedTodo);
+                todo.IsPerformed = performToDoRequest.IsPerformed;
+                await scheduledRepository.SaveChangesAsync();
             }
         }
 
         return RedirectToAction("ScheduledTrips");
     }
-  
+
     [HttpGet]
     public async Task<IActionResult> EditScheduledTrip(Guid id)
     {

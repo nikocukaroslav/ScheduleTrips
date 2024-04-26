@@ -2,16 +2,22 @@
 using Microsoft.EntityFrameworkCore;
 using Save__plan_your_trips.Data;
 using Save__plan_your_trips.Models.Domain;
+using Save__plan_your_trips.Models.ViewModels;
 
 namespace Save__plan_your_trips.Repositories;
 
 public class ScheduledRepository : IScheduledRepository
 {
-    private ScheduleTripsDbContext scheduleTripsDbContext;
+    private readonly ScheduleTripsDbContext scheduleTripsDbContext;
 
     public ScheduledRepository(ScheduleTripsDbContext scheduleTripsDbContext)
     {
         this.scheduleTripsDbContext = scheduleTripsDbContext;
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await scheduleTripsDbContext.SaveChangesAsync();
     }
 
     public async Task<ScheduledTrip> AddScheduledTrip(ScheduledTrip scheduledTrip)
@@ -28,29 +34,20 @@ public class ScheduledRepository : IScheduledRepository
         return todo;
     }
 
-    public async Task<IEnumerable<ToDo>> GetAllToDos()
+    public async Task<List<ToDo>> GetAllToDos()
     {
         return await scheduleTripsDbContext.ToDos.ToListAsync();
     }
 
-    public async Task<ToDo> UpdateToDo(ToDo todo)
+    public async Task<ToDo?> GetSingleToDo(Guid id)
     {
-        var updatedToDo = await scheduleTripsDbContext.ToDos.FirstOrDefaultAsync(x => x.Id == todo.Id);
-
-        if (updatedToDo != null)
-        {
-            updatedToDo.IsPerformed = todo.IsPerformed;
-            await scheduleTripsDbContext.SaveChangesAsync();
-            return updatedToDo;
-        }
-
-        return null;
+        return await scheduleTripsDbContext.ToDos.FindAsync(id);
     }
-    
-    public async Task<ToDo> DeleteToDo(Guid id)
+
+    public async Task<ToDo?> DeleteToDo(Guid id)
     {
         var deletedToDo = await scheduleTripsDbContext.ToDos.FindAsync(id);
-        
+
         if (deletedToDo != null)
         {
             scheduleTripsDbContext.ToDos.Remove(deletedToDo);
@@ -71,7 +68,7 @@ public class ScheduledRepository : IScheduledRepository
         return await scheduleTripsDbContext.ScheduledTrip.Include(x => x.ToDos).FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<ScheduledTrip> EditScheduledTrip(ScheduledTrip scheduledTrip)
+    public async Task<ScheduledTrip?> EditScheduledTrip(ScheduledTrip scheduledTrip)
     {
         var editedScheduledTrip =
             await scheduleTripsDbContext.ScheduledTrip.FirstOrDefaultAsync(x => x.Id == scheduledTrip.Id);
@@ -80,14 +77,15 @@ public class ScheduledRepository : IScheduledRepository
         {
             editedScheduledTrip.Name = scheduledTrip.Name;
             editedScheduledTrip.DateTime = scheduledTrip.DateTime;
-            
+
             await scheduleTripsDbContext.SaveChangesAsync();
             return editedScheduledTrip;
         }
-        
+
         return null;
     }
-    public async Task<ScheduledTrip> SubmitDate(ScheduledTrip scheduledTrip)
+
+    public async Task<ScheduledTrip?> SubmitDate(ScheduledTrip scheduledTrip)
     {
         var editedScheduledTrip =
             await scheduleTripsDbContext.ScheduledTrip.FirstOrDefaultAsync(x => x.Id == scheduledTrip.Id);
@@ -95,14 +93,15 @@ public class ScheduledRepository : IScheduledRepository
         if (editedScheduledTrip != null)
         {
             editedScheduledTrip.DateTime = scheduledTrip.DateTime;
-            
+
             await scheduleTripsDbContext.SaveChangesAsync();
             return editedScheduledTrip;
         }
+
         return null;
     }
 
-    public async Task<ScheduledTrip> DeleteScheduledTrip(Guid id)
+    public async Task<ScheduledTrip?> DeleteScheduledTrip(Guid id)
     {
         var deletedScheduledTrip = await scheduleTripsDbContext.ScheduledTrip.FindAsync(id);
 
