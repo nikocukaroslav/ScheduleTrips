@@ -1,23 +1,19 @@
-﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
-@using System.Net
-@using Save__plan_your_trips.Models.Domain
+﻿<style>
 
-<style>
- 
- body{
- height: 95vh;
- overflow: hidden;
- }
- 
+    body {
+        height: 95vh;
+        overflow: hidden;
+    }
+
     .container {
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-direction:column;
+        flex-direction: column;
     }
 
     .form {
-        margin-top: 10%;
+        margin-top: 18rem;
         font-size: 1.8rem;
         padding: 2.4rem 3.6rem;
         background-color: #333333;
@@ -28,26 +24,26 @@
         position: relative;
     }
 
-        .form label {
-            display: flex;
-            flex-direction: column;
-            align-items:flex-start;
-            gap: 0.6rem;
-        }
+    .form label {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+    }
 
-        .form input {
-            padding: 0.8rem;
-            border: 2px solid #242424;
-            height: 3rem;
-            width: 100%;
-        }
+    .form input {
+        padding: 0.8rem;
+        border: 2px solid #242424;
+        height: 3rem;
+        width: 100%;
+    }
 
-            .form input:focus {
-                outline: none;
-            }
+    .form input:focus {
+        outline: none;
+    }
 
     .buttons {
-        margin-top:2rem;
+        margin-top: 2rem;
         display: flex;
         gap: 1.2rem;
     }
@@ -63,9 +59,9 @@
         width: 14rem;
     }
 
-        .submit:hover {
-            background-color: #333333;
-        }
+    .submit:hover {
+        background-color: #333333;
+    }
 
     .cancel {
         color: inherit;
@@ -87,24 +83,24 @@
     }
 
 
-        .cancel:hover {
-            background-color: #242424;
-        }
-        
-        .delete{
-         border-radius: 6px;
-         height: 4rem;
-         text-decoration: none;
-         background-color: #d90f0f;
-         font-size: 1.6rem;
-         transition: all 0.2s;
-         color: inherit;
-         width: 14rem;
-         }
-        
-        .delete:hover{
+    .cancel:hover {
+        background-color: #242424;
+    }
+
+    .delete {
+        border-radius: 6px;
+        height: 4rem;
+        text-decoration: none;
+        background-color: #d90f0f;
+        font-size: 1.6rem;
+        transition: all 0.2s;
+        color: inherit;
+        width: 14rem;
+    }
+
+    .delete:hover {
         background-color: #e03131;
-        }
+    }
 
     .textDanger {
         color: #e03131;
@@ -123,21 +119,21 @@
         border-radius: 6px;
         padding: 6px 12px;
         cursor: pointer;
-        width:100%;
-        text-align:center;
+        width: 100%;
+        text-align: center;
     }
-    
-    span{
-        text-align:center;
+
+    span {
+        text-align: center;
     }
-    
-    #imageNames{
-    padding: 0.8rem;
-    border: 2px solid #242424;
-    height: 6rem;
-    width: 100%;
-    border-radius: 6px;
-    resize: none;
+
+    #imageNames {
+        padding: 0.8rem;
+        border: 2px solid #242424;
+        height: 6rem;
+        width: 100%;
+        border-radius: 6px;
+        resize: none;
     }
 </style>
 
@@ -146,18 +142,15 @@
 <div class="container">
     <form class="form" method="post" enctype="multipart/form-data">
         <a class="cancel" asp-controller="Trips" asp-action="YourAlbums">
-           &larr;
+            &larr;
         </a>
-
-        <label style="display: none;">
             <input type="hidden" id="id" asp-for="Id" readonly/>
-        </label>
         <label>
             <span>Place where you have been:</span>
             <input type="text" id="name" asp-for="Name" required/>
         </label>
 
-        <label >
+        <label>
             <span>Photos of your trip:</span>
             <div class="uploadPhoto">
                 <span>Download more photos</span>
@@ -180,34 +173,34 @@
 
 @section Scripts{
 
-    <script>
-    
-      const image = document.getElementById('image');
-           const imageNames = document.getElementById("imageNames");
-           
-           async function uploadImage(e) {
-               let uploadPromises = Array.from(e.target.files).map(file => {
-                   console.log(file);
-           
-                   let data = new FormData();
-                   data.append('file', file);
-           
-                   return fetch('/api/images', {
-                       method: 'POST',
-                       headers: {
-                           'Accept': '*/*',
-                       },
-                       body: data
-                   }).then(response => response.json());
-               });
-           
-               let results = await Promise.all(uploadPromises);
-           
-               for (let result of results) {
-                   imageNames.value +="\n\n" + result.link;
-               }
-           }
-           
-           image.addEventListener('change', uploadImage);
+<script>
+
+    const image = document.getElementById('image');
+    const imageNames = document.getElementById("imageNames");
+
+    async function uploadImage(e) {
+        let uploadPromises = Array.from(e.target.files).map(file => {
+            console.log(file);
+
+            let data = new FormData();
+            data.append('file', file);
+
+            return fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*',
+                },
+                body: data
+            }).then(response => response.json());
+        });
+
+        let results = await Promise.all(uploadPromises);
+
+        for (let result of results) {
+            imageNames.value += "\n\n" + result.link;
+        }
+    }
+
+    image.addEventListener('change', uploadImage);
 </script>
 }

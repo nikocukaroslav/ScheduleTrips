@@ -5,7 +5,7 @@
 
     .scheduleTripsPage {
         display: grid;
-        grid-template-columns: 1fr 10fr;
+        grid-template-columns: 15fr 85fr;
     }
 
     .newScheduledTrip {
@@ -35,11 +35,10 @@
         list-style: none;
         flex-direction: column;
         gap: 0.8rem;
-        max-height: 82vh;
+        height: 82vh;
     }
 
     .place {
-        width: 20rem;
         height: 5rem;
         background-color: darkgray;
         color: #242424;
@@ -51,6 +50,7 @@
         border-radius: 6px;
         transition: all 0.2s;
         justify-content: space-between;
+        gap: 0.5rem;
         position: relative;
         line-height: 1.1;
     }
@@ -64,7 +64,6 @@
     }
 
     .firstHeader {
-        width: 20rem;
         height: 6rem;
         background-color: darkgray;
         color: #242424;
@@ -112,7 +111,6 @@
         display: flex;
         flex-direction: column;
         gap: 1.2rem;
-        max-height: 60rem;
         overflow: auto;
     }
     
@@ -161,8 +159,7 @@
         justify-content: center;
         position: absolute;
         cursor: pointer;
-        left: 19rem;
-        padding: 1.2rem;
+        right: -2rem;
     }
 
     .edit {
@@ -171,7 +168,7 @@
     }
 
     form {
-        height: 70rem;
+        height: 82vh;
         width: 100%;
         display: flex;
         gap: 1.2rem;
@@ -183,6 +180,17 @@
     
     .button{
         margin-top: auto;
+    }
+    
+    @@media screen and (max-width: 700px) {
+      .purposes{
+          grid-template-columns: unset;
+          grid-template-rows: 1fr 1fr;
+          
+      }
+        form{
+            height: 41vh;
+        }
     }
     
 </style>
@@ -362,13 +370,12 @@
         todoHeader.click();
 
         const activePlaceId = localStorage.getItem("activePlaceId");
-
-        if (activePlaceId) {
+        if (places.length > 0 && !activePlaceId) {
+            places[0].click();
+        } else if (activePlaceId) {
             const activePlace = document.querySelector(`.place[data-scheduledTrip-id="${activePlaceId}"]`);
             if (activePlace) activePlace.click();
-        } else if (places.length > 0) {
-            places[0].click();
-        }
+        }  
     })
 
 </script>

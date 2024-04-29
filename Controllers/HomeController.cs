@@ -24,14 +24,10 @@ namespace Save__plan_your_trips.Controllers
             var images = new HomePageViewModel
             {
                 Album = await tripsRepository.GetAlbum(),
-                ScheduledTrips = await tripsRepository.GetScheduledTrips()
+                ScheduledTrip = await tripsRepository.GetScheduledTrip()
             };
 
             return View(images);
-        }
-        public IActionResult Privacy()
-        {
-            return View();
         }
         
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

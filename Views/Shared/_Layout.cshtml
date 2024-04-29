@@ -101,7 +101,13 @@
         .userName {
             color: #333;
         }
-        
+
+        @@media screen and (max-width: 768px) {
+           html{
+              font-size: 55%;
+           }
+        }
+
     </style>
 </head>
 
@@ -129,7 +135,7 @@
                 else
                 {
                 <li>
-                    <a asp-area="" asp-controller="Preview" asp-action="StarterPage">Logo</a>
+                    <a asp-area="" asp-controller="Preview" asp-action="StarterPage">Home</a>
                 </li>
                 }
             </div>

@@ -6,7 +6,7 @@ namespace Save__plan_your_trips.Repositories
     {
         Task<IEnumerable<Album>> GetAlbums();
         Task<Album?> GetAlbum();
-        Task<List<ScheduledTrip>> GetScheduledTrips();
+        Task<ScheduledTrip?> GetScheduledTrip();
         Task <Album?> GetSingle(Guid id);
         Task<List<Image>> GetImages();
         Task<Album> AddAlbum(Album album);

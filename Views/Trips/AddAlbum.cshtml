@@ -1,8 +1,4 @@
-﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
-@using System.Net
-
-<style>
- 
+﻿<style>
     .container {
         display: flex;
         align-items: center;
@@ -11,7 +7,7 @@
 
     .form {
         font-size: 1.8rem;
-        margin-top: 10%;
+        margin-top: 18rem;
         padding: 2.4rem 3.6rem;
         background-color: #333333;
         display: flex;
@@ -20,27 +16,27 @@
         border-radius: 6px;
     }
 
-        .form label {
-            display: flex;
-            flex-direction: column;
-            align-items:flex-start;
-            gap: 0.6rem;
-        }
+    .form label {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+    }
 
-        .form input {
-            padding: 0.8rem;
-            border: 2px solid #242424;
-            height: 3rem;
-            width: 100%;
-            border-radius: 6px;
-        }
+    .form input {
+        padding: 0.8rem;
+        border: 2px solid #242424;
+        height: 3rem;
+        width: 100%;
+        border-radius: 6px;
+    }
 
-            .form input:focus {
-                outline: none;
-            }
+    .form input:focus {
+        outline: none;
+    }
 
     .buttons {
-        margin-top:2rem;
+        margin-top: 2rem;
         display: flex;
         gap: 1.2rem;
     }
@@ -56,9 +52,9 @@
         width: 14rem;
     }
 
-        .submit:hover {
-            background-color: #333333;
-        }
+    .submit:hover {
+        background-color: #333333;
+    }
 
     .cancel {
         color: inherit;
@@ -77,9 +73,9 @@
     }
 
 
-        .cancel:hover {
-            background-color: #242424;
-        }
+    .cancel:hover {
+        background-color: #242424;
+    }
 
     .textDanger {
         color: #e03131;
@@ -98,22 +94,22 @@
         border-radius: 6px;
         padding: 6px 12px;
         cursor: pointer;
-        width:100%;
-        text-align:center;
+        width: 100%;
+        text-align: center;
     }
 
-    span{
-        text-align:center;
-        }
-    
-#imageNames{
-padding: 0.8rem;
-            border: 2px solid #242424;
-            height: 6rem;
-            width: 100%;
-            border-radius: 6px;
-            resize: none;
-}
+    span {
+        text-align: center;
+    }
+
+    #imageNames {
+        padding: 0.8rem;
+        border: 2px solid #242424;
+        height: 6rem;
+        width: 100%;
+        border-radius: 6px;
+        resize: none;
+    }
 </style>
 
 @model Save__plan_your_trips.Models.ViewModels.AddAlbumRequest
@@ -125,7 +121,7 @@ padding: 0.8rem;
             <input type="text" id="name" asp-for="Place.Name" required/>
         </label>
 
-        <label >
+        <label>
             <span>Photos of your trip:</span>
             <div class="uploadPhoto">
                 <span>Download some photos</span>
@@ -147,34 +143,34 @@ padding: 0.8rem;
 </div>
 
 @section Scripts {
-    <script>
-       const image = document.getElementById('image');
-       const imageNames = document.getElementById("imageNames");
-       
-       async function uploadImage(e) {
-           let uploadPromises = Array.from(e.target.files).map(file => {
-               console.log(file);
-       
-               let data = new FormData();
-               data.append('file', file);
-       
-               return fetch('/api/images', {
-                   method: 'POST',
-                   headers: {
-                       'Accept': '*/*',
-                   },
-                   body: data
-               }).then(response => response.json());
-           });
-       
-           let results = await Promise.all(uploadPromises);
-       
-           for (let result of results) {
-               imageNames.value += result.link + '\n\n';
-           }
-       }
-       
-       image.addEventListener('change', uploadImage);
-      
-    </script>
+<script>
+    const image = document.getElementById('image');
+    const imageNames = document.getElementById("imageNames");
+
+    async function uploadImage(e) {
+        let uploadPromises = Array.from(e.target.files).map(file => {
+            console.log(file);
+
+            let data = new FormData();
+            data.append('file', file);
+
+            return fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*',
+                },
+                body: data
+            }).then(response => response.json());
+        });
+
+        let results = await Promise.all(uploadPromises);
+
+        for (let result of results) {
+            imageNames.value += result.link + '\n\n';
+        }
+    }
+
+    image.addEventListener('change', uploadImage);
+
+</script>
 }

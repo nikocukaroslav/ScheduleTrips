@@ -9,5 +9,9 @@ namespace Save__plan_your_trips.Controllers
         {
             return View();
         }
+        public IActionResult Privacy()
+        {
+            return View();
+        }
     }
 }

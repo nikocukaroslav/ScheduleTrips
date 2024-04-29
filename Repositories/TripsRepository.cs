@@ -24,9 +24,9 @@ namespace Save__plan_your_trips.Repositories
             return await scheduleTripsDbContext.Album.Include(a => a.Images).OrderBy(a=> a.Id).LastOrDefaultAsync();
         }
         
-        public async Task<List<ScheduledTrip>> GetScheduledTrips()
+        public async Task<ScheduledTrip?> GetScheduledTrip()
         {
-            return await scheduleTripsDbContext.ScheduledTrip.Include(x => x.ToDos).ToListAsync();
+            return await scheduleTripsDbContext.ScheduledTrip.Include(x => x.ToDos).OrderBy(a=> a.DateTime).LastOrDefaultAsync();
         }
         public async Task<List<Image>> GetImages()
         {

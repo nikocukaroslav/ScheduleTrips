@@ -5,5 +5,5 @@ namespace Save__plan_your_trips.Models.ViewModels;
 public class HomePageViewModel
 {
     public Album? Album { get; set; }
-    public List<ScheduledTrip> ScheduledTrips { get; set; }
+    public ScheduledTrip? ScheduledTrip { get; set; }
 }
