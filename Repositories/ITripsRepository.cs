@@ -4,13 +4,15 @@ namespace Save__plan_your_trips.Repositories
 {
     public interface ITripsRepository
     {
-        Task<IEnumerable<Album?>> GetAsync();
-        Task <Album?> GetSingleAsync(Guid id);
-        Task<IEnumerable<Image?>> GetImages();
-        Task<Album> AddAsync(Album album);
-        Task<Image> AddAsync(Image image, IFormFile file);
-        Task<Album?> DeleteAsync(Guid id);
+        Task<IEnumerable<Album>> GetAlbums();
+        Task<Album?> GetAlbum();
+        Task<List<ScheduledTrip>> GetScheduledTrips();
+        Task <Album?> GetSingle(Guid id);
+        Task<List<Image>> GetImages();
+        Task<Album> AddAlbum(Album album);
+        Task<Image> AddImage(Image image, IFormFile file);
+        Task<Album?> DeleteAlbum(Guid id);
         Task<Image?> DeleteImage(Guid id);
-        Task<Album> EditAsync(Album album);
+        Task<Album> EditAlbum(Album album);
     }
 }

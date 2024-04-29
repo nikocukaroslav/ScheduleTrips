@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Save__plan_your_trips.Models;
 using System.Diagnostics;
+using Save__plan_your_trips.Models.ViewModels;
 using Save__plan_your_trips.Repositories;
 
 namespace Save__plan_your_trips.Controllers
@@ -20,7 +21,11 @@ namespace Save__plan_your_trips.Controllers
       
         public async Task<IActionResult> Index()
         {
-            var images = await tripsRepository.GetImages();
+            var images = new HomePageViewModel
+            {
+                Album = await tripsRepository.GetAlbum(),
+                ScheduledTrips = await tripsRepository.GetScheduledTrips()
+            };
 
             return View(images);
         }

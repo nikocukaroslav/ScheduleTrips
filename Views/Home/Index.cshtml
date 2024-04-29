@@ -1,9 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-<style>
+﻿<style>
     .homepage {
-        background-image: linear-gradient( rgba(36, 42, 46, 0.7), rgba(36, 42, 46, 0.7) ), url("https://th.bing.com/th/id/R.ff248f0499987180ef7f89a72b8708e5?rik=7zGYwp0xNHcl%2fA&pid=ImgRaw&r=0");
+        background-image: linear-gradient(rgba(36, 42, 46, 0.7), rgba(36, 42, 46, 0.7)), url("https://th.bing.com/th/id/R.ff248f0499987180ef7f89a72b8708e5?rik=7zGYwp0xNHcl%2fA&pid=ImgRaw&r=0");
         background-size: cover;
         background-position: center center;
         display: flex;
@@ -13,147 +10,251 @@
         gap: 4rem;
     }
 
-    .button {
-        text-decoration: none;
-        border-radius: 8px;
-        border: 1px solid transparent;
-        padding: 0.6em 1.2em;
-        font-size: 1em;
-        font-weight: 500;
-        font-family: inherit;
-        background-color: #15aabf;
-        color: #242424;
-        cursor: pointer;
-        transition: all 0.3s
-    }
-
-        .button:hover {
-            background-color: #22b8cf;
-        }
-
     body {
         overflow: hidden;
     }
 
     .photo {
-        width: 30rem;
         height: 20rem;
+        width: 100%;
+        object-fit: cover;
         background-color: #333333;
         border-radius: 6px;
-        box-shadow:  0 5px 15px 10px rgba(0,0,0, 0.1);
+        box-shadow: 0 5px 15px 10px rgba(0, 0, 0, 0.1);
     }
 
+    .scrollGallery {
+        position: relative;
+        max-width: 120rem;
+    }
+    
     .photos {
+        width: auto;
         display: flex;
         gap: 8rem;
         padding: 0 2.4rem;
+        overflow: hidden;
+        scroll-behavior: smooth;
     }
 
     h2 {
         text-align: center;
-        margin-top:4.2rem;
+        margin-top: 4.2rem;
         letter-spacing: 2.2px;
         font-size: 3.2rem;
         padding: 2.4rem;
         text-shadow: 2px 2px 4px #222;
     }
 
-    .anotherTrip {
-    overflow: hidden;
-        background-color: #333;
-        width: 60rem;
+    .scheduledTrip {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3.6rem;
+        width: 40rem;
         height: 20rem;
-        border-radius:6px;
-        box-shadow:  0 5px 15px 10px rgba(0,0,0, 0.1);
+        background-color: #333;
+        padding: 2.4rem;
+        border-radius: 6px;
+        border: 4px solid #242424;
+        box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .scheduledTripHeader {
+        font-size: 3.2rem;
+        text-decoration: none;
+        color: inherit;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .scheduledTripHeader:hover {
+        color: darkgrey;
+    }
+
+    .noTrips {
         display: flex;
+        align-items: center;
+        height: 28rem;
+    }
+
+    .todos {
+        width: 100%;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        max-height: 100%;
+        overflow: auto;
+    }
+
+    .dateContainer {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
+    }
+
+    .dateTime {
+        background-color: #242424;
+        padding: 1.2rem;
+        border-radius: 6px;
+    }
+
+    .noTodos {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .info {
+        color: #22b8cf;
+        text-decoration: none;
+        display: flex;
+        gap: 0.8rem;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s;
+    }
+
+    .info:hover {
+        color: #15aabf;
     }
     
-    #image{
-    width: 40rem;
-    height: auto;
+    button {
+        font-size: 0;
     }
-    
-    .details{
-    padding: 1.2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1.2rem;
+
+    .arrow-button {
+        top: 50%;
+        transform: translateY(-50%);
+        position: absolute;
+        border-radius: 50%;
+        width: 5rem;
+        height: 5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
-    
-    .noTrips{
-    display: flex;
-    align-items: center;
-    height: 28rem;
+
+    .arrow-button:focus {
+        outline: none;
+    }
+
+    .arrow {
+        width: 2.2rem;
+        fill: #242424;
+    }
+
+    .leftButton {
+        left: -10rem;
+    }
+
+    .rightButton {
+        right: -10rem;
     }
 </style>
 
-@model IEnumerable<Save__plan_your_trips.Models.Domain.Image?>
+@model Save__plan_your_trips.Models.ViewModels.HomePageViewModel
 
 <div class="homepage">
     <div>
-        @if (Model.Any())
+        @if (Model.Album != null)
         {
-            <h2>Your last trip</h2>
+        <h2>Your trip to @Model.Album.Name</h2>
+
+        @if (Model.Album.Images != null)
+        {
+        <div class="scrollGallery">
+            <button class="leftButton arrow-button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="arrow" viewBox="0 0 16 16">
+                    <path
+                        d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                </svg>
+            </button>
             <div class="photos">
-                @foreach (var image in Model.TakeLast(3))
+                @foreach (var image in Model.Album.Images)
                 {
-                    <img src="@image?.Url" alt="image" class="photo"/>
+                <img src="@image.Url" alt="image" class="photo"/>
                 }
             </div>
+            <button class="rightButton arrow-button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="arrow" viewBox="0 0 16 16">
+                    <path
+                        d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                </svg>
+            </button>
+        </div>
         }
         else
         {
-            <h2 class="noTrips">3 photos of your last trip will be there!</h2>
+        <h2 class="noTrips">Photos of your last trip will be there!</h2>
         }
+        }
+        else
+        {
+        <h2 class="noTrips">Photos of your last trip will be there!</h2>
+        }
+
     </div>
     <div>
-        <h2>Maybe try this one</h2>
-        <div class="anotherTrip">
-
-            <img alt="image" id="image"
-                 src=""/>
-
-            <div class="details">
-                <div>
-                    <span> Rating:</span>
-                    <span>5 stars</span>
-                </div>
-                <div>
-                    <span> Country:</span>
-                    <span>Ukraine</span>
-                </div>
-                <div>
-                    <span> City:</span>
-                    <span>Zhitomir</span>
-                </div>
+        <h2>Don't forget!</h2>
+        @if (Model.ScheduledTrips.Any())
+        {
+        @foreach (var item in Model.ScheduledTrips.TakeLast(1))
+        {
+        <div class="scheduledTrip">
+            <div class="dateContainer">
+                <a class="scheduledTripHeader" asp-action="ScheduledTrips" asp-controller="Scheduled">@item.Name</a>
+                <a class="info" href="https://ru.wikipedia.org/wiki/@item.Name" target="_blank">
+                    <span>Discover more</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="link"
+                         viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
+                        <path fill-rule="evenodd"
+                              d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
+                    </svg>
+                </a>
+                <span class="dateTime">@item.DateTime.ToShortDateString()</span>
             </div>
+
+            <ul class="todos">
+                @if (item.ToDos != null)
+                {
+                foreach (var todo in item.ToDos)
+                {
+                <li>@todo.Task</li>
+                }
+                }
+                else
+                {
+                <p class="noTodos">No todos yet</p>
+                }
+            </ul>
         </div>
+        }
+        }
     </div>
 </div>
 
 @section Scripts
 {
-    <script>
-    var data = 'https://api-ninjas.com';
-    var category = 'nature';
-    
-    fetch('https://api.api-ninjas.com/v1/randomimage?category=' + category, {
-        method: 'GET',
-        headers: {
-            'X-Api-Key': 'JpffhF6QMJNcG/oiCz7pwQ==DKDtvj6nJeAc8btm',
-            'Accept': 'image/jpg'
-        }
-    })
-    .then(response => response.blob())
-    .then(imageBlob => {
-        let imageElement = document.getElementById('image');
-        let imageUrl = URL.createObjectURL(imageBlob);
-        imageElement.src = imageUrl;
-    })
-    .catch(error => {
-        console.error('Error: ', error);
-    });
+<script>
+    const leftButton = document.querySelector(".leftButton");
+    const rightButton = document.querySelector(".rightButton");
+    const photos = document.querySelector(".photos")
+    const scrollAmount = 500;
 
-    </script>
+    leftButton.addEventListener("click", function () {
+        photos.scrollLeft -= scrollAmount;
+    })
+
+    rightButton.addEventListener("click", function () {
+        photos.scrollLeft += scrollAmount;
+    })
+
+</script>
 }

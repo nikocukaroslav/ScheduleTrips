@@ -49,13 +49,13 @@
             border-radius: 6px;
             border: 1px solid transparent;
             padding: 0.6em 1.2em;
-            font-size: 1em;
+            font-size: 1.6rem;
             font-weight: 500;
             font-family: inherit;
             background-color: #15aabf;
             color: #242424;
             cursor: pointer;
-            transition: all 0.3s
+            transition: all 0.2s
         }
 
         button:hover {
@@ -92,7 +92,7 @@
         .nav a:hover {
             color: #096072;
         }
-
+        
         .authPages {
             display: flex;
             gap: 1.6rem;
@@ -101,21 +101,18 @@
         .userName {
             color: #333;
         }
-
-        .logo {
-            height: 2.4rem;
-        }
+        
     </style>
 </head>
 
-@inject SignInManager<IdentityUser> signInManager
+@inject SignInManager<IdentityUser> SignInManager
 
 <body>
 <header>
     <nav class="nav">
         <ul>
             <div class="mainPages">
-                @if (signInManager.IsSignedIn(User))
+                @if (SignInManager.IsSignedIn(User))
                 {
                 <li>
                     <a asp-area="" asp-controller="Home" asp-action="Index">
@@ -137,9 +134,9 @@
                 }
             </div>
             <div class="authPages">
-                @if (signInManager.IsSignedIn(User))
+                @if (SignInManager.IsSignedIn(User))
                 {
-                <div class="userName">@User.Identity.Name</div>
+                <div class="userName">@User.Identity?.Name</div>
                 <li>
                     <a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                 </li>

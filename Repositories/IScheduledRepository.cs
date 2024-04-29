@@ -11,7 +11,7 @@ public interface IScheduledRepository
     Task<List<ToDo>> GetAllToDos();
     Task<ToDo?> DeleteToDo(Guid id);
     Task<ToDo?> GetSingleToDo(Guid id);
-    Task<IEnumerable<ScheduledTrip>> GetAllAsync();
+    Task<List<ScheduledTrip>> GetAllScheduledTrips();
     Task<ScheduledTrip?> GetSingleAsync(Guid id);
     Task<ScheduledTrip?> DeleteScheduledTrip(Guid id);
     Task<ScheduledTrip?> EditScheduledTrip(ScheduledTrip scheduledTrip);

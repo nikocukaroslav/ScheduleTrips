@@ -24,7 +24,7 @@ namespace Save__plan_your_trips.Controllers
         {
             var albums = new YourAlbumsPageViewModel
             {
-                Albums = await tripsRepository.GetAsync(),
+                Albums = await tripsRepository.GetAlbums(),
             };
 
             return View(albums);
@@ -41,7 +41,7 @@ namespace Save__plan_your_trips.Controllers
                 Name = addAlbumRequest.Place.Name,
             };
 
-            await tripsRepository.AddAsync(album);
+            await tripsRepository.AddAlbum(album);
 
             if (addAlbumRequest.Images?.File != null)
                 foreach (var imageRequest in addAlbumRequest.Images.File)
@@ -50,7 +50,7 @@ namespace Save__plan_your_trips.Controllers
                     {
                         AlbumId = album.Id,
                     };
-                    await tripsRepository.AddAsync(image, imageRequest);
+                    await tripsRepository.AddImage(image, imageRequest);
                 }
 
             return RedirectToAction("YourAlbums");
@@ -59,7 +59,7 @@ namespace Save__plan_your_trips.Controllers
         [HttpGet]
         public async Task<IActionResult> EditAlbum(Guid id)
         {
-            var album = await tripsRepository.GetSingleAsync(id);
+            var album = await tripsRepository.GetSingle(id);
             if (album == null) return View(null);
             var model = new EditAlbumRequest
             {
@@ -95,11 +95,11 @@ namespace Save__plan_your_trips.Controllers
                         AlbumId = editAlbumRequest.Id,
                         Url = editAlbumRequest.ImageUrls,
                     };
-                    await tripsRepository.AddAsync(image, imageRequest);
+                    await tripsRepository.AddImage(image, imageRequest);
                 }
             }
 
-            var result = await tripsRepository.EditAsync(editedAlbum);
+            var result = await tripsRepository.EditAlbum(editedAlbum);
             if (result != null)
                 return RedirectToAction("YourAlbums");
             return RedirectToAction("EditAlbum");
@@ -108,7 +108,7 @@ namespace Save__plan_your_trips.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteAlbum(EditAlbumRequest editAlbumRequest)
         {
-            var deletedAlbum = await tripsRepository.DeleteAsync(editAlbumRequest.Id);
+            var deletedAlbum = await tripsRepository.DeleteAlbum(editAlbumRequest.Id);
 
             if (deletedAlbum != null)
                 return RedirectToAction("YourAlbums");

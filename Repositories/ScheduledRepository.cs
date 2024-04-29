@@ -58,7 +58,7 @@ public class ScheduledRepository : IScheduledRepository
         return null;
     }
 
-    public async Task<IEnumerable<ScheduledTrip>> GetAllAsync()
+    public async Task<List<ScheduledTrip>> GetAllScheduledTrips()
     {
         return await scheduleTripsDbContext.ScheduledTrip.ToListAsync();
     }

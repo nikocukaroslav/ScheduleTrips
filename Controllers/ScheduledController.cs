@@ -20,12 +20,17 @@ public class ScheduledController : Controller
     [HttpGet]
     public async Task<IActionResult> ScheduledTrips()
     {
-        var scheduledTrips = await scheduledRepository.GetAllAsync();
+        var scheduledTrips = (await scheduledRepository.GetAllScheduledTrips()).OrderBy(x => x.DateTime);
         var todos = await scheduledRepository.GetAllToDos();
+
+        var plannedToDos = todos.Where(todo => !todo.IsPerformed).ToList();
+        var performedToDos = todos.Where(todo => todo.IsPerformed).ToList();
 
         var scheduledTripsPageViewModel = new ScheduledTripsPageViewModel
         {
             ScheduledTrips = scheduledTrips,
+            PlannedToDos = plannedToDos,
+            PerformedToDos = performedToDos,
             ToDos = todos,
         };
 
@@ -46,7 +51,7 @@ public class ScheduledController : Controller
             Name = addScheduledTripNameRequest.Name,
         };
 
-        if (scheduledTrip != null)
+        if (ModelState.IsValid)
         {
             await scheduledRepository.AddScheduledTrip(scheduledTrip);
             return RedirectToAction("AddScheduledTrip", new { id = scheduledTrip.Id });
@@ -115,15 +120,30 @@ public class ScheduledController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> SortTodo(List<PerformToDoRequest> performToDoRequests)
+    public async Task<IActionResult> PerformToDos(List<PerformToDoRequest> performToDoRequests)
     {
         foreach (var performToDoRequest in performToDoRequests)
         {
             var todo = await scheduledRepository.GetSingleToDo(performToDoRequest.Id);
-
             if (todo != null)
             {
                 todo.IsPerformed = performToDoRequest.IsPerformed;
+                await scheduledRepository.SaveChangesAsync();
+            }
+        }
+
+        return RedirectToAction("ScheduledTrips");
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> UnperformToDos(List<UnperformToDoRequest> unperformToDoRequests)
+    {
+        foreach (var unperformToDoRequest in unperformToDoRequests)
+        {
+            var todo = await scheduledRepository.GetSingleToDo(unperformToDoRequest.Id);
+            if (todo != null )
+            {
+                todo.IsPerformed = !unperformToDoRequest.IsPerformed;
                 await scheduledRepository.SaveChangesAsync();
             }
         }

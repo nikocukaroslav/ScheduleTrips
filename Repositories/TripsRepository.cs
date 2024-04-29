@@ -15,29 +15,38 @@ namespace Save__plan_your_trips.Repositories
             this.imageRepository = (ImageRepository)imageRepository;
         }
 
-        public async Task<IEnumerable<Album?>> GetAsync()
+        public async Task<IEnumerable<Album>> GetAlbums()
         {
             return await scheduleTripsDbContext.Album.Include(a => a.Images).ToListAsync();
         }
-        public async Task<IEnumerable<Image?>> GetImages()
+        public async Task<Album?> GetAlbum()
+        {
+            return await scheduleTripsDbContext.Album.Include(a => a.Images).OrderBy(a=> a.Id).LastOrDefaultAsync();
+        }
+        
+        public async Task<List<ScheduledTrip>> GetScheduledTrips()
+        {
+            return await scheduleTripsDbContext.ScheduledTrip.Include(x => x.ToDos).ToListAsync();
+        }
+        public async Task<List<Image>> GetImages()
         {
             return await scheduleTripsDbContext.Images.ToListAsync();
         }
 
-        public async Task<Album?> GetSingleAsync(Guid id)
+        public async Task<Album?> GetSingle(Guid id)
         {
             return await scheduleTripsDbContext.Album.Include(x=> x.Images).FirstOrDefaultAsync(x => x.Id == id);
         }
 
 
-        public async Task<Album> AddAsync(Album album)
+        public async Task<Album> AddAlbum(Album album)
         {
             await scheduleTripsDbContext.Album.AddAsync(album);
             await scheduleTripsDbContext.SaveChangesAsync();
             return album;
         }
 
-        public async Task<Image> AddAsync(Image image, IFormFile file)
+        public async Task<Image> AddImage(Image image, IFormFile file)
         {
             image.Url = await imageRepository.UploadAsync(file);
             await scheduleTripsDbContext.Images.AddAsync(image);
@@ -45,7 +54,7 @@ namespace Save__plan_your_trips.Repositories
             return image;
         }
 
-        public async Task<Album> EditAsync(Album album)
+        public async Task<Album> EditAlbum(Album album)
         {
             var editedAlbum = await scheduleTripsDbContext.Album.Include(x => x.Images)
                 .FirstOrDefaultAsync(x => x.Id == album.Id);
@@ -62,7 +71,7 @@ namespace Save__plan_your_trips.Repositories
             return null;
         }
         
-        public async Task<Album?> DeleteAsync(Guid id)
+        public async Task<Album?> DeleteAlbum(Guid id)
         {
             var deletedAlbum = await scheduleTripsDbContext.Album.FindAsync(id);
 

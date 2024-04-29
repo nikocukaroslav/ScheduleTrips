@@ -112,6 +112,8 @@
         display: flex;
         flex-direction: column;
         gap: 1.2rem;
+        max-height: 60rem;
+        overflow: auto;
     }
     
     label {
@@ -150,8 +152,7 @@
     }
 
     .past {
-        background-color: gray;
-        color: #555;
+        color: #cc3535;
     }
 
     .editScheduledTrip {
@@ -183,9 +184,9 @@
     .button{
         margin-top: auto;
     }
+    
 </style>
 
-@using CloudinaryDotNet.Core
 @model Save__plan_your_trips.Models.ViewModels.ScheduledTripsPageViewModel
 
 <section class="scheduleTripsPage">
@@ -207,9 +208,10 @@
             {
                 foreach (var item in Model.ScheduledTrips.Reverse())
                 {
-                    <li class="@(item.DateTime < DateTime.Now ? "past" : "") place" data-scheduledTrip-id="@item.Id">
+                    <li class="place" data-scheduledTrip-id="@item.Id">
                         @item.Name
-                        <time class="dateTime">@item.DateTime.ToShortDateString()</time>
+
+                        <time class="dateTime @(item.DateTime < DateTime.Now ? "past" : "")">@item.DateTime.ToShortDateString()</time>
                         <a class="editScheduledTrip" asp-action="EditScheduledTrip" asp-controller="Scheduled"
                            asp-route-id="@item.Id">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="edit" viewBox="0 0 16 16">
@@ -236,58 +238,51 @@
                 <h3 class="mapHeader">Marshoot</h3>
             </nav>
             <section class="purposes">
-                <form method="post" asp-action="SortTodo" asp-controller="Scheduled">
+                <form method="post" asp-action="PerformToDos" asp-controller="Scheduled">
                     <div class="todoList">
                         <h4>Planed to do</h4>
-                        @for (int i = 0; i < Model.ToDos.Count; i++)
+                        @for (int i = 0; i < Model.PlannedToDos.Count; i++)
                         {
-                            @if (!Model.ToDos[i].IsPerformed)
-                            {
-                                <label>
-                                    <input type="checkbox" class="todo"
-                                           data-scheduledTrip-id="@Model.ToDos[i].ScheduledTripId"
-                                           asp-for="@Model.PerformToDoRequests[i].IsPerformed"/>
-                                    <input type="hidden" asp-for="@Model.PerformToDoRequests[i].Id" value="@Model.ToDos[i].Id"/>
-                                    <span>@Model.ToDos[i].Task</span>
-                                </label>
-                            }
+                            <label>
+                                <input type="checkbox" class="todo"
+                                       data-scheduledTrip-id="@Model.PlannedToDos[i].ScheduledTripId"
+                                       asp-for="@Model.PerformToDoRequests[i].IsPerformed"/>
+                                <input type="hidden" asp-for="@Model.PerformToDoRequests[i].Id" value="@Model.PlannedToDos[i].Id"/>
+
+                                <span>@Model.PlannedToDos[i].Task</span>
+                            </label>
                         }
                     </div>
-                    <button type="submit" class="button" asp-action="SortTodo"
+                    <button type="submit" class="button" asp-action="PerformToDos"
                             asp-controller="Scheduled">
                         Add to performed
                     </button>
                 </form>
-                <form method="post" asp-action="SortTodo" asp-controller="Scheduled">
-                    <div class="performed todoList">
+                <form method="post" asp-action="UnperformTodos" asp-controller="Scheduled">
+                    <div class="todoList">
                         <h4>Performed</h4>
-                        @for (int i = 0; i < Model.ToDos.Count; i++)
+                        @for (int i = 0; i < Model.PerformedToDos.Count; i++)
                         {
-                            @if (Model.ToDos[i].IsPerformed)
-                            {
-                                <label class="@(Model.ToDos[i].IsPerformed ? "completed" : "")">
+                            <label class="completed">
+                                <input type="checkbox" class="todo"
+                                       data-scheduledTrip-id="@Model.PerformedToDos[i].ScheduledTripId"
+                                       asp-for="@Model.UnperformToDoRequests[i].IsPerformed"
+                                        />
+                                <input type="hidden" asp-for="@Model.UnperformToDoRequests[i].Id" value="@Model.PerformedToDos[i].Id"/>
 
-                                    <input type="checkbox" class="todo"
-                                           data-scheduledTrip-id="@Model.ToDos[i].ScheduledTripId"
-                                           asp-for="@Model.ToDos[i].IsPerformed"
-                                           />
-                                    
-
-                                    <input type="hidden" asp-for="@Model.PerformToDoRequests[i].Id" value="@Model.ToDos[i].Id"/>
-                                    <span>@Model.ToDos[i].Task</span>
-                                </label>
-                            }
+                                <span>@Model.PerformedToDos[i].Task</span>
+                            </label>
                         }
                     </div>
-                    <button type="submit" class="button" asp-action="SortTodo" asp-controller="Scheduled">Remove from performed</button>
+                    <button type="submit" class="button" asp-action="UnperformToDos" asp-controller="Scheduled">Remove from performed</button>
                 </form>
-            </section>
+            </section >
             <section class="mapPage">
                 <iframe class="map"
                         src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d40812.351682017834!2d28.6829387!3d50.25884285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sua!4v1712906141139!5m2!1sru!2sua"
                         allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </section>
+                </iframe >
+            </section >
         </main>
     }
     else
@@ -307,13 +302,11 @@
         const todoHeader = document.querySelector(".todoHeader");
         const mapHeader = document.querySelector(".mapHeader");
         const newScheduledTrip = document.querySelector(".newScheduledTrip");
-
-        mapPage.style.display = "none"
         
-        places.forEach(place => {
+  
+       places.forEach(place => {
             place.addEventListener("click", function () {
                 const placeId = this.getAttribute('data-scheduledTrip-id');
-                const activePlaceId = this.dataset.scheduledTripId;
                 
                 places.forEach((p) => {
                     p.classList.remove("active");
@@ -327,19 +320,12 @@
                         todo.parentElement.style.display = "none";
                     }
                 });
+               
                 localStorage.setItem("activePlaceId", placeId);
             });
         });
-        
-        const activePlaceId = localStorage.getItem("activePlaceId");
-
-        if (activePlaceId) {
-            const activePlace = document.querySelector(`.place[data-scheduledTrip-id="${activePlaceId}"]`);
-            if (activePlace) activePlace.click();
-        } else if (places.length > 0) {
-            places[0].click();
-        }
-        
+       
+       
         places.forEach(place => {
             const editScheduledTrip = place.querySelector(".editScheduledTrip");
 
@@ -371,7 +357,18 @@
             purposesPage.style.display = "grid"
         })
 
+        mapPage.style.display = "none"
+
         todoHeader.click();
+
+        const activePlaceId = localStorage.getItem("activePlaceId");
+
+        if (activePlaceId) {
+            const activePlace = document.querySelector(`.place[data-scheduledTrip-id="${activePlaceId}"]`);
+            if (activePlace) activePlace.click();
+        } else if (places.length > 0) {
+            places[0].click();
+        }
     })
 
 </script>
