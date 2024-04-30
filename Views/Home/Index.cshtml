@@ -20,8 +20,8 @@
     }
 
     .photo {
+        margin: 0 auto;
         height: 20rem;
-        width: 100%;
         object-fit: cover;
         background-color: #333333;
         border-radius: 6px;
@@ -157,7 +157,6 @@
     }
 
     .newScheduledTrip {
-        display: block;
         border-radius: 6px;
         padding: 1.2rem;
         background-color: #15aabf;
@@ -165,13 +164,13 @@
         color: #333;
         font-weight: bold;
         transition: all 0.2s;
-        margin-top: 15rem;
     }
 
     .newScheduledTrip:hover {
         background-color: #22b8cf;
     }
-
+    
+    
     @@media screen and (max-width: 1600px) {
         .scrollGallery{
             width: 100rem;
@@ -216,12 +215,6 @@
             height: 95vh;
         }
     }
-    @@media screen and (max-width: 500px) {
-        html{
-            font-size: 47%;
-        }
-        
-    }
 </style>
 
 @model Save__plan_your_trips.Models.ViewModels.HomePageViewModel
@@ -230,11 +223,10 @@
     <div>
         @if (Model.Album != null)
         {
-        <h2>Your trip to @Model.Album.Name</h2>
-
-        @if (Model.Album.Images != null)
+        @if (Model.Album.Images != null && Model.Album.Images.Any())
         {
-        <div class="scrollGallery">
+            <h2>Your trip to @Model.Album.Name</h2>
+            <div class="scrollGallery">
             <button class="leftButton arrow-button">
                 <svg xmlns="http://www.w3.org/2000/svg" class="arrow" viewBox="0 0 16 16">
                     <path
@@ -306,10 +298,11 @@
         }
         else
         {
-        <a class="newScheduledTrip" asp-action="AddScheduledTripName" asp-controller="Scheduled">
-            Plan your first trip
-            now
-        </a>
+         
+                <a class="newScheduledTrip" asp-action="AddScheduledTripName" asp-controller="Scheduled">
+                    Plan your first trip now
+                </a>
+        
         }
     </div>
 </div>

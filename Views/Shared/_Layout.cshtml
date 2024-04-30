@@ -102,11 +102,22 @@
             color: #333;
         }
 
+        @@media screen and (max-width: 1600px) {
+            html{
+                font-size: 58%;
+            }
+        }
+        
         @@media screen and (max-width: 768px) {
            html{
               font-size: 55%;
            }
-        }
+        } 
+        @@media screen and (max-width: 500px) {
+           html{
+              font-size: 45%;
+           }
+        }  
         @@media screen and (max-height: 750px) {
             h2{
                 margin-bottom: 1.2rem;
@@ -115,6 +126,13 @@
                 font-size: 48%;
             }
         }
+
+        @@keyframes fadeIn {
+            0% {opacity: 0.8;}
+            100% {opacity: 1;}
+        }
+         
+        
     </style>
 </head>
 

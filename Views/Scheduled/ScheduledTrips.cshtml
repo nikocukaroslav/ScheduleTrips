@@ -201,7 +201,13 @@
          height: 75vh;
      }
   }
-    
+    @@keyframes fadeIn {
+         0% {opacity: 0.5;}
+         100% {opacity: 1;}
+     }
+    label {
+        animation: fadeIn 0.2s ease-in-out;
+    }
 </style>
 
 @model Save__plan_your_trips.Models.ViewModels.ScheduledTripsPageViewModel
