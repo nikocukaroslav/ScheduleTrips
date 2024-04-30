@@ -4,6 +4,7 @@
     }
 
     .scheduleTripsPage {
+        height: 88vh;
         display: grid;
         grid-template-columns: 1fr 4fr;
         gap: 0.8rem;
@@ -32,6 +33,8 @@
 
 
     .formContainer {
+        display: grid;
+        grid-template-rows: auto 1fr auto ;
         width: 100%;
         margin: 0.8rem;
     }
@@ -46,31 +49,32 @@
         height: 5rem;
         background-color: #333;
         border-radius: 6px;
-        margin-bottom: 1.2rem;
+        margin-bottom: 0.8rem;
     }
 
     .map {
         border-radius: 6px;
+        height: 100%;
         width: 100%;
-        height: 82vh;
         border: none;
     }
 
     .mapContainer {
         margin: 0.8rem;
+        display: grid;
+        grid-template-rows: auto 1fr;
     }
 
     label {
         display: flex;
         flex-direction: column;
-        gap: 0.4rem;
     }
 
     .todos {
+        height: 100%;
         margin-top: 0.8rem;
         border-radius: 6px;
         background-color: #333;
-        height: 41vh;
         display: flex;
         flex-direction: column;
         gap: 0.8rem;
@@ -79,7 +83,7 @@
         overflow: auto;
     }
 
-    .todo{
+    .todo {
         padding-bottom: 0.4rem;
         display: flex;
         justify-content: space-between;
@@ -87,7 +91,7 @@
         border-bottom: 1px solid #ddd;
     }
 
-    .trash{
+    .trash {
         height: 1.8rem;
         display: flex;
         justify-content: space-between;
@@ -120,14 +124,14 @@
         justify-content: center;
     }
 
-    .noStyle{
+    .noStyle {
         display: flex;
         margin: 0;
         padding: 0.4rem;
         background-color: unset;
     }
 
-    .task{
+    .task {
         max-width: 18rem;
         word-wrap: break-word;
     }
@@ -138,7 +142,7 @@
         gap: 0.8rem;
     }
 
-    .delete{
+    .delete {
         width: 100%;
         border-radius: 6px;
         text-decoration: none;
@@ -147,12 +151,15 @@
         color: inherit;
     }
 
-    .delete:hover{
+    .delete:hover {
         background-color: #e03131;
     }
-    
-    .submit{
+
+    .submit {
         width: 100%;
+    }
+
+    @@media screen and (max-height: 920px) {
     }
 </style>
 
@@ -163,7 +170,7 @@
         <form method="post" asp-action="AddToDo" asp-controller="Scheduled">
             <h3>Edit your todos</h3>
             <div class="addTodos">
-                <input type="hidden" asp-for="AddToDoRequest.ReturnUrl" value="@Context.Request.Path" />
+                <input type="hidden" asp-for="AddToDoRequest.ReturnUrl" value="@Context.Request.Path"/>
                 <input type="text" asp-for="AddToDoRequest.Task"/>
                 <input type="hidden" asp-for="AddToDoRequest.ScheduledTripId" value="@Model.ScheduledTrip?.Id"/>
                 <button class="add" asp-action="AddToDo" asp-controller="Scheduled">Add</button>
@@ -172,27 +179,29 @@
         <ul class="todos">
             @if (Model.ScheduledTrip.ToDos.Any())
             {
-                foreach (var item in Model.ScheduledTrip.ToDos)
-                {
-                    <li class="todo">
-                        <span class="task">@item.Task</span>
-                        <form method="post" asp-action="DeleteToDo" asp-controller="Scheduled" class="deleteTodo">
-                            <input type="hidden" value="@item.Id" asp-for="DeleteToDoRequest.Id"/>
-                            <input type="hidden" asp-for="DeleteToDoRequest.ReturnUrl" value="@Context.Request.Path" />
-                            <input type="hidden" value="@item.ScheduledTripId" asp-for="DeleteToDoRequest.ScheduledTripId"/>
-                            <button type="submit" class="noStyle" asp-action="DeleteToDo" asp-controller="Scheduled">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="trash" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                                </svg>
-                            </button>
-                        </form>
-                    </li>
-                }
+            foreach (var item in Model.ScheduledTrip.ToDos)
+            {
+            <li class="todo">
+                <span class="task">@item.Task</span>
+                <form method="post" asp-action="DeleteToDo" asp-controller="Scheduled" class="deleteTodo">
+                    <input type="hidden" value="@item.Id" asp-for="DeleteToDoRequest.Id"/>
+                    <input type="hidden" asp-for="DeleteToDoRequest.ReturnUrl" value="@Context.Request.Path"/>
+                    <input type="hidden" value="@item.ScheduledTripId" asp-for="DeleteToDoRequest.ScheduledTripId"/>
+                    <button type="submit" class="noStyle" asp-action="DeleteToDo" asp-controller="Scheduled">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="trash" viewBox="0 0 16 16">
+                            <path
+                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                            <path
+                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                        </svg>
+                    </button>
+                </form>
+            </li>
+            }
             }
             else
             {
-                <p class="noTodos">No todos yet</p>
+            <p class="noTodos">No todos yet</p>
             }
         </ul>
         <form method="post" asp-action="EditScheduledTrip" asp-controller="Scheduled" class="marginTop">

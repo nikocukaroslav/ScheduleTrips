@@ -6,6 +6,7 @@
     .scheduleTripsPage {
         display: grid;
         grid-template-columns: 15fr 85fr;
+        height: 90vh;
     }
 
     .newScheduledTrip {
@@ -35,7 +36,6 @@
         list-style: none;
         flex-direction: column;
         gap: 0.8rem;
-        height: 82vh;
     }
 
     .place {
@@ -50,7 +50,7 @@
         border-radius: 6px;
         transition: all 0.2s;
         justify-content: space-between;
-        gap: 0.5rem;
+        gap: 0.4rem;
         position: relative;
         line-height: 1.1;
     }
@@ -79,7 +79,7 @@
 
     .scheduledTripsNav {
         display: flex;
-        margin: 0.8rem;
+        margin: 0.8rem 0.8rem 0 0.8rem ;
         gap: 0.8rem;
     }
 
@@ -100,6 +100,11 @@
         background-color: #242424;
     }
 
+    main{
+        display: grid;
+        grid-template-rows: auto 1fr;
+    }
+    
     .purposes {
         margin: 0.8rem;
         display: grid;
@@ -107,6 +112,15 @@
         gap: 0.8rem;
     }
 
+    form {
+        display: flex;
+        gap: 1.2rem;
+        flex-direction: column;
+        border-radius: 6px;
+        padding: 0.8rem;
+        border: 3px solid #333;
+    }
+    
     .todoList {
         display: flex;
         flex-direction: column;
@@ -120,10 +134,10 @@
     }
 
     .map {
-        margin: 0 0.8rem;
+        margin: 0.8rem;
         border-radius: 6px;
         width: 100%;
-        height: 82vh;
+        height: 100%;
         border: none;
     }
 
@@ -159,23 +173,13 @@
         justify-content: center;
         position: absolute;
         cursor: pointer;
-        right: -2rem;
+        right: -2.4rem;
+        padding: 0.4rem;
     }
 
     .edit {
         height: 1.6rem;
         fill: #ddd;
-    }
-
-    form {
-        height: 82vh;
-        width: 100%;
-        display: flex;
-        gap: 1.2rem;
-        flex-direction: column;
-        border-radius: 6px;
-        padding: 0.8rem;
-        border: 3px solid #333;
     }
     
     .button{
@@ -192,6 +196,11 @@
             height: 41vh;
         }
     }
+    @@media screen and (max-height: 800px) {
+     .scheduledTripsList{
+         height: 75vh;
+     }
+  }
     
 </style>
 
