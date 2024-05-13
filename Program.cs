@@ -11,11 +11,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ScheduleTripsDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ScheduleTripsDbConnectionString")));
 
-builder.Services.AddDbContext<AuthDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ScheduleTripsAuthDbConnectionString")));
-
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<AuthDbContext>();
+    .AddEntityFrameworkStores<ScheduleTripsDbContext>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
