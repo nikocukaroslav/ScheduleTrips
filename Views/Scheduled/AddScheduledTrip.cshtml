@@ -142,7 +142,7 @@
 <section class="scheduleTripsPage">
     <div class="formContainer">
         <form method="post" asp-action="AddToDo" asp-controller="Scheduled">
-            <h3>Edit your todos</h3>
+            <h3>Add some purposes</h3>
             <div class="addTodos">
                 <input type="hidden" asp-for="AddToDoRequest.ReturnUrl" value="@Context.Request.Path" />
                 <input type="text" asp-for="AddToDoRequest.Task"/>
@@ -183,7 +183,7 @@
                 <input type="hidden" id="id" asp-for="AddScheduledTripDateRequest.Id" value="@Model.ScheduledTrip.Id" required/>
             </label>
             <button type="submit" class="submitButton marginTop" asp-action="AddScheduledTripDate" >
-                Schedule
+                Add trip
             </button>
         </form>
     </div>

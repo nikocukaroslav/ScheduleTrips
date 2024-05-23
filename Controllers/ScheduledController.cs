@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Save__plan_your_trips.Data;
 using Save__plan_your_trips.Models.Domain;
@@ -7,6 +8,7 @@ using Save__plan_your_trips.Repositories;
 
 namespace Save__plan_your_trips.Controllers;
 
+[Authorize]
 public class ScheduledController : Controller
 {
     private readonly ScheduledRepository? scheduledRepository;

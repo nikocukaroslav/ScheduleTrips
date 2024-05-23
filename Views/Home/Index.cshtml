@@ -223,93 +223,91 @@
     <div>
         @if (Model.Album != null)
         {
-        @if (Model.Album.Images != null && Model.Album.Images.Any())
-        {
-            <h2>Your trip to @Model.Album.Name</h2>
-            <div class="scrollGallery">
-            <button class="leftButton arrow-button">
-                <svg xmlns="http://www.w3.org/2000/svg" class="arrow" viewBox="0 0 16 16">
-                    <path
-                        d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
-                </svg>
-            </button>
-            <div class="photos">
-                @foreach (var image in Model.Album.Images)
-                {
-                <img src="@image.Url" alt="image" class="photo"/>
-                }
-            </div>
-            <button class="rightButton arrow-button">
-                <svg xmlns="http://www.w3.org/2000/svg" class="arrow" viewBox="0 0 16 16">
-                    <path
-                        d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-                </svg>
-            </button>
-        </div>
+            if (Model.Album.Images != null && Model.Album.Images.Any())
+            {
+                <h2>Your trip to @Model.Album.Name</h2>
+                <div class="scrollGallery">
+                    <button class="leftButton arrow-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="arrow" viewBox="0 0 16 16">
+                            <path
+                                d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                        </svg>
+                    </button>
+                    <div class="photos">
+                        @foreach (var image in Model.Album.Images)
+                        {
+                            <img src="@image.Url" alt="image" class="photo"/>
+                        }
+                    </div>
+                    <button class="rightButton arrow-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="arrow" viewBox="0 0 16 16">
+                            <path
+                                d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                        </svg>
+                    </button>
+                </div>
+            }
+            else
+            {
+                <h2 class="noTrips">Photos of your last trip will be there!</h2>
+            }
         }
         else
         {
-        <h2 class="noTrips">Photos of your last trip will be there!</h2>
-        }
-        }
-        else
-        {
-        <h2 class="noTrips">Photos of your last trip will be there!</h2>
+            <h2 class="noTrips">Photos of your last trip will be there!</h2>
         }
 
     </div>
     <div>
         @if (Model.ScheduledTrip != null)
         {
-        <h2>Don't forget!</h2>
-        <div class="scheduledTrip">
-            <div class="dateContainer">
-                <a class="scheduledTripHeader" asp-action="ScheduledTrips"
-                   asp-controller="Scheduled">
-                    @Model.ScheduledTrip.Name
-                </a>
-                <a class="info" href="https://ru.wikipedia.org/wiki/@Model.ScheduledTrip.Name" target="_blank">
-                    <span>Discover more</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="link"
-                         viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                              d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
-                        <path fill-rule="evenodd"
-                              d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
-                    </svg>
-                </a>
-                <span class="dateTime">@Model.ScheduledTrip.DateTime.ToShortDateString()</span>
-            </div>
+            <h2>Don't forget!</h2>
+            <div class="scheduledTrip">
+                <div class="dateContainer">
+                    <a class="scheduledTripHeader" asp-action="ScheduledTrips"
+                       asp-controller="Scheduled">
+                        @Model.ScheduledTrip.Name
+                    </a>
+                    <a class="info" href="https://ru.wikipedia.org/wiki/@Model.ScheduledTrip.Name" target="_blank">
+                        <span>Discover more</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="link"
+                             viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
+                            <path fill-rule="evenodd"
+                                  d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
+                        </svg>
+                    </a>
+                    <span class="dateTime">@Model.ScheduledTrip.DateTime.ToShortDateString()</span>
+                </div>
 
-            <ul class="todos">
-                @if (Model.ScheduledTrip.ToDos != null)
-                {
-                foreach (var todo in @Model.ScheduledTrip.ToDos)
-                {
-                <li>@todo.Task</li>
-                }
-                }
-                else
-                {
-                <p class="noTodos">No todos yet</p>
-                }
-            </ul>
-        </div>
+                <ul class="todos">
+                    @if (Model.ScheduledTrip.ToDos != null)
+                    {
+                        foreach (var todo in @Model.ScheduledTrip.ToDos)
+                        {
+                            <li>@todo.Task</li>
+                        }
+                    }
+                    else
+                    {
+                        <p class="noTodos">No todos yet</p>
+                    }
+                </ul>
+            </div>
         }
         else
         {
-         
-                <a class="newScheduledTrip" asp-action="AddScheduledTripName" asp-controller="Scheduled">
-                    Plan your first trip now
-                </a>
-        
+            <a class="newScheduledTrip" asp-action="AddScheduledTripName" asp-controller="Scheduled">
+                Plan your first trip now
+            </a>
         }
     </div>
 </div>
 
 @section Scripts
 {
-<script>
+    <script>
     const leftButton = document.querySelector(".leftButton");
     const rightButton = document.querySelector(".rightButton");
     const photos = document.querySelector(".photos")
