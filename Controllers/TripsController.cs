@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Save__plan_your_trips.Models.Domain;
@@ -22,6 +23,8 @@ public class TripsController : Controller
     [HttpGet]
     public async Task<IActionResult> YourAlbums()
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
+        
         var albums = new YourAlbumsPageViewModel
         {
             Albums = await tripsRepository.GetAlbums(),

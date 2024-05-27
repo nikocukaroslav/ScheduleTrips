@@ -81,5 +81,6 @@ namespace Save__plan_your_trips.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("StarterPage", "Preview");
         }
+
     }
 }

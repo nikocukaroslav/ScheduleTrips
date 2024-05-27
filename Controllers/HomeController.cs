@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Save__plan_your_trips.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 using Save__plan_your_trips.Models.ViewModels;
 using Save__plan_your_trips.Repositories;
 

@@ -2,7 +2,6 @@
 {
     public class AddImageRequest
     {
-        public Guid AlbumId { get; set; }
         public List<IFormFile> File { get; set; }
     }
 }
